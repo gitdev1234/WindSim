@@ -22,4 +22,9 @@ struct coords {
     int x, y;
 };
 
+struct vector3 {
+    float x, y, z;
+};
+
+
 #endif // TYPES_H_INCLUDED

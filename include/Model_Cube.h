@@ -19,17 +19,12 @@ using namespace std;
 class Model_Cube
 {
     public:
-        /* TODO STATIC
-        static float   height;
-        static float   length;
-        static float   width;
-        static float   volume;
-        */
 
         Model_Cube();
         Model_Cube(int molecules_count, float temperature, float pressure, GeoCoords geoCoords);
         virtual ~Model_Cube();
 
+        /* --- miscellaneous --- */
         // temperature
         void ModifyTemperature(string s);
 
@@ -39,6 +34,10 @@ class Model_Cube
         // pressure
         void CalcPressure();
 
+        /* --- simulation --- */
+        void simulateTimeStep(float timeStepInSeconds);
+
+        /* --- getters and setters --- */
         // setters
         void setMolecules_Count(float val) {molecules_count = val;};
         void setTemperature(float val)     {temperature = val;};
@@ -62,16 +61,23 @@ class Model_Cube
     protected:
 
     private:
-        float molecules_count;
-        float temperature;
-        float pressure;
+        // constant properties
+        float height;  // in m
+        float length;  // in m
+        float width;   // in m
+        float volume;  // in m
         GeoCoords geoCoords;
 
-        float height;
-        float length;
-        float width;
-        float volume;
+        // changing properties
+        float molecules_count;
+        float temperature;     // in K
+        float pressure;        // in hPa
+
         float mass;
+        vector3 force;        // in Newton
+        vector3 acceleration; // in m/s^2
+        vector3 speed;        // in m/s
+
 };
 
 #endif // MODEL_CUBE_H

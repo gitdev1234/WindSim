@@ -13,14 +13,11 @@ Model_Cube::Model_Cube() {
     //ctor
 }
 
-Model_Cube::Model_Cube(int molecules_count, float temperature, float pressure, GeoCoords geoCoords) {
-    //ctor
-}
-
 Model_Cube::~Model_Cube() {
     //dtor
 }
 
+/* --- miscellaneous --- */
 void Model_Cube::ModifyTemperature(string s){
     float temp = getTemperature();
     if (s[0] == '+') {
@@ -59,4 +56,9 @@ float Model_Cube::getAndSetMass() {
     mass = thickness * getVolume();
 
     return mass;
+};
+
+
+/* --- simulation --- */
+void Model_Cube::simulateTimeStep(float timeStepInSeconds) {
 };
