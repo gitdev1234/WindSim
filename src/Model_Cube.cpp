@@ -60,5 +60,25 @@ float Model_Cube::getAndSetMass() {
 
 
 /* --- simulation --- */
+
+// simulation
 void Model_Cube::simulateTimeStep(float timeStepInSeconds) {
+};
+
+// calculation of forces
+
+void Model_Cube::clearForce() {
+    force.x = 0;
+    force.y = 0;
+    force.z = 0;
+};
+
+void Model_Cube::AddForce(vector3 force_) {
+    force.x += force_.x;
+    force.y += force_.y;
+    force.z += force_.z;
+};
+
+vector3 Model_Cube::getForce() {
+    return force;
 };

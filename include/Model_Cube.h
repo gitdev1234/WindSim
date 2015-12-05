@@ -35,7 +35,15 @@ class Model_Cube
         void CalcPressure();
 
         /* --- simulation --- */
+
+        // simulation
         void simulateTimeStep(float timeStepInSeconds);
+
+        // calculation of forces
+        void clearForce();
+        void AddForce(vector3 force);
+        vector3 getForce();
+
 
         /* --- getters and setters --- */
         // setters
@@ -74,9 +82,7 @@ class Model_Cube
         float pressure;        // in hPa
 
         float mass;
-        vector3 force;        // in Newton
-        vector3 acceleration; // in m/s^2
-        vector3 speed;        // in m/s
+        vector3 force; // in N
 
 };
 
