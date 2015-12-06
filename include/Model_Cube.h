@@ -55,6 +55,7 @@ class Model_Cube
         void setWidth (float val)          {width  = val;};
         void setVolume(float val)          {volume = val;};
         void setVolume()                   {volume = height * length * width;};
+
         // getters
         float getMolecules_Count() {return molecules_count;};
         float getTemperature()     {return temperature;};

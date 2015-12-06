@@ -7,6 +7,7 @@
 */
 
 #include "../include/Model_Cube.h"
+#include "Model_Molecule.h"
 
 
 Model_Cube::Model_Cube() {
