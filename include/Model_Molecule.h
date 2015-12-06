@@ -11,7 +11,9 @@ class Model_Molecule
 
         /* --- simulation --- */
         // simulation
-        void simulateTimeStep(float timeStepInSeconds);
+        void startSimulation();
+        void startSimulation(vector3 speed_);
+        coords simulateTimeStep(float timeStepInSeconds);
         void calculateAcceleration();
         void calculateSpeed(float timeStepInSeconds);
 

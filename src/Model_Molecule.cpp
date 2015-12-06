@@ -13,10 +13,24 @@ Model_Molecule::~Model_Molecule()
 /* --- simulation --- */
 
 // simulation
-void Model_Molecule::simulateTimeStep(float timeStepInSeconds_){
+void Model_Molecule::startSimulation() {
+    speed.x = 0;
+    speed.y = 0;
+    speed.z = 0;
+};
+
+void Model_Molecule::startSimulation(vector3 speed_){
+    speed = speed_;
+};
+
+coords Model_Molecule::simulateTimeStep(float timeStepInSeconds_){
     calculateAcceleration();
     calculateSpeed(timeStepInSeconds_);
-    // TODO molecule exchange
+    // TODO molecule exchange and new coordinates
+    coords tempCoords;
+    tempCoords.x = 0;
+    tempCoords.y = 0;
+    return tempCoords;
 };
 
 void Model_Molecule::calculateAcceleration() {
