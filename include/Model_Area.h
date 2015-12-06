@@ -37,7 +37,7 @@ class Model_Area
         void PrintCubes(string properties);
 
 
-        // modifying values
+        // modifying temperature values
         void ModifyTemperature(int x, int y, string s);
         void AffectSurroundingCubes(int x, int y);
         void AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner, coords rightUpperCorner, coords rightLowerCorner,
@@ -46,11 +46,20 @@ class Model_Area
         float MixTemperatures(float Temp1, float Mass1, float Volume1, float Temp2, float Mass2, float Volume2);
         Model_Cube MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2);
         bool  CheckCoordsStillInArea(coords c);
-        float GetMinMaxValue(string properties, bool max_) ;
 
-        //miscellanous
+
+        // calculating forces
+        void calculateForces();
+        void calculateForces(coords c);
+        vector3 calculateGradientForce(coords c);
+        vector3 calculateCoriolisForce(coords c);
+        vector3 calculateSurfaceTODO(coords c);
+        vector3 calculateInnerTODO(coords);
+
+        // miscellanous
         string getANSIRGBScaleColor(float min_, float max_, float value_);
         string getANSIEndCode();
+        float GetMinMaxValue(string properties, bool max_) ;
 
         // setters
         void SetCubesCountWidth(int val)  { CubesCountWidth = val; }

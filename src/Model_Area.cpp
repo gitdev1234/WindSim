@@ -867,3 +867,58 @@ Model_Cube Model_Area::MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2) {
     return newCube;
 };
 
+// calculating forces
+void Model_Area::calculateForces() {
+    coords c;
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+            c.x = x;
+            c.y = y;
+            calculateForces(c);
+        }
+    }
+};
+
+void Model_Area::calculateForces(coords c) {
+    Cubes[c.x][c.y].clearForce();
+    Cubes[c.x][c.y].addForce(calculateGradientForce(c));
+    Cubes[c.x][c.y].addForce(calculateCoriolisForce(c));
+    Cubes[c.x][c.y].addForce(calculateSurfaceTODO(c));
+    Cubes[c.x][c.y].addForce(calculateInnerTODO(c));
+};
+
+vector3 Model_Area::calculateGradientForce(coords c) {
+    // TODO
+    vector3 tempForces;
+    tempForces.x = 0.0;
+    tempForces.y = 0.0;
+    tempForces.z = 0.0;
+    return tempForces;
+};
+
+vector3 Model_Area::calculateCoriolisForce(coords c) {
+    // TODO
+    vector3 tempForces;
+    tempForces.x = 0.0;
+    tempForces.y = 0.0;
+    tempForces.z = 0.0;
+    return tempForces;
+};
+
+vector3 Model_Area::calculateSurfaceTODO(coords c) {
+    // TODO
+    vector3 tempForces;
+    tempForces.x = 0.0;
+    tempForces.y = 0.0;
+    tempForces.z = 0.0;
+    return tempForces;
+};
+
+vector3 Model_Area::calculateInnerTODO(coords) {
+    // TODO
+    vector3 tempForces;
+    tempForces.x = 0.0;
+    tempForces.y = 0.0;
+    tempForces.z = 0.0;
+    return tempForces;
+};

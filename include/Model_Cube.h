@@ -41,7 +41,7 @@ class Model_Cube
 
         // calculation of forces
         void clearForce();
-        void AddForce(vector3 force);
+        void addForce(vector3 force);
         vector3 getForce();
 
 

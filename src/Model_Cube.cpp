@@ -73,7 +73,7 @@ void Model_Cube::clearForce() {
     force.z = 0;
 };
 
-void Model_Cube::AddForce(vector3 force_) {
+void Model_Cube::addForce(vector3 force_) {
     force.x += force_.x;
     force.y += force_.y;
     force.z += force_.z;
