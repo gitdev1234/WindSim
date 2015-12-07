@@ -50,7 +50,8 @@ class Model_Area
 
         /* --- simulation --- */
         // simulation
-        void startSimulation(int moleculeAbstractionFactor);
+        void initSimulation(int moleculeAbstractionFactor);
+        bool simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_);
         void simulateTimeStep(float timeStepInSeconds);
 
         // calculating forces
@@ -66,6 +67,7 @@ class Model_Area
         string getANSIRGBScaleColor(float min_, float max_, float value_);
         string getANSIEndCode();
         float GetMinMaxValue(string properties, bool max_) ;
+        uint64 GetTimeMs64();
 
         // setters
         void SetCubesCountWidth(int val)  { CubesCountWidth = val; }

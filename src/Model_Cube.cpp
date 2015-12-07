@@ -63,7 +63,7 @@ float Model_Cube::getAndSetMass() {
 /* --- simulation --- */
 
 // simulation
-void Model_Cube::startSimulation(int moleculeAbstractionFactor) {
+void Model_Cube::initSimulation(int moleculeAbstractionFactor) {
     Model_Molecule tempMolecule;
     float tempSimulatedMoleculesCount = round(molecules_count/moleculeAbstractionFactor);
     setSimulatedMoleculesCount(tempSimulatedMoleculesCount);

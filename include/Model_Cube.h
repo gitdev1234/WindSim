@@ -39,7 +39,7 @@ class Model_Cube
 
         /* --- simulation --- */
         // simulation
-        void startSimulation(int moleculeAbstractionFactor);
+        void initSimulation(int moleculeAbstractionFactor);
         void simulateTimeStep(float timeStepInSeconds);
 
         // calculation of forces

@@ -123,6 +123,7 @@ int main() {
         cout << "You are now in modify-values mode." << endl;
         cout << "Enter [M] for modifying." << endl;
         cout << "Enter [P] for printing the area." << endl;
+        cout << "Enter [S] for starting the simulation" << endl;
 
         do {
             ProgramMode = STAY_IN_LOOP;
@@ -163,6 +164,41 @@ int main() {
                         MA.PrintCubes(s);
                     }
                 } while (ProgramMode == STAY_IN_LOOP);
+            } else if (toupper(s[0]) == 'S') {
+                float moleculeAbstractionFactor, timeStepInSeconds, simulationSpeedInSeconds;
+                cout << "At current speed of most of the computers, this program can not simulate ";
+                cout << "every molecule in our Model-Area." << endl;
+                cout << "Thus we have to abstract our simulation a bit." << endl;
+                cout << "Please enter a factor of how many molecules shall be simulated by one molecule." << endl;
+                cout << "For example if you enter 1000, not every molecule is simulated with an individual behaviour, ";
+                cout << "but always groups of 1000 molecules are simulated as a group, in which every molecule behaves equal." << endl;
+                cout << "So please enter an abstraction - factor." << endl;
+                cin  >> moleculeAbstractionFactor;
+                cout << "For simulation we still need two parameters:" << endl;
+                cout << "1. The length of one timestep in seconds. This tells how detailed the simulation is calculated." << endl;
+                cout << "2. The length of how long every timestep shall be displayed. This tells how slow or fast the simulation ";
+                cout << "is shown on display." << endl;
+                cout << "For example if you enter first a 0.25 and second a 1 the programm calculates all moving of molecules and ";
+                cout << "changing of air pressure and so on for always a timestep of 0.25seconds (250 ms), but it displays every ";
+                cout << "timestep for 1 second on the screen. This means you are seeing the simulation not in real-time, but four ";
+                cout << "times slower." << endl;
+                cout << "If you would enter first a 0.5 and second a 0.5, then you have a real-time simulation in which the ";
+                cout << "programm simulates always timesteps of 0.5 seconds (500 ms) and shows every timestep for 0.5 seconds on ";
+                cout << "the screen." << endl;
+                cout << "So now please enter first value." << endl;
+                cin  >> timeStepInSeconds;
+                cout << "And now please enter second value." << endl;
+                cin  >> simulationSpeedInSeconds;
+                cout << "Simulation starts now, if you want to stop simulation press [X]" << endl;
+                MA.initSimulation(moleculeAbstractionFactor);
+                bool simulationState = MA.simulate(timeStepInSeconds,simulationSpeedInSeconds);
+                do {
+                    ProgramMode = STAY_IN_LOOP;
+                    if (toupper(s[0]) == 'X') {
+                        ProgramMode = MODIFY_VAL;
+                    }
+                } while (ProgramMode == STAY_IN_LOOP);
+
             } else {
                 ProgramMode = STAY_IN_LOOP;
             }

@@ -9,6 +9,16 @@
 #ifndef TYPES_H_INCLUDED
 #define TYPES_H_INCLUDED
 
+
+// needed for Model_Area::GetTimeMs64()
+#ifdef _WIN32
+#include <Windows.h>
+#else
+#include <sys/time.h>
+#include <ctime>
+#endif
+typedef long long int64; typedef unsigned long long uint64;
+
 // const:
 const bool showInDetail = false;
 const bool printPretty  = true;

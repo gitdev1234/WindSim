@@ -37,6 +37,7 @@
 		<Unit filename="include/Model_Area.h" />
 		<Unit filename="include/Model_Cube.h" />
 		<Unit filename="include/Model_Molecule.h" />
+		<Unit filename="include/Time.h" />
 		<Unit filename="include/Types.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Model_Area.cpp" />
