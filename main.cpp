@@ -174,8 +174,9 @@ int main() {
                 cout << "For example, if you enter 1000, then every cube contains 1000 molecule-groups." << endl;
                 cout << "Every molecule-group represents a number of molecules and all moleules within a ";
                 cout << "molecule-group behave equal." << endl;
-                cout << "Notice that only quadratic-values can be simulated. If you enter another value it is ";
-                cout << "automatically transformed to a quadratic-value.";
+                cout << "Notice that the number of molecule-groups has to be a square number. ";
+                cout << "Other values can not be simulated. If you enter another value it is ";
+                cout << "automatically transformed to a square number." << endl;
                 cout << "So please enter an number of molecules per cube." << endl;
                 cin  >> moleculeGroupsPerCube;
                 float quadraticMoleculeGroupsPerCube = round(sqrt(moleculeGroupsPerCube)) * round(sqrt(moleculeGroupsPerCube));

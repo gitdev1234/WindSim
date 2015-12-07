@@ -65,7 +65,7 @@ float Model_Cube::getAndSetMass() {
 
 // simulation
 /**
- * @param moleculeGroupsPerCube has to be a quadratic value e.g. 100, 1024, 10000
+ * @param moleculeGroupsPerCube has to be a square number e.g. 100, 1024, 10000
  */
 void Model_Cube::initSimulation(int moleculeGroupsPerCube_) {
     Model_Molecule tempMolecule;
