@@ -54,7 +54,7 @@ class Model_Area
         void simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_);
         void simulateTimeStep(float timeStepInSeconds_);
 
-        void simulateMoleculeFlow(float timeStepInSeconds_);
+        void simulateMoleculesFlow(float timeStepInSeconds_);
 
         // calculating forces
         void calculateForces();

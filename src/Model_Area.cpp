@@ -912,10 +912,10 @@ void Model_Area::simulate(float timeStepInSeconds_, float simulationSpeedInSecon
 void Model_Area::simulateTimeStep(float timeStepInSeconds_) {
     //TODO
     cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
-    simulateMoleculeFlow(timeStepInSeconds_);
+    simulateMoleculesFlow(timeStepInSeconds_);
 };
 
-void Model_Area::simulateMoleculeFlow(float timeStepInSeconds_) {
+void Model_Area::simulateMoleculesFlow(float timeStepInSeconds_) {
     calculateForces(); // calculates all forces for every cube
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {

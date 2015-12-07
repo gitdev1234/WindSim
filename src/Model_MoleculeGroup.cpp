@@ -21,6 +21,13 @@ void Model_MoleculeGroup::startSimulation() {
 
 
 coords Model_MoleculeGroup::simulateTimeStep(float timeStepInSeconds_){
+    coords tempCoords = simulateMoleculesFlow(timeStepInSeconds_);
+    //simulateTemperatureFlow(timeStepInSeconds_);
+
+    return tempCoords;
+};
+
+coords Model_MoleculeGroup::simulateMoleculesFlow(float timeStepInSeconds_) {
     calculateAcceleration();
     calculateSpeed(timeStepInSeconds_);
     // TODO molecule exchange and new coordinates

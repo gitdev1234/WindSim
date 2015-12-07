@@ -40,12 +40,12 @@
 		</Linker>
 		<Unit filename="include/Model_Area.h" />
 		<Unit filename="include/Model_Cube.h" />
-		<Unit filename="include/Model_Molecule.h" />
+		<Unit filename="include/Model_MoleculeGroup.h" />
 		<Unit filename="include/Types.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Model_Area.cpp" />
 		<Unit filename="src/Model_Cube.cpp" />
-		<Unit filename="src/Model_Molecule.cpp" />
+		<Unit filename="src/Model_MoleculeGroup.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />
