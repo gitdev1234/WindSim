@@ -63,6 +63,34 @@ float Model_Cube::getAndSetMass() {
 /* --- simulation --- */
 
 // simulation
+void Model_Cube::startSimulation(int moleculeAbstractionFactor) {
+    Model_Molecule tempMolecule;
+    float tempSimulatedMoleculesCount = round(molecules_count/moleculeAbstractionFactor);
+    setSimulatedMoleculesCount(tempSimulatedMoleculesCount);
+
+    float tempWidth = getWidth();
+    float tempLength = getLength();
+    float distanceMoleculesInXDirection = tempSimulatedMoleculesCount / tempWidth / tempLength;
+    float distanceMoleculesInYDirection = distanceMoleculesInXDirection;
+    int moleculesInXDirection = round(distanceMoleculesInYDirection);
+    int moleculesInYDirection = moleculesInXDirection;
+
+    float tempX = 0, tempY = 0;
+    vector3 tempPosition;
+
+    // calculating positions of molecules in cube and adding them to
+    // molecules-list of cube
+    for (int tempX = 0; tempX <= (tempWidth-distanceMoleculesInXDirection); tempX += distanceMoleculesInXDirection) {
+        for (int tempY = 0; tempY <= (tempLength-distanceMoleculesInXDirection); tempY += distanceMoleculesInXDirection) {
+            tempPosition.x = tempX;
+            tempPosition.y = tempY;
+            tempPosition.z = 0;
+            tempMolecule.setPositionInCube(tempPosition);
+            Molecules.push_front(tempMolecule);
+        }
+    }
+}
+
 void Model_Cube::simulateTimeStep(float timeStepInSeconds) {
 };
 

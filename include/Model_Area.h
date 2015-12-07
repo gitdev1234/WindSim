@@ -3,7 +3,8 @@
     Purpose: Defines Class Model_Area
 
     @author Wall.Of.Death
-    @version 1.0 20151120
+    @version 1.0
+    @since 2015-11-20
 */
 
 #ifndef MODEL_AREA_H
@@ -47,6 +48,10 @@ class Model_Area
         Model_Cube MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2);
         bool  CheckCoordsStillInArea(coords c);
 
+        /* --- simulation --- */
+        // simulation
+        void startSimulation(int moleculeAbstractionFactor);
+        void simulateTimeStep(float timeStepInSeconds);
 
         // calculating forces
         void calculateForces();
@@ -55,6 +60,7 @@ class Model_Area
         vector3 calculateCoriolisForce(coords c);
         vector3 calculateSurfaceTODO(coords c);
         vector3 calculateInnerTODO(coords);
+
 
         // miscellanous
         string getANSIRGBScaleColor(float min_, float max_, float value_);

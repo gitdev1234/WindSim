@@ -10,8 +10,10 @@
 #define MODEL_CUBE_H
 
 #include <string>
+#include <list>
 #include <math.h>
 #include "Types.h"
+#include "Model_Molecule.h"
 
 
 using namespace std;
@@ -34,9 +36,10 @@ class Model_Cube
         // pressure
         void CalcPressure();
 
-        /* --- simulation --- */
 
+        /* --- simulation --- */
         // simulation
+        void startSimulation(int moleculeAbstractionFactor);
         void simulateTimeStep(float timeStepInSeconds);
 
         // calculation of forces
@@ -47,20 +50,22 @@ class Model_Cube
 
         /* --- getters and setters --- */
         // setters
-        void setMolecules_Count(float val) {molecules_count = val;};
-        void setTemperature(float val)     {temperature = val;};
-        void setPressure(float val)        {pressure = val;};
-        void setHeight(float val)          {height = val;};
-        void setLength(float val)          {length = val;};
-        void setWidth (float val)          {width  = val;};
-        void setVolume(float val)          {volume = val;};
-        void setVolume()                   {volume = height * length * width;};
+        void setMolecules_Count(float val)         {molecules_count = val;           };
+        void setSimulatedMoleculesCount(float val) {simulatedMoleculesCount = val;   };
+        void setTemperature(float val)             {temperature = val;               };
+        void setPressure(float val)                {pressure = val;                  };
+        void setHeight(float val)                  {height = val;                    };
+        void setLength(float val)                  {length = val;                    };
+        void setWidth (float val)                  {width  = val;                    };
+        void setVolume(float val)                  {volume = val;                    };
+        void setVolume()                           {volume = height * length * width;};
 
         // getters
-        float getMolecules_Count() {return molecules_count;};
-        float getTemperature()     {return temperature;};
-        float getPressure()        { CalcPressure(); return pressure;};
-        GeoCoords getGeoCoords()   {return geoCoords;};
+        float getMolecules_Count()         {return molecules_count;         };
+        float getSimulatedMoleculesCount() {return simulatedMoleculesCount; };
+        float getTemperature()             {return temperature;             };
+        float getPressure()                {CalcPressure(); return pressure;};
+        GeoCoords getGeoCoords()           {return geoCoords;               };
         float getHeight() {return height;};
         float getLength() {return length;};
         float getWidth () {return width ;};
@@ -77,13 +82,16 @@ class Model_Cube
         float volume;  // in m
         GeoCoords geoCoords;
 
+
         // changing properties
         float molecules_count;
+        float simulatedMoleculesCount;
         float temperature;     // in K
         float pressure;        // in hPa
 
         float mass;
         vector3 force; // in N
+        list<Model_Molecule> Molecules;
 
 };
 

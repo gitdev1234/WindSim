@@ -12,16 +12,16 @@ class Model_Molecule
         /* --- simulation --- */
         // simulation
         void startSimulation();
-        void startSimulation(vector3 speed_);
         coords simulateTimeStep(float timeStepInSeconds);
         void calculateAcceleration();
         void calculateSpeed(float timeStepInSeconds);
 
         /* --- getters and setters --- */
         // setters
-        void setMoleculesCount(float val)  {moleculesCount = val;};
-        void setMass(float val)            {mass = val;          };
-        void setForce(vector3 val)         {force = val;         };
+        void setMoleculesCount(float val)   {moleculesCount = val;};
+        void setMass(float val)             {mass = val;          };
+        void setForce(vector3 val)          {force = val;         };
+        void setPositionInCube(vector3 val) {positionInCube = val;};
 
         // getters
         float   getMoleculesCount()  {return moleculesCount;};
@@ -29,6 +29,7 @@ class Model_Molecule
         vector3 getForce()           {return force;         };
         vector3 getAcceleration()    {return acceleration;  };
         vector3 getSpeed()           {return speed;         };
+        vector3 getPositionInCube()  {return positionInCube;};
 
     protected:
 
@@ -38,6 +39,7 @@ class Model_Molecule
         vector3 force;
         vector3 acceleration;
         vector3 speed;
+        vector3 positionInCube;
 
 };
 

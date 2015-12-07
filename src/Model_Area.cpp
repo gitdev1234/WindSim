@@ -867,6 +867,16 @@ Model_Cube Model_Area::MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2) {
     return newCube;
 };
 
+/* --- simulation --- */
+// simulation
+void Model_Area::startSimulation(int moleculeAbstractionFactor) {
+    //TODO
+};
+
+void Model_Area::simulateTimeStep(float timeStepInSeconds) {
+    //TODO
+};
+
 // calculating forces
 void Model_Area::calculateForces() {
     coords c;

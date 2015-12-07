@@ -19,9 +19,6 @@ void Model_Molecule::startSimulation() {
     speed.z = 0;
 };
 
-void Model_Molecule::startSimulation(vector3 speed_){
-    speed = speed_;
-};
 
 coords Model_Molecule::simulateTimeStep(float timeStepInSeconds_){
     calculateAcceleration();
