@@ -893,8 +893,8 @@ void Model_Area::calculateForces(coords c) {
     Cubes[c.x][c.y].clearForce();
     Cubes[c.x][c.y].addForce(calculateGradientForce(c));
     Cubes[c.x][c.y].addForce(calculateCoriolisForce(c));
-    Cubes[c.x][c.y].addForce(calculateSurfaceTODO(c));
-    Cubes[c.x][c.y].addForce(calculateInnerTODO(c));
+    Cubes[c.x][c.y].addForce(calculateSurfaceFrictionForce(c));
+    Cubes[c.x][c.y].addForce(calculateInnerFrictionForce(c));
 };
 
 vector3 Model_Area::calculateGradientForce(coords c) {
@@ -915,7 +915,7 @@ vector3 Model_Area::calculateCoriolisForce(coords c) {
     return tempForces;
 };
 
-vector3 Model_Area::calculateSurfaceTODO(coords c) {
+vector3 Model_Area::calculateSurfaceFrictionForce(coords c) {
     // TODO
     vector3 tempForces;
     tempForces.x = 0.0;
@@ -924,7 +924,7 @@ vector3 Model_Area::calculateSurfaceTODO(coords c) {
     return tempForces;
 };
 
-vector3 Model_Area::calculateInnerTODO(coords) {
+vector3 Model_Area::calculateInnerFrictionForce(coords) {
     // TODO
     vector3 tempForces;
     tempForces.x = 0.0;

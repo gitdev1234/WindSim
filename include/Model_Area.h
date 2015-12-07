@@ -58,8 +58,8 @@ class Model_Area
         void calculateForces(coords c);
         vector3 calculateGradientForce(coords c);
         vector3 calculateCoriolisForce(coords c);
-        vector3 calculateSurfaceTODO(coords c);
-        vector3 calculateInnerTODO(coords);
+        vector3 calculateSurfaceFrictionForce(coords c);
+        vector3 calculateInnerFrictionForce(coords);
 
 
         // miscellanous
