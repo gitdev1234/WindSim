@@ -10,6 +10,7 @@
 #define MODEL_CUBE_H
 
 #include <string>
+#include <iostream>"
 #include <list>
 #include <math.h>
 #include "Types.h"
@@ -39,7 +40,7 @@ class Model_Cube
 
         /* --- simulation --- */
         // simulation
-        void initSimulation(int moleculeAbstractionFactor);
+        void initSimulation(int moleculeGroupsPerCube);
         void simulateTimeStep(float timeStepInSeconds);
 
         // calculation of forces
@@ -51,7 +52,7 @@ class Model_Cube
         /* --- getters and setters --- */
         // setters
         void setMolecules_Count(float val)         {molecules_count = val;           };
-        void setSimulatedMoleculesCount(float val) {simulatedMoleculesCount = val;   };
+        void setmoleculeGroupsPerCube(float val)   {moleculeGroupsPerCube = val;     };
         void setTemperature(float val)             {temperature = val;               };
         void setPressure(float val)                {pressure = val;                  };
         void setHeight(float val)                  {height = val;                    };
@@ -62,7 +63,7 @@ class Model_Cube
 
         // getters
         float getMolecules_Count()         {return molecules_count;         };
-        float getSimulatedMoleculesCount() {return simulatedMoleculesCount; };
+        float getmoleculeGroupsPerCube()   {return moleculeGroupsPerCube;   };
         float getTemperature()             {return temperature;             };
         float getPressure()                {CalcPressure(); return pressure;};
         GeoCoords getGeoCoords()           {return geoCoords;               };
@@ -85,7 +86,7 @@ class Model_Cube
 
         // changing properties
         float molecules_count;
-        float simulatedMoleculesCount;
+        float moleculeGroupsPerCube;
         float temperature;     // in K
         float pressure;        // in hPa
 

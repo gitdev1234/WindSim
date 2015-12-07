@@ -165,15 +165,26 @@ int main() {
                     }
                 } while (ProgramMode == STAY_IN_LOOP);
             } else if (toupper(s[0]) == 'S') {
-                float moleculeAbstractionFactor, timeStepInSeconds, simulationSpeedInSeconds;
+                int moleculeGroupsPerCube;
+                float moleculesPerMoleculeGroup, timeStepInSeconds, simulationSpeedInSeconds;
                 cout << "At current speed of most of the computers, this program can not simulate ";
                 cout << "every molecule in our Model-Area." << endl;
                 cout << "Thus we have to abstract our simulation a bit." << endl;
-                cout << "Please enter a factor of how many molecules shall be simulated by one molecule." << endl;
-                cout << "For example if you enter 1000, not every molecule is simulated with an individual behaviour, ";
-                cout << "but always groups of 1000 molecules are simulated as a group, in which every molecule behaves equal." << endl;
-                cout << "So please enter an abstraction - factor." << endl;
-                cin  >> moleculeAbstractionFactor;
+                cout << "Please enter how many molecule-groups shall be simulated in one cube." << endl;
+                cout << "For example, if you enter 1000, then every cube contains 1000 molecule-groups." << endl;
+                cout << "Every molecule-group represents a number of molecules and all moleules within a ";
+                cout << "molecule-group behave equal." << endl;
+                cout << "Notice that only quadratic-values can be simulated. If you enter another value it is ";
+                cout << "automatically transformed to a quadratic-value.";
+                cout << "So please enter an number of molecules per cube." << endl;
+                cin  >> moleculeGroupsPerCube;
+                float quadraticMoleculeGroupsPerCube = round(sqrt(moleculeGroupsPerCube)) * round(sqrt(moleculeGroupsPerCube));
+                if (quadraticMoleculeGroupsPerCube != moleculeGroupsPerCube) {
+                    cout << "Your value was automatically transformed to the quadratic value " << quadraticMoleculeGroupsPerCube << endl;
+                }
+                moleculesPerMoleculeGroup = MA.getMoleculesCountAfterStart() / quadraticMoleculeGroupsPerCube;
+                cout << "Okay you entered : " << quadraticMoleculeGroupsPerCube << ". This means that every molecule group within a cube ";
+                cout << "represents " << moleculesPerMoleculeGroup << " molecules." << endl;
                 cout << "For simulation we still need two parameters:" << endl;
                 cout << "1. The length of one timestep in seconds. This tells how detailed the simulation is calculated." << endl;
                 cout << "2. The length of how long every timestep shall be displayed. This tells how slow or fast the simulation ";
@@ -190,8 +201,8 @@ int main() {
                 cout << "And now please enter second value." << endl;
                 cin  >> simulationSpeedInSeconds;
                 cout << "Simulation starts now, if you want to stop simulation press [X]" << endl;
-                MA.initSimulation(moleculeAbstractionFactor);
-                bool simulationState = MA.simulate(timeStepInSeconds,simulationSpeedInSeconds);
+                MA.initSimulation(quadraticMoleculeGroupsPerCube);
+                MA.simulate(timeStepInSeconds,simulationSpeedInSeconds);
                 do {
                     ProgramMode = STAY_IN_LOOP;
                     if (toupper(s[0]) == 'X') {

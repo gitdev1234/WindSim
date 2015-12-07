@@ -32,8 +32,12 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++0x" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Linker>
+			<Add option="-pthread" />
+		</Linker>
 		<Unit filename="include/Model_Area.h" />
 		<Unit filename="include/Model_Cube.h" />
 		<Unit filename="include/Model_Molecule.h" />

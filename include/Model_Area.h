@@ -50,9 +50,11 @@ class Model_Area
 
         /* --- simulation --- */
         // simulation
-        void initSimulation(int moleculeAbstractionFactor);
-        bool simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_);
-        void simulateTimeStep(float timeStepInSeconds);
+        void initSimulation(int moleculeGroupsPerCube_);
+        void simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_);
+        void simulateTimeStep(float timeStepInSeconds_);
+
+        void simulateMoleculeFlow(float timeStepInSeconds_);
 
         // calculating forces
         void calculateForces();
@@ -82,6 +84,8 @@ class Model_Area
         float Getheight()         { return height; }
         float Getlength()         { return length; }
         float Getwidth()          { return width; }
+        // use this only directly after loading the area!
+        float getMoleculesCountAfterStart();
 
     protected:
 

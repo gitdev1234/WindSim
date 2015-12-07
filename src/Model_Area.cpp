@@ -13,6 +13,7 @@
 #include "Model_Area.h"
 #include "Types.h"
 #include "float.h"
+#include <thread>
 
 using namespace std;
 
@@ -869,20 +870,19 @@ Model_Cube Model_Area::MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2) {
 
 /* --- simulation --- */
 // simulation
-void Model_Area::initSimulation(int moleculeAbstractionFactor) {
+void Model_Area::initSimulation(int moleculeGroupsPerCube_) {
     for (int x = 0; x < Cubes.size(); x++) {
         for (int y = 0; y < Cubes[x].size(); y++) {
-            Cubes[x][y].initSimulation(moleculeAbstractionFactor);
+            Cubes[x][y].initSimulation(moleculeGroupsPerCube_);
         }
     }
 };
 
+
 /**
  @return true if simulation has ended
  */
-bool Model_Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
-
-    bool simulationState = false;
+void Model_Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
     int startTime = GetTimeMs64();
     float timeDelta = 0;
 
@@ -907,16 +907,22 @@ bool Model_Area::simulate(float timeStepInSeconds_, float simulationSpeedInSecon
         cout << "ShowSimulation [][][][][]" << endl;
 
     }
-
-    simulationState = true;
-
-    return simulationState;
 };
 
-void Model_Area::simulateTimeStep(float timeStepInSeconds) {
+void Model_Area::simulateTimeStep(float timeStepInSeconds_) {
     //TODO
     cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
+    simulateMoleculeFlow(timeStepInSeconds_);
 };
+
+void Model_Area::simulateMoleculeFlow(float timeStepInSeconds_) {
+    calculateForces(); // calculates all forces for every cube
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+            Cubes[x][y].simulateTimeStep(timeStepInSeconds_);
+        }
+    }
+}
 
 // calculating forces
 void Model_Area::calculateForces() {
@@ -941,8 +947,8 @@ void Model_Area::calculateForces(coords c) {
 vector3 Model_Area::calculateGradientForce(coords c) {
     // TODO
     vector3 tempForces;
-    tempForces.x = 0.0;
-    tempForces.y = 0.0;
+    tempForces.x = 10;
+    tempForces.y = 40;
     tempForces.z = 0.0;
     return tempForces;
 };
@@ -1013,4 +1019,8 @@ uint64 Model_Area::GetTimeMs64() {
 
  return ret;
 #endif
+}
+
+float Model_Area::getMoleculesCountAfterStart() {
+    return Cubes[0][0].getMolecules_Count();
 }

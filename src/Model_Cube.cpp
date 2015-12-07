@@ -10,6 +10,7 @@
 #include "Model_Molecule.h"
 
 
+
 Model_Cube::Model_Cube() {
     //ctor
 }
@@ -63,25 +64,32 @@ float Model_Cube::getAndSetMass() {
 /* --- simulation --- */
 
 // simulation
-void Model_Cube::initSimulation(int moleculeAbstractionFactor) {
+/**
+ * @param moleculeGroupsPerCube has to be a quadratic value e.g. 100, 1024, 10000
+ */
+void Model_Cube::initSimulation(int moleculeGroupsPerCube_) {
     Model_Molecule tempMolecule;
-    float tempSimulatedMoleculesCount = round(molecules_count/moleculeAbstractionFactor);
-    setSimulatedMoleculesCount(tempSimulatedMoleculesCount);
+    setmoleculeGroupsPerCube(moleculeGroupsPerCube_);
 
+    int moleculesInXDirection = round(sqrt(moleculeGroupsPerCube_));
+    int moleculesInYDirection = moleculesInXDirection;
     float tempWidth = getWidth();
     float tempLength = getLength();
-    float distanceMoleculesInXDirection = tempSimulatedMoleculesCount / tempWidth / tempLength;
-    float distanceMoleculesInYDirection = distanceMoleculesInXDirection;
-    int moleculesInXDirection = round(distanceMoleculesInYDirection);
-    int moleculesInYDirection = moleculesInXDirection;
+    float distanceMoleculesInXDirection = (tempWidth / moleculesInXDirection);
+    float distanceMoleculesInYDirection = (tempLength / moleculesInYDirection);
+
 
     float tempX = 0, tempY = 0;
     vector3 tempPosition;
 
     // calculating positions of molecules in cube and adding them to
     // molecules-list of cube
-    for (int tempX = 0; tempX <= (tempWidth-distanceMoleculesInXDirection); tempX += distanceMoleculesInXDirection) {
-        for (int tempY = 0; tempY <= (tempLength-distanceMoleculesInXDirection); tempY += distanceMoleculesInXDirection) {
+    tempX = 0-distanceMoleculesInXDirection;
+    for (float x = 0; x < moleculesInXDirection; x++) {
+        tempX += distanceMoleculesInXDirection;
+        tempY = 0-distanceMoleculesInYDirection;
+        for (float y = 0; y < moleculesInYDirection; y++) {
+            tempY += distanceMoleculesInYDirection;
             tempPosition.x = tempX;
             tempPosition.y = tempY;
             tempPosition.z = 0;
@@ -89,9 +97,11 @@ void Model_Cube::initSimulation(int moleculeAbstractionFactor) {
             Molecules.push_front(tempMolecule);
         }
     }
+    cout << "created " << Molecules.size() << " molecules." << endl;
 }
 
 void Model_Cube::simulateTimeStep(float timeStepInSeconds) {
+    //TODO;
 };
 
 // calculation of forces
