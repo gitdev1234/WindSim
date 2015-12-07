@@ -1,11 +1,11 @@
-#include "Model_Molecule.h"
+#include "Model_MoleculeGroup.h"
 
-Model_Molecule::Model_Molecule()
+Model_MoleculeGroup::Model_MoleculeGroup()
 {
     //ctor
 }
 
-Model_Molecule::~Model_Molecule()
+Model_MoleculeGroup::~Model_MoleculeGroup()
 {
     //dtor
 }
@@ -13,14 +13,14 @@ Model_Molecule::~Model_Molecule()
 /* --- simulation --- */
 
 // simulation
-void Model_Molecule::startSimulation() {
+void Model_MoleculeGroup::startSimulation() {
     speed.x = 0;
     speed.y = 0;
     speed.z = 0;
 };
 
 
-coords Model_Molecule::simulateTimeStep(float timeStepInSeconds_){
+coords Model_MoleculeGroup::simulateTimeStep(float timeStepInSeconds_){
     calculateAcceleration();
     calculateSpeed(timeStepInSeconds_);
     // TODO molecule exchange and new coordinates
@@ -30,7 +30,7 @@ coords Model_Molecule::simulateTimeStep(float timeStepInSeconds_){
     return tempCoords;
 };
 
-void Model_Molecule::calculateAcceleration() {
+void Model_MoleculeGroup::calculateAcceleration() {
     vector3 tempAcceleration;
     vector3 tempForce = getForce();
     float tempMass = getMass();
@@ -40,7 +40,7 @@ void Model_Molecule::calculateAcceleration() {
     acceleration = tempAcceleration;
 };
 
-void Model_Molecule::calculateSpeed(float timeStepInSeconds_) {
+void Model_MoleculeGroup::calculateSpeed(float timeStepInSeconds_) {
     vector3 tempSpeed;
     vector3 tempAcceleration = getAcceleration();
     tempSpeed.x += (tempAcceleration.x * timeStepInSeconds_);

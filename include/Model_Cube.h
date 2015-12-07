@@ -14,7 +14,7 @@
 #include <list>
 #include <math.h>
 #include "Types.h"
-#include "Model_Molecule.h"
+#include "Model_MoleculeGroup.h"
 
 
 using namespace std;
@@ -92,7 +92,7 @@ class Model_Cube
 
         float mass;
         vector3 force; // in N
-        list<Model_Molecule> Molecules;
+        list<Model_MoleculeGroup> Molecules;
 
 };
 

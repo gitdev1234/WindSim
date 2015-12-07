@@ -1,13 +1,13 @@
-#ifndef MODEL_MOLECULE_H
-#define MODEL_MOLECULE_H
+#ifndef MODEL_MOLECULEGROUP_H
+#define MODEL_MOLECULEGROUP_H
 
 #include "Types.h"
 
-class Model_Molecule
+class Model_MoleculeGroup
 {
     public:
-        Model_Molecule();
-        virtual ~Model_Molecule();
+        Model_MoleculeGroup();
+        virtual ~Model_MoleculeGroup();
 
         /* --- simulation --- */
         // simulation
@@ -43,4 +43,4 @@ class Model_Molecule
 
 };
 
-#endif // MODEL_MOLECULE_H
+#endif // MODEL_MOLECULEGROUP_H
