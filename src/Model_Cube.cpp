@@ -7,7 +7,7 @@
 */
 
 #include "../include/Model_Cube.h"
-#include "Model_MoleculeGroup.h"
+#include "MoleculeGroup.h"
 
 
 
@@ -68,7 +68,7 @@ float Model_Cube::getAndSetMass() {
  * @param moleculeGroupsPerCube has to be a square number e.g. 100, 1024, 10000
  */
 void Model_Cube::initSimulation(int moleculeGroupsPerCube_) {
-    Model_MoleculeGroup tempMolecule;
+    MoleculeGroup tempMolecule;
     setmoleculeGroupsPerCube(moleculeGroupsPerCube_);
 
     int moleculesInXDirection = round(sqrt(moleculeGroupsPerCube_));

@@ -1,7 +1,7 @@
 /**
-  * Model_MoleculeGroup.h
+  * MoleculeGroup.h
   *
-  * Purpose: Defines Class Model_MoleculeGroup
+  * Purpose: Defines Class MoleculeGroup
   *
   *
   * @author Wall.Of.Death
@@ -9,24 +9,24 @@
   * @since 20151120
   */
 
-#ifndef MODEL_MOLECULEGROUP_H
-#define MODEL_MOLECULEGROUP_H
+#ifndef MOLECULEGROUP_H
+#define MOLECULEGROUP_H
 
 #include "Types.h"
 
 /**
- * Class Model_MoleculeGroup
+ * Class MoleculeGroup
  *
  * @brief represents a group of air molecules
  *
- * A Model_MoleculeGroup - object represents a group of air molecules.
+ * A MoleculeGroup - object represents a group of air molecules.
  * The Model_MoleculesGroup - objects are stored in Model_Cube - objects.
  * This means every cube contains a number of MoleculeGroups.
  * The cubes are stored in the Model_Area - object.
  * The Model_Area - object calculates in every simulationTimeStep the current forces for every cube.
- * The cubes hand these forces over to their Model_MoleculeGroup - objects.
- * The Model_MoleculeGroup - objects then calculate for every simulationTimeStep, the new attributes.
- * Depending on the positionInCube attribute of the Model_MoleculeGroup - objects the Model_Area - object
+ * The cubes hand these forces over to their MoleculeGroup - objects.
+ * The MoleculeGroup - objects then calculate for every simulationTimeStep, the new attributes.
+ * Depending on the positionInCube attribute of the MoleculeGroup - objects the Model_Area - object
  * can react on a MoleculeGroup that is leaving a cube. In such a case the MoleculeGroup is handed over from
  * the old cube into the new.
  *
@@ -43,11 +43,11 @@
  *  - positionInCube : changes during simulateMoleculesFlow() by calculating positionInCube += (speed*simulation-time)
  * every molecule-group has a mass, a temperature
  */
-class Model_MoleculeGroup
+class MoleculeGroup
 {
     public:
-        Model_MoleculeGroup();
-        virtual ~Model_MoleculeGroup();
+        MoleculeGroup();
+        virtual ~MoleculeGroup();
 
         /* --- simulation --- */
         // simulation
@@ -88,4 +88,4 @@ class Model_MoleculeGroup
 
 };
 
-#endif // MODEL_MOLECULEGROUP_H
+#endif // MOLECULEGROUP_H
