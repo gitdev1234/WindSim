@@ -1,14 +1,14 @@
 /**
-    Model_Area.h
-    Purpose: Defines Class Model_Area
+    Area.h
+    Purpose: Defines Class Area
 
     @author Wall.Of.Death
     @version 1.0
     @since 2015-11-20
 */
 
-#ifndef MODEL_AREA_H
-#define MODEL_AREA_H
+#ifndef AREA_H
+#define AREA_H
 
 #include <vector>
 #include <stack>
@@ -18,12 +18,12 @@
 
 using namespace std;
 
-class Model_Area
+class Area
 {
     public:
-        Model_Area();
-        //Model_Area(int CubesCountWidth, int CubesCountLength, float heightCube, float widthCube, float lengthCube);
-        virtual ~Model_Area();
+        Area();
+        //Area(int CubesCountWidth, int CubesCountLength, float heightCube, float widthCube, float lengthCube);
+        virtual ~Area();
 
         // creating Areas
         void createStandardArea();
@@ -100,4 +100,4 @@ class Model_Area
         std::stack<coords> temperatureModifications;
 };
 
-#endif // MODEL_AREA_H
+#endif // AREA_H

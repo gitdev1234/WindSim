@@ -2,24 +2,9 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="src/Model_Area.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="30954" topLine="885" />
-		</Cursor>
-	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8430" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include/Types.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="289" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include/Model_MoleculeGroup.h" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="0" topLine="0" />
+			<Cursor1 position="666" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="include/Model_Cube.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -27,9 +12,14 @@
 			<Cursor1 position="2972" topLine="62" />
 		</Cursor>
 	</File>
-	<File name="src/Model_Cube.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Types.h" open="0" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="1584" topLine="38" />
+			<Cursor1 position="289" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/Model_Area.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="31897" topLine="881" />
 		</Cursor>
 	</File>
 	<File name="include/Model_Area.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -37,5 +27,10 @@
 			<Cursor1 position="1778" topLine="71" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="04dc6c005665a506002a036000000002=0;WindSim:main.cpp,1;WindSim:include/Model_Cube.h,2;WindSim:src/Model_Cube.cpp,3;WindSim:include/Model_Area.h,4;WindSim:src/Model_Area.cpp,*5;WindSim:include/Model_MoleculeGroup.h@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=569;besth=281;minw=569;minh=281;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=04dc6c005665a506002a036000000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<File name="src/Model_Cube.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1584" topLine="38" />
+		</Cursor>
+	</File>
+	<EditorTabsLayout layout="054ebd005667056500262ac100000002=*0;WindSim:main.cpp,1;WindSim:include/Model_Cube.h,2;WindSim:src/Model_Cube.cpp,3;WindSim:include/Model_Area.h,4;WindSim:src/Model_Area.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=569;besth=281;minw=569;minh=281;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=054ebd005667056500262ac100000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
 </CodeBlocks_layout_file>

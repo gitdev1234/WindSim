@@ -1,6 +1,6 @@
 #include <iostream>
 #include "include/Model_Cube.h"
-#include "Model_Area.h"
+#include "Area.h"
 #include <limits>
 #include <math.h>
 using namespace std;
@@ -13,7 +13,7 @@ int main() {
     float w_total, l_total, h_total, w_cube, l_cube;
     GeoCoords geoCoords;
     string s;
-    Model_Area MA;
+    Area MA;
     programMode ProgramMode = START;
 
     cout << "Welcome to this WindSim-Console UI." << endl;

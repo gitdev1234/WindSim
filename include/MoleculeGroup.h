@@ -22,11 +22,11 @@
  * A MoleculeGroup - object represents a group of air molecules.
  * The Model_MoleculesGroup - objects are stored in Model_Cube - objects.
  * This means every cube contains a number of MoleculeGroups.
- * The cubes are stored in the Model_Area - object.
- * The Model_Area - object calculates in every simulationTimeStep the current forces for every cube.
+ * The cubes are stored in the Area - object.
+ * The Area - object calculates in every simulationTimeStep the current forces for every cube.
  * The cubes hand these forces over to their MoleculeGroup - objects.
  * The MoleculeGroup - objects then calculate for every simulationTimeStep, the new attributes.
- * Depending on the positionInCube attribute of the MoleculeGroup - objects the Model_Area - object
+ * Depending on the positionInCube attribute of the MoleculeGroup - objects the Area - object
  * can react on a MoleculeGroup that is leaving a cube. In such a case the MoleculeGroup is handed over from
  * the old cube into the new.
  *

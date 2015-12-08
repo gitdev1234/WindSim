@@ -1,5 +1,5 @@
 /**
-    Model_Area.cpp
+    Area.cpp
     Purpose: Implements Class Model_Are
 
     @author Wall.Of.Death
@@ -10,22 +10,22 @@
 #include <string>
 #include <sstream>
 #include <math.h>
-#include "Model_Area.h"
+#include "Area.h"
 #include "Types.h"
 #include "float.h"
 #include <thread>
 
 using namespace std;
 
-Model_Area::Model_Area() {
+Area::Area() {
 
 };
 
-Model_Area::~Model_Area() {
+Area::~Area() {
     //dtor
 };
 
-void Model_Area::createStandardArea() {
+void Area::createStandardArea() {
     GeoCoords UpperLeftCube;
     UpperLeftCube.geoLength = 8.8;       //
     UpperLeftCube.geoWidth = 53.083333;  // Bremen
@@ -33,7 +33,7 @@ void Model_Area::createStandardArea() {
     createArea(10,10,1,10,10,UpperLeftCube);
 };
 
-void Model_Area::createArea(int CubesCountWidth_, int CubesCountLength_, float heightArea_, float widthArea_, float lengthArea_, GeoCoords UpperLeftCube_) {
+void Area::createArea(int CubesCountWidth_, int CubesCountLength_, float heightArea_, float widthArea_, float lengthArea_, GeoCoords UpperLeftCube_) {
     CubesCountWidth = CubesCountWidth_;
     CubesCountLength = CubesCountLength_;
     height = heightArea_;
@@ -42,12 +42,12 @@ void Model_Area::createArea(int CubesCountWidth_, int CubesCountLength_, float h
     geoCoordsUpperLeftCube = UpperLeftCube_;
 };
 
-void Model_Area::DestroyArea() {
+void Area::DestroyArea() {
     // clear storage
     Cubes.clear();
 };
 
-void Model_Area::LoadBalancedAreaStructure() {
+void Area::LoadBalancedAreaStructure() {
     // calculation of initial values for cubes
     float height_cube        = height;
     float width_cube         = width / CubesCountWidth;
@@ -79,11 +79,11 @@ void Model_Area::LoadBalancedAreaStructure() {
 };
 
 
-void Model_Area::LoadAreaStructureTemplate(string path){
+void Area::LoadAreaStructureTemplate(string path){
     // TODO
 };
 
-float Model_Area::GetMinMaxValue(string properties, bool max_) {
+float Area::GetMinMaxValue(string properties, bool max_) {
 
     float minmaxValue, temp = 0.0;
 
@@ -123,7 +123,7 @@ float Model_Area::GetMinMaxValue(string properties, bool max_) {
 /**
 only to use for positive numbers!!!
 */
-string Model_Area::getANSIRGBScaleColor(float min_, float max_, float value_) {
+string Area::getANSIRGBScaleColor(float min_, float max_, float value_) {
     int red,green,blue;
     if (min_ == max_) {
         red = 0;
@@ -151,13 +151,13 @@ string Model_Area::getANSIRGBScaleColor(float min_, float max_, float value_) {
     return s;
 }
 
-string Model_Area::getANSIEndCode() {
+string Area::getANSIEndCode() {
     string s;
     s = "\033[0m";
     return s;
 }
 
-void Model_Area::PrintCubes(string properties) {
+void Area::PrintCubes(string properties) {
     bool printCoordinates = false, printMoleculesCount = false, printTemperature = false, printPressure = false;
 
     for (int i = 0; i < properties.length(); i++) {
@@ -253,7 +253,7 @@ void Model_Area::PrintCubes(string properties) {
 
 };
 
-void Model_Area::ModifyTemperature(int x, int y, string s) {
+void Area::ModifyTemperature(int x, int y, string s) {
     coords c = { .x = x, .y = y };
     Cubes[x][y].ModifyTemperature(s);
     AffectSurroundingCubes(x,y);
@@ -280,7 +280,7 @@ The molecules_count are not effected by temperature changes.
 
 
 */
-void Model_Area::AffectSurroundingCubes(int x, int y){
+void Area::AffectSurroundingCubes(int x, int y){
     // First Step :
 
     coords A1, A2, A3;
@@ -467,7 +467,7 @@ void Model_Area::AffectSurroundingCubes(int x, int y){
                               new_rightLowerCorner, new_left, new_right, new_up, new_down);
 
 */
-void Model_Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner, coords rightUpperCorner, coords rightLowerCorner,
+void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner, coords rightUpperCorner, coords rightLowerCorner,
                                         stack <coords> left, stack <coords> right, stack <coords> up, stack <coords> down) {
 
 
@@ -813,7 +813,7 @@ void Model_Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLower
 
 };
 
-bool  Model_Area::CheckCoordsStillInArea(coords c) {
+bool  Area::CheckCoordsStillInArea(coords c) {
     bool temp = true;
     if ( (c.x < 0) || (c.x > (GetCubesCountWidth()-1) )) {
         temp = false;
@@ -828,7 +828,7 @@ bool  Model_Area::CheckCoordsStillInArea(coords c) {
 
 returns new Temperature
 */
-float Model_Area::MixTemperatures(Model_Cube Cube1, Model_Cube Cube2) {
+float Area::MixTemperatures(Model_Cube Cube1, Model_Cube Cube2) {
     float Temp1 = Cube1.getTemperature();
     float Mass1 = Cube1.getAndSetMass();
     float Volume1 = Cube1.getVolume();
@@ -842,7 +842,7 @@ float Model_Area::MixTemperatures(Model_Cube Cube1, Model_Cube Cube2) {
 
 returns new Temperature
 */
-float Model_Area::MixTemperatures(float Temp1, float Mass1, float Volume1, float Temp2, float Mass2, float Volume2) {
+float Area::MixTemperatures(float Temp1, float Mass1, float Volume1, float Temp2, float Mass2, float Volume2) {
     float newTemperature_ = ( (Mass1 * Temp1) + (Mass2 * Temp2) ) / (Mass1 + Mass2);
     return newTemperature_;
 };
@@ -854,7 +854,7 @@ returns new cube object which has
  -> new Volume      = Cube1.Volume + Cube2.Volume
  -> new Mass        = Cube1.Mass + Cube2.Mass
 */
-Model_Cube Model_Area::MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2) {
+Model_Cube Area::MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2) {
     float Temp1 = Cube1.getTemperature();
     float Mass1 = Cube1.getAndSetMass();
     float Volume1 = Cube1.getVolume();
@@ -870,7 +870,7 @@ Model_Cube Model_Area::MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2) {
 
 /* --- simulation --- */
 // simulation
-void Model_Area::initSimulation(int moleculeGroupsPerCube_) {
+void Area::initSimulation(int moleculeGroupsPerCube_) {
     for (int x = 0; x < Cubes.size(); x++) {
         for (int y = 0; y < Cubes[x].size(); y++) {
             Cubes[x][y].initSimulation(moleculeGroupsPerCube_);
@@ -882,7 +882,7 @@ void Model_Area::initSimulation(int moleculeGroupsPerCube_) {
 /**
  @return true if simulation has ended
  */
-void Model_Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
+void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
     int startTime = GetTimeMs64();
     float timeDelta = 0;
 
@@ -909,13 +909,13 @@ void Model_Area::simulate(float timeStepInSeconds_, float simulationSpeedInSecon
     }
 };
 
-void Model_Area::simulateTimeStep(float timeStepInSeconds_) {
+void Area::simulateTimeStep(float timeStepInSeconds_) {
     //TODO
     cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
     simulateMoleculesFlow(timeStepInSeconds_);
 };
 
-void Model_Area::simulateMoleculesFlow(float timeStepInSeconds_) {
+void Area::simulateMoleculesFlow(float timeStepInSeconds_) {
     calculateForces(); // calculates all forces for every cube
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
@@ -925,7 +925,7 @@ void Model_Area::simulateMoleculesFlow(float timeStepInSeconds_) {
 }
 
 // calculating forces
-void Model_Area::calculateForces() {
+void Area::calculateForces() {
     coords c;
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
@@ -936,7 +936,7 @@ void Model_Area::calculateForces() {
     }
 };
 
-void Model_Area::calculateForces(coords c) {
+void Area::calculateForces(coords c) {
     Cubes[c.x][c.y].clearForce();
     Cubes[c.x][c.y].addForce(calculateGradientForce(c));
     Cubes[c.x][c.y].addForce(calculateCoriolisForce(c));
@@ -944,7 +944,7 @@ void Model_Area::calculateForces(coords c) {
     Cubes[c.x][c.y].addForce(calculateInnerFrictionForce(c));
 };
 
-vector3 Model_Area::calculateGradientForce(coords c) {
+vector3 Area::calculateGradientForce(coords c) {
     // TODO
     vector3 tempForces;
     tempForces.x = 10;
@@ -953,7 +953,7 @@ vector3 Model_Area::calculateGradientForce(coords c) {
     return tempForces;
 };
 
-vector3 Model_Area::calculateCoriolisForce(coords c) {
+vector3 Area::calculateCoriolisForce(coords c) {
     // TODO
     vector3 tempForces;
     tempForces.x = 0.0;
@@ -962,7 +962,7 @@ vector3 Model_Area::calculateCoriolisForce(coords c) {
     return tempForces;
 };
 
-vector3 Model_Area::calculateSurfaceFrictionForce(coords c) {
+vector3 Area::calculateSurfaceFrictionForce(coords c) {
     // TODO
     vector3 tempForces;
     tempForces.x = 0.0;
@@ -971,7 +971,7 @@ vector3 Model_Area::calculateSurfaceFrictionForce(coords c) {
     return tempForces;
 };
 
-vector3 Model_Area::calculateInnerFrictionForce(coords) {
+vector3 Area::calculateInnerFrictionForce(coords) {
     // TODO
     vector3 tempForces;
     tempForces.x = 0.0;
@@ -987,7 +987,7 @@ vector3 Model_Area::calculateInnerFrictionForce(coords) {
  * @source https://stackoverflow.com/questions/1861294/how-to-calculate-execution-time-of-a-code-snippet-in-c
  */
 
-uint64 Model_Area::GetTimeMs64() {
+uint64 Area::GetTimeMs64() {
 #ifdef _WIN32
  /* Windows */
  FILETIME ft;
@@ -1021,6 +1021,6 @@ uint64 Model_Area::GetTimeMs64() {
 #endif
 }
 
-float Model_Area::getMoleculesCountAfterStart() {
+float Area::getMoleculesCountAfterStart() {
     return Cubes[0][0].getMolecules_Count();
 }
