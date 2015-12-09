@@ -63,8 +63,8 @@ class MoleculeGroup
         void setMass(float val_)             {mass = val_;          };
         void setTemperature(float val_)      {temperature = val_;   };
         void setForce(vector3 val_)          {force = val_;         };
-        void setAcceleration(float val_)     {acceleration = val_;  };
-        void setSpeed(float val_)            {speed = val_;         };
+        void setAcceleration(vector3 val_)   {acceleration = val_;  };
+        void setSpeed(vector3 val_)          {speed = val_;         };
         void setPositionInCube(vector3 val_) {positionInCube = val_;};
 
         // getters
