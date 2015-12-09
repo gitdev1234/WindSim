@@ -143,38 +143,68 @@ list<MoleculeGroup> Cube::simulateTimeStep(float timeStepInSeconds_) {
         float tempLength = getLength();
         bool isOutOfCube = false;
         coords tempCoordsOfCube = iterateMoleculeGroups->getCoordsOfCube();
+        coords tempMaxCoordsInArea = getMaxCoordsInArea();
 
 
         if (newPositionInCube.x < 0) {                             // out in the minus direction of x-axis
-            isOutOfCube = true;
-            newPositionInCube.x = tempWidth + newPositionInCube.x; // calculate new x coordinate of moleculeGroup
             tempCoordsOfCube.x = tempCoordsOfCube.x - 1;           // calculate x coordinate of new cube
-
+            if (tempCoordsOfCube.x >= 0) {                             // if new cube is still in area
+                isOutOfCube = true;                                       // allow leaving cube
+                newPositionInCube.x = tempWidth + newPositionInCube.x;    // calculate new x coordinate of moleculeGroup
+            } else {                                                   // else do not allow leaving cube
+                tempCoordsOfCube.x = 0;                                   // moleculeGroup stays in cube
+                newPositionInCube.x = 0;                                  //          --||--
+            }
         } else if (newPositionInCube.x > tempWidth) {              // out in the plus direction of x-axis
-            isOutOfCube = true;
-            newPositionInCube.x = newPositionInCube.x - tempWidth; // calculate new x coordinate of moleculeGroup
             tempCoordsOfCube.x = tempCoordsOfCube.x - 1;           // calculate x coordinate of new cube
+            if (newPositionInCube.x < tempMaxCoordsInArea.x) {         // if new cube is still in area
+                isOutOfCube = true;                                       // allow leaving cube
+                newPositionInCube.x = newPositionInCube.x - tempWidth;    // calculate new x coordinate of moleculeGroup
+            } else {                                                   // else do not allow leaving cube
+                tempCoordsOfCube.x = tempMaxCoordsInArea.x - 1;           // moleculeGroup stays in cube
+                newPositionInCube.x = tempWidth;                          //          --||--
+            }
         }
 
         if (newPositionInCube.y < 0) {                             // out in the minus direction of y-axis
-            isOutOfCube = true;
-            newPositionInCube.y = tempLength + newPositionInCube.y;// calculate new y coordinate of moleculeGroup
             tempCoordsOfCube.y = tempCoordsOfCube.y - 1;           // calculate y coordinate of new cube
+            if (tempCoordsOfCube.y >= 0) {                              // if new cube is still in area
+                isOutOfCube = true;                                       // allow leaving cube
+                newPositionInCube.y = tempLength + newPositionInCube.y;   // calculate new y coordinate of moleculeGroup
+            } else {                                                   // else do not allow leaving cube
+                tempCoordsOfCube.y = 0;                                   // moleculeGroup stays in cube
+                newPositionInCube.y = 0;                                  //          --||--
+            }
         } else if (newPositionInCube.y > tempLength) {             // out in the plus direction of y-axis
-            isOutOfCube = true;
-            newPositionInCube.y = newPositionInCube.y - tempLength;// calculate new y coordinate of moleculeGroup
-            tempCoordsOfCube.y = tempCoordsOfCube.y + 1;             // calculate y coordinate of new cube
+            tempCoordsOfCube.y = tempCoordsOfCube.y + 1;           // calculate y coordinate of new cube
+            if (tempCoordsOfCube.y < tempMaxCoordsInArea.y) {          // if new cube is still in area
+                isOutOfCube = true;                                       // allow leaving cube
+                newPositionInCube.y = newPositionInCube.y - tempLength;   // calculate new y coordinate of moleculeGroup
+            } else {                                                   // else do not allow leaving cube
+                tempCoordsOfCube.y = tempMaxCoordsInArea.y - 1;          // moleculeGroup stays in cube
+                newPositionInCube.y = tempLength;                        //          --||--
+            }
         }
 
-        /* @todo later versions z - axis
-        if (newPositionInCube.z < 0) {                 // out in the minus direction of z-axis
-            isOutOfCube = true;
-            newPositionInCube.z = tempHeight + newPositionInCube.z;// calculate new z coordinate of moleculeGroup
+        /*@todo later versions z - axis
+        if (newPositionInCube.z < 0) {                             // out in the minus direction of z-axis
             tempCoordsOfCube.z = tempCoordsOfCube.z - 1;           // calculate z coordinate of new cube
-        } else if (newPositionInCube.z > tempHeight) { // out in the plus direction of z-axis
-            isOutOfCube = true;
-            newPositionInCube.z = newPositionInCube.z - tempHeight;
-            tempCoordsOfCube.z = tempCoordsOfCube.z + 1;
+            if (tempCoordsOfCube.z >= 0) {                             // if new cube is still in area
+                isOutOfCube = true;                                       // allow leaving cube
+                newPositionInCube.z = tempHeight + newPositionInCube.z;   // calculate new z coordinate of moleculeGroup
+            } else {                                                   // else do not allow leaving cube
+                tempCoordsOfCube.z = 0;                                   // moleculeGroup stays in cubes
+                newPositionInCube.z = 0;                                  //          --||--
+            }
+        } else if (newPositionInCube.z > tempHeight) {             // out in the plus direction of z-axis
+            tempCoordsOfCube.z = tempCoordsOfCube.z + 1;           // calculate z coordinate of new cube
+            if (tempCoordsOfCube.z < tempMaxCoordsInArea.z) {          // if new cube is still in area
+                isOutOfCube = true;                                       // allow leaving cube
+                newPositionInCube.z = newPositionInCube.z - tempHeight;   // calculate new z coordinate of moleculeGroup
+            } else {                                                   // else do not allow leaving cube
+                tempCoordsOfCube.z = tempMaxCoordsInArea.z - 1;           // moleculeGroup stays in cubes.
+                newPositionInCube.z = tempHeight;
+            }
         }
         */
 
@@ -182,13 +212,20 @@ list<MoleculeGroup> Cube::simulateTimeStep(float timeStepInSeconds_) {
         if (isOutOfCube) {
             iterateMoleculeGroups->setCoordsOfCube(tempCoordsOfCube);
             moleculeGroupsWhichAreLeavingTheCube.push_front(*iterateMoleculeGroups);
-            moleculeGroups.erase(iterateMoleculeGroups);
+            moleculeGroups.erase(iterateMoleculeGroups--);
+            setmoleculeGroupsPerCube(moleculeGroups.size());
+            iterateMoleculeGroups++;
 
         }
 
     }
     return moleculeGroupsWhichAreLeavingTheCube;
 
+};
+
+void Cube::addMoleculeGroup(MoleculeGroup moleculeGroup_) {
+    moleculeGroups.push_front(moleculeGroup_);
+    setmoleculeGroupsPerCube(moleculeGroups.size());
 };
 
 // calculation of forces

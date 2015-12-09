@@ -74,6 +74,10 @@ void Area::LoadBalancedAreaStructure() {
             tempCoords.x = x;
             tempCoords.y = y;
             Cubes[x][y].setCoordsInArea(tempCoords);
+            coords maxCoords;
+            maxCoords.x = Cubes.size();
+            maxCoords.y = Cubes[x].size();
+            Cubes[x][y].setMaxCoordsInArea(maxCoords);
             Cubes[x][y].setHeight(height_cube);
             Cubes[x][y].setLength(length_cube);
             Cubes[x][y].setWidth (width_cube);
@@ -102,9 +106,10 @@ float Area::GetMinMaxValue(string properties, bool max_) {
     for (int x = 0; x < Cubes.size(); x++) {
         for (int y = 0; y < Cubes[x].size(); y++) {
             switch (toupper(properties[0])) {
-                case 'M' : temp = Cubes[x][y].getMolecules_Count(); break;
-                case 'T' : temp = Cubes[x][y].getTemperature();     break;
-                case 'P' : temp = Cubes[x][y].getPressure();        break;
+                case 'M' : temp = Cubes[x][y].getMolecules_Count();       break;
+                case 'T' : temp = Cubes[x][y].getTemperature();           break;
+                case 'P' : temp = Cubes[x][y].getPressure();              break;
+                case 'G' : temp = Cubes[x][y].getmoleculeGroupsPerCube(); break;
             };
             if (max_) {
                 if (temp > minmaxValue) {
@@ -162,7 +167,8 @@ string Area::getANSIEndCode() {
 }
 
 void Area::PrintCubes(string properties) {
-    bool printCoordinates = false, printMoleculesCount = false, printTemperature = false, printPressure = false;
+    bool printCoordinates = false, printMoleculesCount = false, printTemperature = false;
+    bool printPressure = false, printMoleculeGroups = false;
 
     for (int i = 0; i < properties.length(); i++) {
         switch (toupper(properties[i])) {
@@ -170,6 +176,7 @@ void Area::PrintCubes(string properties) {
             case 'M' : printMoleculesCount = true; break;
             case 'T' : printTemperature = true; break;
             case 'P' : printPressure = true; break;
+            case 'G' : printMoleculeGroups = true; break;
         };
     };
 
@@ -180,6 +187,8 @@ void Area::PrintCubes(string properties) {
     float Temperature_Min    = GetMinMaxValue("T",false);
     float Pressure_Max       = GetMinMaxValue("P",true);
     float Pressure_Min       = GetMinMaxValue("P",false);
+    float MoleculeGroupsCount_Min = GetMinMaxValue("G",true);
+    float MoleculeGroupsCount_Max = GetMinMaxValue("G",true);
 
     // calculate width of table coloumns
     int size;
@@ -223,6 +232,17 @@ void Area::PrintCubes(string properties) {
                         outStream << getANSIEndCode();
                     }
                 }
+                if (printMoleculeGroups) {
+                    if (printPretty) {
+                        outStream << getANSIRGBScaleColor(MoleculeGroupsCount_Max,MoleculeGroupsCount_Min,Cubes[x][y].getmoleculeGroupsPerCube());
+                    }
+                    outStream    << "G:" << Cubes[x][y].getmoleculeGroupsPerCube();
+                    lengthStream << "G:" << Cubes[x][y].getmoleculeGroupsPerCube();
+                    if (printPretty) {
+                        outStream << getANSIEndCode();
+                    }
+                }
+
 
                 lengthStream.seekg(0, ios::end); // calculate current length
                 size = lengthStream.tellg();     //
@@ -906,6 +926,7 @@ void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
         timeDelta = 0;
         startTime = GetTimeMs64();
         // TODO output simulation results to console
+        PrintCubes("G");
         cout << "ShowSimulation [][][][][]" << endl;
 
     }
@@ -919,9 +940,16 @@ void Area::simulateTimeStep(float timeStepInSeconds_) {
 
 void Area::simulateMoleculesFlow(float timeStepInSeconds_) {
     calculateForces(); // calculates all forces for every cube
+    std::vector<std::vector<Cube> > tempCubesAfterSimulationTimeStep; // 2-dimensional array of Cube objects
+    //tempCubesAfterSimulationTimeStep = Cubes;
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
-            Cubes[x][y].simulateTimeStep(timeStepInSeconds_);
+            list<MoleculeGroup> moleculeGroupsWhichAreLeavingTheCube = Cubes[x][y].simulateTimeStep(timeStepInSeconds_);
+            for(auto iterateMoleculeGroups = moleculeGroupsWhichAreLeavingTheCube.begin(); iterateMoleculeGroups != moleculeGroupsWhichAreLeavingTheCube.end(); iterateMoleculeGroups++) {
+                MoleculeGroup tempMoleculeGroup = *iterateMoleculeGroups;
+                coords newCoords = tempMoleculeGroup.getCoordsOfCube();
+                Cubes[newCoords.x][newCoords.y].addMoleculeGroup(*iterateMoleculeGroups);
+            }
         }
     }
 }
@@ -949,8 +977,8 @@ void Area::calculateForces(coords c) {
 vector3 Area::calculateGradientForce(coords c) {
     // TODO
     vector3 tempForces;
-    tempForces.x = 10;
-    tempForces.y = 40;
+    tempForces.x = 0.00010;
+    tempForces.y = 0.00040;
     tempForces.z = 0.0;
     return tempForces;
 };
@@ -967,8 +995,8 @@ vector3 Area::calculateCoriolisForce(coords c) {
 vector3 Area::calculateSurfaceFrictionForce(coords c) {
     // TODO
     vector3 tempForces;
-    tempForces.x = -3.0;
-    tempForces.y = -20.0;
+    tempForces.x = -0.00003;
+    tempForces.y = -0.00002;
     tempForces.z = 0.0;
     return tempForces;
 };

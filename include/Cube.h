@@ -62,6 +62,7 @@ class Cube
         // simulation
         void initSimulation(int moleculeGroupsPerCube);
         list<MoleculeGroup> simulateTimeStep(float timeStepInSeconds_);
+        void addMoleculeGroup(MoleculeGroup moleculeGroup_);
 
         // calculation of forces
         void clearForce();
@@ -76,6 +77,7 @@ class Cube
         void setTemperature(float val)             {temperature = val;               };
         void setPressure(float val)                {pressure = val;                  };
         void setCoordsInArea(coords val_)          {coordsInArea = val_;             };
+        void setMaxCoordsInArea(coords val_)       {maxCoordsInArea = val_;          };
         void setHeight(float val)                  {height = val;                    };
         void setLength(float val)                  {length = val;                    };
         void setWidth (float val)                  {width  = val;                    };
@@ -89,6 +91,7 @@ class Cube
         float getPressure()                {CalcPressure(); return pressure;};
         GeoCoords getGeoCoords()           {return geoCoords;               };
         coords getCoordsInArea()           {return coordsInArea;            };
+        coords getMaxCoordsInArea()        {return maxCoordsInArea;         };
         float getHeight() {return height;};
         float getLength() {return length;};
         float getWidth () {return width ;};
@@ -105,6 +108,7 @@ class Cube
         float volume;  // in m
         GeoCoords geoCoords;
         coords coordsInArea;
+        coords maxCoordsInArea;
 
 
         // changing properties
