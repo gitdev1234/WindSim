@@ -895,6 +895,10 @@ Cube Area::MixTemperaturesC(Cube Cube1, Cube Cube2) {
 /* --- simulation --- */
 // simulation
 void Area::initSimulation(int moleculeGroupsPerCube_) {
+    float tempMassPerCube = Cubes[0][0].getAndSetMass();
+    float tempMassPerMoleculeGroup = tempMassPerCube / moleculeGroupsPerCube_;
+    setMassPerMoleculeGroup(tempMassPerMoleculeGroup);
+
     for (int x = 0; x < Cubes.size(); x++) {
         for (int y = 0; y < Cubes[x].size(); y++) {
             Cubes[x][y].initSimulation(moleculeGroupsPerCube_);
@@ -940,8 +944,6 @@ void Area::simulateTimeStep(float timeStepInSeconds_) {
 
 void Area::simulateMoleculesFlow(float timeStepInSeconds_) {
     calculateForces(); // calculates all forces for every cube
-    std::vector<std::vector<Cube> > tempCubesAfterSimulationTimeStep; // 2-dimensional array of Cube objects
-    //tempCubesAfterSimulationTimeStep = Cubes;
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
             list<MoleculeGroup> moleculeGroupsWhichAreLeavingTheCube = Cubes[x][y].simulateTimeStep(timeStepInSeconds_);
@@ -1051,6 +1053,6 @@ uint64 Area::GetTimeMs64() {
 #endif
 }
 
-float Area::getMoleculesCountAfterStart() {
+float Area::getMoleculesPerCubeAfterStart() {
     return Cubes[0][0].getMolecules_Count();
 }

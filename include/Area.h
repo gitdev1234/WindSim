@@ -77,6 +77,8 @@ class Area
         void Setheight(float val)         { height = val; }
         void Setlength(float val)         { length = val; }
         void Setwidth(float val)          { width = val; }
+        void setMoleculeGroupsPerCube(float val_) {moleculeGroupsPerCube = val_;};
+        void setMassPerMoleculeGroup(float val_) {massPerMoleculeGroup = val_;};
 
         // getters
         int GetCubesCountWidth()  { return CubesCountWidth; }
@@ -84,8 +86,13 @@ class Area
         float Getheight()         { return height; }
         float Getlength()         { return length; }
         float Getwidth()          { return width; }
+        float getMoleculeGroupsPerCube() {return moleculeGroupsPerCube;};
+        float GetMassPerMoleculeGroup() {return massPerMoleculeGroup;};
+
+
         // use this only directly after loading the area!
-        float getMoleculesCountAfterStart();
+        float getMoleculesPerCubeAfterStart();
+
 
     protected:
 
@@ -95,6 +102,8 @@ class Area
         float height;
         float length;
         float width;
+        float moleculeGroupsPerCube;
+        float massPerMoleculeGroup;
         GeoCoords geoCoordsUpperLeftCube;
         std::vector<std::vector<Cube> > Cubes; // 2-dimensional array of Cube objects
         std::stack<coords> temperatureModifications;

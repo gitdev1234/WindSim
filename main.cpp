@@ -183,7 +183,7 @@ int main() {
                 if (quadraticMoleculeGroupsPerCube != moleculeGroupsPerCube) {
                     cout << "Your value was automatically transformed to the quadratic value " << quadraticMoleculeGroupsPerCube << endl;
                 }
-                moleculesPerMoleculeGroup = MA.getMoleculesCountAfterStart() / quadraticMoleculeGroupsPerCube;
+                moleculesPerMoleculeGroup = MA.getMoleculesPerCubeAfterStart() / quadraticMoleculeGroupsPerCube;
                 cout << "Okay you entered : " << quadraticMoleculeGroupsPerCube << ". This means that every molecule group within a cube ";
                 cout << "represents " << moleculesPerMoleculeGroup << " molecules." << endl;
                 cout << "For simulation we still need two parameters:" << endl;
