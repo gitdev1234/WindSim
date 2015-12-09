@@ -1,3 +1,16 @@
+/**
+  * MoleculeGroup.cpp
+  *
+  * Purpose: implements Class MoleculeGroup
+  *
+  *
+  * @author Wall.Of.Death
+  * @version 1.0
+  * @since 20151120
+  *
+  * @todo later versions : z coordinate is not used
+  */
+
 #include "MoleculeGroup.h"
 
 /**
@@ -25,7 +38,7 @@ MoleculeGroup::~MoleculeGroup() { }
  * @brief startSimulation sets speed to zero
  *
  */
-void MoleculeGroup::startSimulation() {
+void MoleculeGroup::initSimulation() {
     vector3 tempSpeed;
     tempSpeed.x = 0;
     tempSpeed.y = 0;
@@ -70,10 +83,13 @@ vector3 MoleculeGroup::simulateTimeStep(float timeStepInSeconds_){
 vector3 MoleculeGroup::simulateMoleculesFlow(float timeStepInSeconds_) {
     calculateAcceleration();
     calculateSpeed(timeStepInSeconds_);
-    // TODO molecule exchange and new coordinates
-    vector3 newPositionInCube;
-    newPositionInCube.x = 0;
-    newPositionInCube.y = 0;
+    vector3 tempSpeed = getSpeed();
+    // calculation of new positionInCube
+    vector3 newPositionInCube = getPositionInCube();
+    newPositionInCube.x += (tempSpeed.x * timeStepInSeconds_);
+    newPositionInCube.y += (tempSpeed.y * timeStepInSeconds_);
+    newPositionInCube.z += (tempSpeed.z * timeStepInSeconds_); // is always 0
+    setPositionInCube(newPositionInCube);
     return newPositionInCube;
 };
 

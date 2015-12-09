@@ -1,9 +1,10 @@
 /**
-    Types.h
-    Purpose: Defines struct GeoCoords
-
-    @author Wall.Of.Death
-    @version 1.0 20151120
+ * Types.h
+ * Purpose: defines structs, constants and types
+ *
+ * @author Wall.Of.Death
+ * @version 1.0
+ * @since 20151120
 */
 
 #ifndef TYPES_H_INCLUDED

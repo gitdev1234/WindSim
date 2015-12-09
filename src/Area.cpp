@@ -70,6 +70,10 @@ void Area::LoadBalancedAreaStructure() {
             Cubes[x][y].setMolecules_Count(molecules_count);
             Cubes[x][y].setTemperature(temperature);
             Cubes[x][y].setPressure(pressure);
+            coords tempCoords;
+            tempCoords.x = x;
+            tempCoords.y = y;
+            Cubes[x][y].setCoordsInArea(tempCoords);
             Cubes[x][y].setHeight(height_cube);
             Cubes[x][y].setLength(length_cube);
             Cubes[x][y].setWidth (width_cube);
@@ -879,9 +883,7 @@ void Area::initSimulation(int moleculeGroupsPerCube_) {
 };
 
 
-/**
- @return true if simulation has ended
- */
+
 void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
     int startTime = GetTimeMs64();
     float timeDelta = 0;
@@ -965,8 +967,8 @@ vector3 Area::calculateCoriolisForce(coords c) {
 vector3 Area::calculateSurfaceFrictionForce(coords c) {
     // TODO
     vector3 tempForces;
-    tempForces.x = 0.0;
-    tempForces.y = 0.0;
+    tempForces.x = -3.0;
+    tempForces.y = -20.0;
     tempForces.z = 0.0;
     return tempForces;
 };

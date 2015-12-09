@@ -1,10 +1,11 @@
 /**
-    Cube.h
-    Purpose: Defines Class Cube
-
-    @author Wall.Of.Death
-    @version 1.0 20151120
-*/
+ * Cube.h
+ * Purpose: defines Class Cube
+ *
+ * @author Wall.Of.Death
+ * @version 1.0
+ * @since 20151120
+ */
 
 #ifndef CUBE_H
 #define CUBE_H
@@ -18,6 +19,25 @@
 
 
 using namespace std;
+
+/**
+
+   e-------f
+  /|      /|
+ / |     / |
+a--|----b  |
+|  g----|--h
+| /     | /
+|/      |/
+c-------d
+
+x-axis --> width  = c-->d
+y-axis --> length = d-->h
+z-axis --> height = d-->b
+
+
+
+ */
 
 class Cube
 {
@@ -41,7 +61,7 @@ class Cube
         /* --- simulation --- */
         // simulation
         void initSimulation(int moleculeGroupsPerCube);
-        void simulateTimeStep(float timeStepInSeconds);
+        list<MoleculeGroup> simulateTimeStep(float timeStepInSeconds_);
 
         // calculation of forces
         void clearForce();
@@ -55,6 +75,7 @@ class Cube
         void setmoleculeGroupsPerCube(float val)   {moleculeGroupsPerCube = val;     };
         void setTemperature(float val)             {temperature = val;               };
         void setPressure(float val)                {pressure = val;                  };
+        void setCoordsInArea(coords val_)          {coordsInArea = val_;             };
         void setHeight(float val)                  {height = val;                    };
         void setLength(float val)                  {length = val;                    };
         void setWidth (float val)                  {width  = val;                    };
@@ -67,6 +88,7 @@ class Cube
         float getTemperature()             {return temperature;             };
         float getPressure()                {CalcPressure(); return pressure;};
         GeoCoords getGeoCoords()           {return geoCoords;               };
+        coords getCoordsInArea()           {return coordsInArea;            };
         float getHeight() {return height;};
         float getLength() {return length;};
         float getWidth () {return width ;};
@@ -82,6 +104,7 @@ class Cube
         float width;   // in m
         float volume;  // in m
         GeoCoords geoCoords;
+        coords coordsInArea;
 
 
         // changing properties
@@ -92,7 +115,7 @@ class Cube
 
         float mass;
         vector3 force; // in N
-        list<MoleculeGroup> Molecules;
+        list<MoleculeGroup> moleculeGroups;
 
 };
 

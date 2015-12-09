@@ -1,7 +1,7 @@
 /**
   * MoleculeGroup.h
   *
-  * Purpose: Defines Class MoleculeGroup
+  * Purpose: defines Class MoleculeGroup
   *
   *
   * @author Wall.Of.Death
@@ -51,7 +51,7 @@ class MoleculeGroup
 
         /* --- simulation --- */
         // simulation
-        void startSimulation();
+        void initSimulation();
         vector3 simulateTimeStep(float timeStepInSeconds_);
         vector3 simulateMoleculesFlow(float timeStepInSeconds_);
         void calculateAcceleration();
@@ -59,6 +59,7 @@ class MoleculeGroup
 
         /* --- getters and setters --- */
         // setters
+        void setCoordsOfCube(coords val_)    {coordsOfCube = val_;  };
         void setMoleculesCount(float val_)   {moleculesCount = val_;};
         void setMass(float val_)             {mass = val_;          };
         void setTemperature(float val_)      {temperature = val_;   };
@@ -68,6 +69,7 @@ class MoleculeGroup
         void setPositionInCube(vector3 val_) {positionInCube = val_;};
 
         // getters
+        coords  getCoordsOfCube()    {return coordsOfCube;  };
         float   getMoleculesCount()  {return moleculesCount;};
         float   getMass()            {return mass;          };
         float   getTemperature()     {return temperature;   };
@@ -77,9 +79,11 @@ class MoleculeGroup
         vector3 getPositionInCube()  {return positionInCube;};
 
 
+
     protected:
 
     private:
+        coords coordsOfCube;
         float moleculesCount;
         float mass;
         float temperature;
