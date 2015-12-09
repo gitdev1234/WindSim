@@ -20,7 +20,7 @@
  * @brief represents a group of air molecules
  *
  * A MoleculeGroup - object represents a group of air molecules.
- * The Model_MoleculesGroup - objects are stored in Model_Cube - objects.
+ * The MoleculesGroup - objects are stored in Cube - objects.
  * This means every cube contains a number of MoleculeGroups.
  * The cubes are stored in the Area - object.
  * The Area - object calculates in every simulationTimeStep the current forces for every cube.
@@ -31,17 +31,17 @@
  * the old cube into the new.
  *
  *
- * The following attributes stay constant for during one simulation-process :
+ * The following attributes stay constant during one simulation-process :
  *  - moleculesCount : the number of molecules the group is representing
  *  - mass           : the mass (calculated by mass of one molecule * moleculesCount)
  *
  * The following attributes change their values during a simulation-process :
  *  - temperature    : changes during simulateTemperaturFlow()
- *  - force          : force is the sum of all current forces, which are calculated and set by Model_Cubes - class
+ *  - force          : force is the sum of all current forces, which are calculated and set by Cubes - class
  *  - acceleration   : changes during simulateMoleculesFlow() by calculating acceleration = Force/mass
  *  - speed          : changes during simulateMoleculesFlow() by calculating speed += (acceleration*simulation-time)
  *  - positionInCube : changes during simulateMoleculesFlow() by calculating positionInCube += (speed*simulation-time)
- * every molecule-group has a mass, a temperature
+ *
  */
 class MoleculeGroup
 {
@@ -52,18 +52,20 @@ class MoleculeGroup
         /* --- simulation --- */
         // simulation
         void startSimulation();
-        coords simulateTimeStep(float timeStepInSeconds_);
-        coords simulateMoleculesFlow(float timeStepInSeconds_);
+        vector3 simulateTimeStep(float timeStepInSeconds_);
+        vector3 simulateMoleculesFlow(float timeStepInSeconds_);
         void calculateAcceleration();
-        void calculateSpeed(float timeStepInSeconds);
+        void calculateSpeed(float timeStepInSeconds_);
 
         /* --- getters and setters --- */
         // setters
-        void setMoleculesCount(float val)   {moleculesCount = val;};
-        void setMass(float val)             {mass = val;          };
-        void setTemperature(float val_)     {temperature = val_;  };
-        void setForce(vector3 val)          {force = val;         };
-        void setPositionInCube(vector3 val) {positionInCube = val;};
+        void setMoleculesCount(float val_)   {moleculesCount = val_;};
+        void setMass(float val_)             {mass = val_;          };
+        void setTemperature(float val_)      {temperature = val_;   };
+        void setForce(vector3 val_)          {force = val_;         };
+        void setAcceleration(float val_)     {acceleration = val_;  };
+        void setSpeed(float val_)            {speed = val_;         };
+        void setPositionInCube(vector3 val_) {positionInCube = val_;};
 
         // getters
         float   getMoleculesCount()  {return moleculesCount;};

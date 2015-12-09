@@ -1,5 +1,5 @@
 #include <iostream>
-#include "include/Model_Cube.h"
+#include "include/Cube.h"
 #include "Area.h"
 #include <limits>
 #include <math.h>

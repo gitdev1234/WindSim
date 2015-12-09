@@ -1,13 +1,13 @@
 /**
-    Model_Cube.h
-    Purpose: Defines Class Model_Cube
+    Cube.h
+    Purpose: Defines Class Cube
 
     @author Wall.Of.Death
     @version 1.0 20151120
 */
 
-#ifndef MODEL_CUBE_H
-#define MODEL_CUBE_H
+#ifndef CUBE_H
+#define CUBE_H
 
 #include <string>
 #include <iostream>"
@@ -19,13 +19,13 @@
 
 using namespace std;
 
-class Model_Cube
+class Cube
 {
     public:
 
-        Model_Cube();
-        Model_Cube(int molecules_count, float temperature, float pressure, GeoCoords geoCoords);
-        virtual ~Model_Cube();
+        Cube();
+        Cube(int molecules_count, float temperature, float pressure, GeoCoords geoCoords);
+        virtual ~Cube();
 
         /* --- miscellaneous --- */
         // temperature
@@ -96,4 +96,4 @@ class Model_Cube
 
 };
 
-#endif // MODEL_CUBE_H
+#endif // CUBE_H

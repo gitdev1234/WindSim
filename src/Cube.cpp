@@ -1,26 +1,26 @@
 /**
-    Model_Cube.cpp
-    Purpose: Implements Class Model_Cube
+    Cube.cpp
+    Purpose: Implements Class Cube
 
     @author Wall.Of.Death
     @version 1.0 20151120
 */
 
-#include "../include/Model_Cube.h"
+#include "../include/Cube.h"
 #include "MoleculeGroup.h"
 
 
 
-Model_Cube::Model_Cube() {
+Cube::Cube() {
     //ctor
 }
 
-Model_Cube::~Model_Cube() {
+Cube::~Cube() {
     //dtor
 }
 
 /* --- miscellaneous --- */
-void Model_Cube::ModifyTemperature(string s){
+void Cube::ModifyTemperature(string s){
     float temp = getTemperature();
     if (s[0] == '+') {
         temp += ModifyTemperatureDelta;
@@ -33,14 +33,14 @@ void Model_Cube::ModifyTemperature(string s){
     CalcPressure();
 };
 
-void Model_Cube::ModifyMolecules_count(float delta){
+void Cube::ModifyMolecules_count(float delta){
     float temp = getMolecules_Count();
     temp += delta;
     setMolecules_Count(temp);
     CalcPressure();
 };
 
-void Model_Cube::CalcPressure() {
+void Cube::CalcPressure() {
     float boltzmann_const = 1.38 * pow(10,-23);
     float molecules_count_ = getMolecules_Count();
     float temperature_     = getTemperature();
@@ -50,7 +50,7 @@ void Model_Cube::CalcPressure() {
 };
 
 
-float Model_Cube::getAndSetMass() {
+float Cube::getAndSetMass() {
     float R_ = 287.05;// individual gas-constant [J / (Kg * K)]
     float pressure_ = getPressure();
     float temperature_ = getTemperature();
@@ -67,7 +67,7 @@ float Model_Cube::getAndSetMass() {
 /**
  * @param moleculeGroupsPerCube has to be a square number e.g. 100, 1024, 10000
  */
-void Model_Cube::initSimulation(int moleculeGroupsPerCube_) {
+void Cube::initSimulation(int moleculeGroupsPerCube_) {
     MoleculeGroup tempMolecule;
     setmoleculeGroupsPerCube(moleculeGroupsPerCube_);
 
@@ -100,24 +100,24 @@ void Model_Cube::initSimulation(int moleculeGroupsPerCube_) {
     cout << "created " << Molecules.size() << " molecules." << endl;
 }
 
-void Model_Cube::simulateTimeStep(float timeStepInSeconds) {
+void Cube::simulateTimeStep(float timeStepInSeconds) {
     //TODO;
 };
 
 // calculation of forces
 
-void Model_Cube::clearForce() {
+void Cube::clearForce() {
     force.x = 0;
     force.y = 0;
     force.z = 0;
 };
 
-void Model_Cube::addForce(vector3 force_) {
+void Cube::addForce(vector3 force_) {
     force.x += force_.x;
     force.y += force_.y;
     force.z += force_.z;
 };
 
-vector3 Model_Cube::getForce() {
+vector3 Cube::getForce() {
     return force;
 };

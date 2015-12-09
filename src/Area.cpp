@@ -59,7 +59,7 @@ void Area::LoadBalancedAreaStructure() {
     float molecules_count = (pressure * volume) / (boltzmann_const * temperature);
 
     // create a 2-dimensional vector of cubes with the size CubesCountWidth x CubesCountLength
-    std::vector<std::vector<Model_Cube> > temp(CubesCountWidth, std::vector<Model_Cube>(CubesCountLength));
+    std::vector<std::vector<Cube> > temp(CubesCountWidth, std::vector<Cube>(CubesCountLength));
     Cubes = temp;
     temp.clear();
 
@@ -292,7 +292,7 @@ void Area::AffectSurroundingCubes(int x, int y){
 
         float volume_ = Cubes[B2.x][B2.y].getVolume(); // volume is equal for every cube
         float newTemperature_, mass_;
-        Model_Cube newCube;
+        Cube newCube;
 
         A1 = {.x = B2.x - 1, .y = B2.y - 1};
         A2 = {.x = B2.x    , .y = B2.y - 1};
@@ -541,7 +541,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
     // second step :
 
     coords A1, A2, B1, B2;
-    Model_Cube newCube;
+    Cube newCube;
     float newTemperature;
 
     // left upper corner
@@ -828,7 +828,7 @@ bool  Area::CheckCoordsStillInArea(coords c) {
 
 returns new Temperature
 */
-float Area::MixTemperatures(Model_Cube Cube1, Model_Cube Cube2) {
+float Area::MixTemperatures(Cube Cube1, Cube Cube2) {
     float Temp1 = Cube1.getTemperature();
     float Mass1 = Cube1.getAndSetMass();
     float Volume1 = Cube1.getVolume();
@@ -854,14 +854,14 @@ returns new cube object which has
  -> new Volume      = Cube1.Volume + Cube2.Volume
  -> new Mass        = Cube1.Mass + Cube2.Mass
 */
-Model_Cube Area::MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2) {
+Cube Area::MixTemperaturesC(Cube Cube1, Cube Cube2) {
     float Temp1 = Cube1.getTemperature();
     float Mass1 = Cube1.getAndSetMass();
     float Volume1 = Cube1.getVolume();
     float Temp2 = Cube2.getTemperature();
     float Mass2 = Cube2.getAndSetMass();
     float Volume2 = Cube2.getVolume();
-    Model_Cube newCube = Cube1;
+    Cube newCube = Cube1;
     newCube.setTemperature(MixTemperatures(Temp1, Mass1, Volume1, Temp2, Mass2, Volume2));
     newCube.setVolume(Volume1 + Volume2);
     newCube.getAndSetMass();

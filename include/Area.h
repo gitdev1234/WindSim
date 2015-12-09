@@ -13,7 +13,7 @@
 #include <vector>
 #include <stack>
 #include <string>
-#include "Model_Cube.h"
+#include "Cube.h"
 #include "sstream"
 
 using namespace std;
@@ -43,9 +43,9 @@ class Area
         void AffectSurroundingCubes(int x, int y);
         void AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner, coords rightUpperCorner, coords rightLowerCorner,
                                     stack <coords> left, stack <coords> right, stack <coords> up, stack <coords> down);
-        float MixTemperatures(Model_Cube Cube1, Model_Cube Cube2);
+        float MixTemperatures(Cube Cube1, Cube Cube2);
         float MixTemperatures(float Temp1, float Mass1, float Volume1, float Temp2, float Mass2, float Volume2);
-        Model_Cube MixTemperaturesC(Model_Cube Cube1, Model_Cube Cube2);
+        Cube MixTemperaturesC(Cube Cube1, Cube Cube2);
         bool  CheckCoordsStillInArea(coords c);
 
         /* --- simulation --- */
@@ -96,7 +96,7 @@ class Area
         float length;
         float width;
         GeoCoords geoCoordsUpperLeftCube;
-        std::vector<std::vector<Model_Cube> > Cubes; // 2-dimensional array of model_cube objects
+        std::vector<std::vector<Cube> > Cubes; // 2-dimensional array of Cube objects
         std::stack<coords> temperatureModifications;
 };
 
