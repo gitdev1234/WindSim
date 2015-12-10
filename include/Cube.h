@@ -61,7 +61,7 @@ class Cube
         /* --- simulation --- */
         // simulation
         void initSimulation(int moleculeGroupsPerCube);
-        list<MoleculeGroup> simulateTimeStep(float timeStepInSeconds_);
+        void simulateTimeStep(float timeStepInSeconds_);
         void addMoleculeGroup(MoleculeGroup moleculeGroup_);
 
         // calculation of forces
@@ -83,6 +83,9 @@ class Cube
         void setWidth (float val)                  {width  = val;                    };
         void setVolume(float val)                  {volume = val;                    };
         void setVolume()                           {volume = height * length * width;};
+        void setMoleculeGroupsWhichAreLeavingTheCube(list<MoleculeGroup> val_) {
+            moleculeGroupsWhichAreLeavingTheCube = val_;
+        };
 
         // getters
         float getMolecules_Count()         {return molecules_count;         };
@@ -97,6 +100,8 @@ class Cube
         float getWidth () {return width ;};
         float getVolume() {return volume;};
         float getAndSetMass() ;
+        list<MoleculeGroup> getMoleculeGroupsWhichAreLeavingTheCube() {return moleculeGroupsWhichAreLeavingTheCube;};
+
 
     protected:
 
@@ -120,6 +125,7 @@ class Cube
         float mass;
         vector3 force; // in N
         list<MoleculeGroup> moleculeGroups;
+        list<MoleculeGroup> moleculeGroupsWhichAreLeavingTheCube;
 
 };
 

@@ -125,13 +125,13 @@ y-axis --> length = d-->h
 z-axis --> height = d-->b
 
 */
-list<MoleculeGroup> Cube::simulateTimeStep(float timeStepInSeconds_) {
+void Cube::simulateTimeStep(float timeStepInSeconds_) {
     // iterate list of moleculegroups
       // --> setForce
       // --> simulateTimeStep
       // --> check if newPositionInCube is out of cube
       //      --> hand moleculeGroup over to different cube
-    list<MoleculeGroup> moleculeGroupsWhichAreLeavingTheCube;
+    list<MoleculeGroup> tempMoleculeGroupsWhichAreLeavingTheCube;
     vector3 tempForce = getForce();
     for(auto iterateMoleculeGroups = moleculeGroups.begin(); iterateMoleculeGroups != moleculeGroups.end(); iterateMoleculeGroups++) {
         iterateMoleculeGroups->setForce(tempForce);
@@ -211,7 +211,7 @@ list<MoleculeGroup> Cube::simulateTimeStep(float timeStepInSeconds_) {
         iterateMoleculeGroups->setPositionInCube(newPositionInCube);
         if (isOutOfCube) {
             iterateMoleculeGroups->setCoordsOfCube(tempCoordsOfCube);
-            moleculeGroupsWhichAreLeavingTheCube.push_front(*iterateMoleculeGroups);
+            tempMoleculeGroupsWhichAreLeavingTheCube.push_front(*iterateMoleculeGroups);
             moleculeGroups.erase(iterateMoleculeGroups--);
             setmoleculeGroupsPerCube(moleculeGroups.size());
             iterateMoleculeGroups++;
@@ -220,7 +220,7 @@ list<MoleculeGroup> Cube::simulateTimeStep(float timeStepInSeconds_) {
 
     }
 
-    return moleculeGroupsWhichAreLeavingTheCube;
+    setMoleculeGroupsWhichAreLeavingTheCube(tempMoleculeGroupsWhichAreLeavingTheCube);
 
 };
 

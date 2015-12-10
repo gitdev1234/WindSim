@@ -55,6 +55,7 @@ class Area
         void simulateTimeStep(float timeStepInSeconds_);
 
         void simulateMoleculesFlow(float timeStepInSeconds_);
+        void simulateMoleculeGroupsHandover();
 
         // calculating forces
         void calculateForces();

@@ -946,8 +946,17 @@ void Area::simulateMoleculesFlow(float timeStepInSeconds_) {
     calculateForces(); // calculates all forces for every cube
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
-            list<MoleculeGroup> moleculeGroupsWhichAreLeavingTheCube = Cubes[x][y].simulateTimeStep(timeStepInSeconds_);
-            for(auto iterateMoleculeGroups = moleculeGroupsWhichAreLeavingTheCube.begin(); iterateMoleculeGroups != moleculeGroupsWhichAreLeavingTheCube.end(); iterateMoleculeGroups++) {
+            Cubes[x][y].simulateTimeStep(timeStepInSeconds_);
+        }
+    }
+    simulateMoleculeGroupsHandover();
+}
+
+void Area::simulateMoleculeGroupsHandover() {
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+            list<MoleculeGroup> tempMoleculeGroupsWhichAreLeavingTheCube = Cubes[x][y].getMoleculeGroupsWhichAreLeavingTheCube();
+            for(auto iterateMoleculeGroups = tempMoleculeGroupsWhichAreLeavingTheCube.begin(); iterateMoleculeGroups != tempMoleculeGroupsWhichAreLeavingTheCube.end(); iterateMoleculeGroups++) {
                 MoleculeGroup tempMoleculeGroup = *iterateMoleculeGroups;
                 coords newCoords = tempMoleculeGroup.getCoordsOfCube();
                 Cubes[newCoords.x][newCoords.y].addMoleculeGroup(*iterateMoleculeGroups);
