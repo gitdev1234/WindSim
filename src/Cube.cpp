@@ -156,8 +156,8 @@ list<MoleculeGroup> Cube::simulateTimeStep(float timeStepInSeconds_) {
                 newPositionInCube.x = 0;                                  //          --||--
             }
         } else if (newPositionInCube.x > tempWidth) {              // out in the plus direction of x-axis
-            tempCoordsOfCube.x = tempCoordsOfCube.x - 1;           // calculate x coordinate of new cube
-            if (newPositionInCube.x < tempMaxCoordsInArea.x) {         // if new cube is still in area
+            tempCoordsOfCube.x = tempCoordsOfCube.x + 1;           // calculate x coordinate of new cube
+            if (tempCoordsOfCube.x < tempMaxCoordsInArea.x) {         // if new cube is still in area
                 isOutOfCube = true;                                       // allow leaving cube
                 newPositionInCube.x = newPositionInCube.x - tempWidth;    // calculate new x coordinate of moleculeGroup
             } else {                                                   // else do not allow leaving cube
@@ -219,6 +219,7 @@ list<MoleculeGroup> Cube::simulateTimeStep(float timeStepInSeconds_) {
         }
 
     }
+
     return moleculeGroupsWhichAreLeavingTheCube;
 
 };
