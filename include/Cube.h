@@ -90,21 +90,13 @@ class Cube
 
         /* --- miscellaneous --- */
         // temperature
-        /**
-         * Cube::modifyTemperature(string s_)
-         *
-         * @brief increments or decrements the temperature of the cube by
-         * @param timeStepInSeconds_ the length in seconds of the simulated timeStep
-         * @return coords : returns the new positionInCube, after the simulated timestep
-         *
-         * executes simulateMoleculesFlow() for to calculate a new positionInCube of
-         * the moleculeGroup
-         *
-         */
         void modifyTemperature(string s_);
 
         // pressure
-        void calcPressure();
+        float calcPressure();
+
+        // mass
+        float calcMass() ;
 
 
         /* --- simulation --- */
@@ -146,7 +138,6 @@ class Cube
         float getMoleculesCount()          {return moleculesCount;          };
         float getMoleculeGroupsPerCube()   {return moleculeGroupsPerCube;   };
         float getTemperature()             {return temperature;             };
-        float getPressure()                {calcPressure(); return pressure;};
         GeoCoords getGeoCoords()           {return geoCoords;               };
         coords getCoordsInArea()           {return coordsInArea;            };
         coords getMaxCoordsInArea()        {return maxCoordsInArea;         };
@@ -154,7 +145,6 @@ class Cube
         float getLength() {return length;};
         float getWidth () {return width ;};
         float getVolume() {return volume;};
-        float getAndSetMass() ;
         list<MoleculeGroup> getMoleculeGroupsWhichAreLeavingTheCube() {return moleculeGroupsWhichAreLeavingTheCube;};
 
 

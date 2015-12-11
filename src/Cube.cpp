@@ -28,6 +28,20 @@ Cube::Cube() { };
 Cube::~Cube() { };
 
 /* --- miscellaneous --- */
+// temperature
+
+/**
+ * Cube::modifyTemperature(string s_)
+ *
+ * @brief increments or decrements the temperature of the cube by MODIFY_TEMPERATURE_DELTA
+ * @param s_ enter '+' for increment, enter '-' for decrement
+ *
+ *
+ * if s == '+' the current temperature of the cube gets incremented by MODIFY_TEMPERATURE_DELTA
+ * if s == '-' the current temperature of the cube gets decremented by MODIFY_TEMPERATURE_DELTA
+ * executes calcPressure after setting new temperature
+ *
+ */
 void Cube::modifyTemperature(string s_){
     float temp = getTemperature();
     if (s_[0] == '+') {
@@ -41,24 +55,43 @@ void Cube::modifyTemperature(string s_){
     calcPressure();
 };
 
-void Cube::calcPressure() {
-    float boltzmannConst = 1.38 * pow(10,-23);
-    float moleculesCount_  = getMoleculesCount();
-    float temperature_     = getTemperature();
-    float volume_         = getVolume();
-    float pressure_ = (moleculesCount_ * boltzmannConst * temperature_) / volume_;
-    setPressure(pressure_);
+// pressure
+/**
+ * Cube::calcPressure()
+ *
+ * @brief calculates the current pressure within the cube
+ * @return returns the current pressure within the cube
+ *
+ * calculates the current pressure within the cube by
+ *  --> pressure = (moleculesCount * BOLTZMANN_CONST * temperature) / volume
+ *
+ */
+float Cube::calcPressure() {
+    float tempMoleculesCount = getMoleculesCount();
+    float tempTemperature    = getTemperature();
+    float tempVolume         = getVolume();
+    float tempPressure = (tempMoleculesCount * BOLTZMANN_CONST * tempTemperature) / tempVolume;
+    setPressure(tempPressure);
+    return tempPressure;
 };
 
-
-float Cube::getAndSetMass() {
-    float R_ = 287.05;// individual gas-constant [J / (Kg * K)]
-    float pressure_ = getPressure();
-    float temperature_ = getTemperature();
-    float density = pressure_ / (R_ * temperature_);
-    mass = density * getVolume();
-
-    return mass;
+// mass
+/**
+ * Cube::calcMass()
+ *
+ * @brief calculates the current mass of all the air within the cube
+ * @return returns the current mass of all the air within the cube
+ *
+ * calculates the current mass of all the air within the cube by
+ *  --> mass = density / volume
+ *
+ */
+float Cube::calcMass() {
+    float tempPressure    = calcPressure();
+    float tempTemperature = getTemperature();
+    float tempDensity = tempPressure / (INDIVIDUAL_GAS_CONST * tempTemperature);
+    float tempMass = tempDensity * getVolume();
+    return tempMass;
 };
 
 
@@ -66,18 +99,43 @@ float Cube::getAndSetMass() {
 
 // simulation
 /**
+ * Cube::initSimulation(int moleculeGroupsPerCube_) {
+ *
+ * @brief creates and initializes moleculeGroups
  * @param moleculeGroupsPerCube has to be a square number e.g. 100, 1024, 10000
  * @todo later versions : z coordinate is not used
+ *
+ *
+ * --> sets moleculeGroupsPerCube
+ * --> creates and initializes moleculeGroups
+ *      --> sets attributes
+ *      --> for example : calculate position of every moleculeGroup within the cube
+ *      --> executes moleculeGroup.initSimulation() for ever moleculeGroup
+ *
+ * the moleculeGroups are distributed linear in the cube
+ * for example see the following pictures
+ *
+ *  +------------+  +-----------+
+ +  |            |  | M   M   M |
+ *  |   M    M   |  |           |
+ *  |            |  | M   M   M |
+ *  |   M    M   |  |           |
+ *  |            |  | M   M   M |
+ *  +------------+  +-----------+
+ *
+ * ATTENTION : NOTE THAT THE PARAMETER moleculeGroupsPerCube HAS TO BE A SQUARE NUMBER
+ *
+ *
  */
 void Cube::initSimulation(int moleculeGroupsPerCube_) {
     MoleculeGroup tempMoleculeGroup;
     setmoleculeGroupsPerCube(moleculeGroupsPerCube_);
 
     // calculate mass per moleculeGroup
-    float tempMass = getAndSetMass();
+    float tempMass = calcMass();
     float massPerMoleculeGroup = tempMass / moleculeGroupsPerCube_;
 
-    //
+    // calculations before loop
     int moleculesInXDirection = round(sqrt(moleculeGroupsPerCube_));
     int moleculesInYDirection = moleculesInXDirection;
     float tempWidth = getWidth();
@@ -89,12 +147,12 @@ void Cube::initSimulation(int moleculeGroupsPerCube_) {
     float tempX = 0, tempY = 0;
     vector3 tempPosition;
 
-    // calculating positions of moleculeGroups in cube and adding them to
+    // calculate positions of moleculeGroups in cube and add them to
     // moleculeGroups-list of cube
-    tempX = 0-distanceMoleculesInXDirection;
+    tempX = 0 - (distanceMoleculesInXDirection / 2);
     for (float x = 0; x < moleculesInXDirection; x++) {
         tempX += distanceMoleculesInXDirection;
-        tempY = 0-distanceMoleculesInYDirection;
+        tempY = 0 - (distanceMoleculesInYDirection / 2);
         for (float y = 0; y < moleculesInYDirection; y++) {
             tempY += distanceMoleculesInYDirection;
             tempPosition.x = tempX;

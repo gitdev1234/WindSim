@@ -108,7 +108,7 @@ float Area::GetMinMaxValue(string properties, bool max_) {
             switch (toupper(properties[0])) {
                 case 'M' : temp = Cubes[x][y].getMoleculesCount();        break;
                 case 'T' : temp = Cubes[x][y].getTemperature();           break;
-                case 'P' : temp = Cubes[x][y].getPressure();              break;
+                case 'P' : temp = Cubes[x][y].calcPressure();              break;
                 case 'G' : temp = Cubes[x][y].getMoleculeGroupsPerCube(); break;
             };
             if (max_) {
@@ -224,10 +224,10 @@ void Area::PrintCubes(string properties) {
                 }
                 if (printPressure) {
                     if (PRINT_PRETTY) {
-                        outStream << getANSIRGBScaleColor(Pressure_Max,Pressure_Min,Cubes[x][y].getPressure());
+                        outStream << getANSIRGBScaleColor(Pressure_Max,Pressure_Min,Cubes[x][y].calcPressure());
                     }
-                    outStream    << "P:" << Cubes[x][y].getPressure();
-                    lengthStream << "P:" << Cubes[x][y].getPressure();
+                    outStream    << "P:" << Cubes[x][y].calcPressure();
+                    lengthStream << "P:" << Cubes[x][y].calcPressure();
                     if (PRINT_PRETTY) {
                         outStream << getANSIEndCode();
                     }
@@ -285,7 +285,7 @@ void Area::ModifyTemperature(int x, int y, string s) {
     cout << "[<" << x << ":" << y << ">";
     cout << "M:" << Cubes[x][y].getMoleculesCount();
     cout << "T:" << Cubes[x][y].getTemperature();
-    cout << "P:" << Cubes[x][y].getPressure() << "]" << endl;
+    cout << "P:" << Cubes[x][y].calcPressure() << "]" << endl;
 };
 
 
@@ -854,10 +854,10 @@ returns new Temperature
 */
 float Area::MixTemperatures(Cube Cube1, Cube Cube2) {
     float Temp1 = Cube1.getTemperature();
-    float Mass1 = Cube1.getAndSetMass();
+    float Mass1 = Cube1.calcMass();
     float Volume1 = Cube1.getVolume();
     float Temp2 = Cube2.getTemperature();
-    float Mass2 = Cube2.getAndSetMass();
+    float Mass2 = Cube2.calcMass();
     float Volume2 = Cube2.getVolume();
     return MixTemperatures(Temp1, Mass1, Volume1, Temp2, Mass2, Volume2);
 };
@@ -880,22 +880,22 @@ returns new cube object which has
 */
 Cube Area::MixTemperaturesC(Cube Cube1, Cube Cube2) {
     float Temp1 = Cube1.getTemperature();
-    float Mass1 = Cube1.getAndSetMass();
+    float Mass1 = Cube1.calcMass();
     float Volume1 = Cube1.getVolume();
     float Temp2 = Cube2.getTemperature();
-    float Mass2 = Cube2.getAndSetMass();
+    float Mass2 = Cube2.calcMass();
     float Volume2 = Cube2.getVolume();
     Cube newCube = Cube1;
     newCube.setTemperature(MixTemperatures(Temp1, Mass1, Volume1, Temp2, Mass2, Volume2));
     newCube.setVolume(Volume1 + Volume2);
-    newCube.getAndSetMass();
+    newCube.calcMass();
     return newCube;
 };
 
 /* --- simulation --- */
 // simulation
 void Area::initSimulation(int moleculeGroupsPerCube_) {
-    float tempMassPerCube = Cubes[0][0].getAndSetMass();
+    float tempMassPerCube = Cubes[0][0].calcMass();
     float tempMassPerMoleculeGroup = tempMassPerCube / moleculeGroupsPerCube_;
     setMassPerMoleculeGroup(tempMassPerMoleculeGroup);
 

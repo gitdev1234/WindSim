@@ -10,6 +10,8 @@
 #ifndef TYPES_H_INCLUDED
 #define TYPES_H_INCLUDED
 
+#include <math.h>
+
 
 // needed for Area::GetTimeMs64()
 #ifdef _WIN32
@@ -24,6 +26,8 @@ typedef long long int64; typedef unsigned long long uint64;
 const bool SHOW_IN_DETAIL = false;
 const bool PRINT_PRETTY  = true;
 const float MODIFY_TEMPERATURE_DELTA = 25.0;
+const float BOLTZMANN_CONST = 1.38 * pow(10,-23);
+const float INDIVIDUAL_GAS_CONST = 287.05; // [J / (Kg * K)]
 
 struct GeoCoords {
     float geoHeight, geoLength, geoWidth;
