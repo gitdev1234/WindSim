@@ -20,27 +20,20 @@ Cube::~Cube() {
 }
 
 /* --- miscellaneous --- */
-void Cube::ModifyTemperature(string s){
+void Cube::modifyTemperature(string s_){
     float temp = getTemperature();
-    if (s[0] == '+') {
+    if (s_[0] == '+') {
         temp += ModifyTemperatureDelta;
     }
-    if (s[0] == '-') {
+    if (s_[0] == '-') {
         temp -= ModifyTemperatureDelta;
     }
     setTemperature(temp);
 
-    CalcPressure();
+    calcPressure();
 };
 
-void Cube::ModifyMolecules_count(float delta){
-    float temp = getMolecules_Count();
-    temp += delta;
-    setMolecules_Count(temp);
-    CalcPressure();
-};
-
-void Cube::CalcPressure() {
+void Cube::calcPressure() {
     float boltzmann_const = 1.38 * pow(10,-23);
     float molecules_count_ = getMolecules_Count();
     float temperature_     = getTemperature();
@@ -110,6 +103,11 @@ void Cube::initSimulation(int moleculeGroupsPerCube_) {
     cout << "created " << moleculeGroups.size() << " molecules." << endl;
 }
 
+void Cube::simulateTimeStep(float timeStepInSeconds_) {
+    simulateMoleculesFlow(timeStepInSeconds_);
+    //simulateTemperatureFlow(timeStepInSeconds_);
+}
+
 /**
    e-------f
   /|      /|
@@ -125,7 +123,7 @@ y-axis --> length = d-->h
 z-axis --> height = d-->b
 
 */
-void Cube::simulateTimeStep(float timeStepInSeconds_) {
+void Cube::simulateMoleculesFlow(float timeStepInSeconds_) {
     // iterate list of moleculegroups
       // --> setForce
       // --> simulateTimeStep

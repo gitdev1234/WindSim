@@ -279,7 +279,7 @@ void Area::PrintCubes(string properties) {
 
 void Area::ModifyTemperature(int x, int y, string s) {
     coords c = { .x = x, .y = y };
-    Cubes[x][y].ModifyTemperature(s);
+    Cubes[x][y].modifyTemperature(s);
     AffectSurroundingCubes(x,y);
 
     cout << "[<" << x << ":" << y << ">";
@@ -358,39 +358,39 @@ void Area::AffectSurroundingCubes(int x, int y){
 
         if (CheckCoordsStillInArea(A1)) {
             Cubes[A1.x][A1.y].setTemperature(newTemperature_); // set new mixed temperature at all cubes with valid coordinates
-            Cubes[A1.x][A1.y].CalcPressure(); // calculate pressure depending on new temperature
+            Cubes[A1.x][A1.y].calcPressure(); // calculate pressure depending on new temperature
         }
         if (CheckCoordsStillInArea(A2)) {
             Cubes[A2.x][A2.y].setTemperature(newTemperature_); //
-            Cubes[A2.x][A2.y].CalcPressure(); //
+            Cubes[A2.x][A2.y].calcPressure(); //
         }
         if (CheckCoordsStillInArea(A3)) {
             Cubes[A3.x][A3.y].setTemperature(newTemperature_); //
-            Cubes[A3.x][A3.y].CalcPressure(); //
+            Cubes[A3.x][A3.y].calcPressure(); //
         }
         if (CheckCoordsStillInArea(B1)) {
             Cubes[B1.x][B1.y].setTemperature(newTemperature_); //
-            Cubes[B1.x][B1.y].CalcPressure(); //
+            Cubes[B1.x][B1.y].calcPressure(); //
         }
 
         Cubes[B2.x][B2.y].setTemperature(newTemperature_);     //
-        Cubes[B2.x][B2.y].CalcPressure();     //
+        Cubes[B2.x][B2.y].calcPressure();     //
 
         if (CheckCoordsStillInArea(B3)) {
             Cubes[B3.x][B3.y].setTemperature(newTemperature_); //
-            Cubes[B3.x][B3.y].CalcPressure(); //
+            Cubes[B3.x][B3.y].calcPressure(); //
         }
         if (CheckCoordsStillInArea(C1)) {
             Cubes[C1.x][C1.y].setTemperature(newTemperature_); //
-            Cubes[C1.x][C1.y].CalcPressure(); //
+            Cubes[C1.x][C1.y].calcPressure(); //
         }
         if (CheckCoordsStillInArea(C2)) {
             Cubes[C2.x][C2.y].setTemperature(newTemperature_); //
-            Cubes[C2.x][C2.y].CalcPressure(); //
+            Cubes[C2.x][C2.y].calcPressure(); //
         }
         if (CheckCoordsStillInArea(C3)) {
             Cubes[C3.x][C3.y].setTemperature(newTemperature_); //
-            Cubes[C3.x][C3.y].CalcPressure(); //
+            Cubes[C3.x][C3.y].calcPressure(); //
         }
 
         if (showInDetail) {
@@ -587,18 +587,18 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         }
         newTemperature = newCube.getTemperature();         // get calculated mixed temperature
         Cubes[B2.x][B2.y].setTemperature(newTemperature);      // set new mixed temperature at all cubes with valid coordinates
-        Cubes[B2.x][B2.y].CalcPressure();                        // calculate pressure depending on new temperature
+        Cubes[B2.x][B2.y].calcPressure();                        // calculate pressure depending on new temperature
         if (CheckCoordsStillInArea(A1)) {
             Cubes[A1.x][A1.y].setTemperature(newTemperature);  //
-            Cubes[A1.x][A1.y].CalcPressure();                    //
+            Cubes[A1.x][A1.y].calcPressure();                    //
         }
         if (CheckCoordsStillInArea(A2)) {
             Cubes[A2.x][A2.y].setTemperature(newTemperature);  //
-            Cubes[A2.x][A2.y].CalcPressure();                    //
+            Cubes[A2.x][A2.y].calcPressure();                    //
         }
         if (CheckCoordsStillInArea(B1)) {
             Cubes[B1.x][B1.y].setTemperature(newTemperature);  //
-            Cubes[B1.x][B1.y].CalcPressure();                    //
+            Cubes[B1.x][B1.y].calcPressure();                    //
         }
     }
 
@@ -629,18 +629,18 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         }
         newTemperature = newCube.getTemperature();         // get calculated mixed temperature
         Cubes[B1.x][B1.y].setTemperature(newTemperature);      // set new mixed temperature at all cubes with valid coordinates
-        Cubes[B1.x][B1.y].CalcPressure();                        // calculate pressure depending on new temperature
+        Cubes[B1.x][B1.y].calcPressure();                        // calculate pressure depending on new temperature
         if (CheckCoordsStillInArea(A1)) {
             Cubes[A1.x][A1.y].setTemperature(newTemperature);  //
-            Cubes[A1.x][A1.y].CalcPressure();                    //
+            Cubes[A1.x][A1.y].calcPressure();                    //
         }
         if (CheckCoordsStillInArea(A2)) {
             Cubes[A2.x][A2.y].setTemperature(newTemperature);  //
-            Cubes[A2.x][A2.y].CalcPressure();                    //
+            Cubes[A2.x][A2.y].calcPressure();                    //
         }
         if (CheckCoordsStillInArea(B2)) {
             Cubes[B2.x][B2.y].setTemperature(newTemperature);  //
-            Cubes[B2.x][B2.y].CalcPressure();                    //
+            Cubes[B2.x][B2.y].calcPressure();                    //
         }
     }
 
@@ -670,18 +670,18 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         }
         newTemperature = newCube.getTemperature();         // get calculated mixed temperature
         Cubes[A2.x][A2.y].setTemperature(newTemperature);      // set new mixed temperature at all cubes with valid coordinates
-        Cubes[A2.x][A2.y].CalcPressure();                        // calculate pressure depending on new temperature
+        Cubes[A2.x][A2.y].calcPressure();                        // calculate pressure depending on new temperature
         if (CheckCoordsStillInArea(A1)) {
             Cubes[A1.x][A1.y].setTemperature(newTemperature);  //
-            Cubes[A1.x][A1.y].CalcPressure();                    //
+            Cubes[A1.x][A1.y].calcPressure();                    //
         }
         if (CheckCoordsStillInArea(B1)) {
             Cubes[B1.x][B1.y].setTemperature(newTemperature);  //
-            Cubes[B1.x][B1.y].CalcPressure();                    //
+            Cubes[B1.x][B1.y].calcPressure();                    //
         }
         if (CheckCoordsStillInArea(B2)) {
             Cubes[B2.x][B2.y].setTemperature(newTemperature);  //
-            Cubes[B2.x][B2.y].CalcPressure();                    //
+            Cubes[B2.x][B2.y].calcPressure();                    //
         }
     }
 
@@ -712,19 +712,19 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
 
         newTemperature = newCube.getTemperature();  // getting calculated mixed temperature
         Cubes[A1.x][A1.y].setTemperature(newTemperature);      // set new mixed temperature
-        Cubes[A1.x][A1.y].CalcPressure();                        // calculate pressure depending on new temperature
+        Cubes[A1.x][A1.y].calcPressure();                        // calculate pressure depending on new temperature
 
         if (CheckCoordsStillInArea(A2)) {
             Cubes[A2.x][A2.y].setTemperature(newTemperature);  //
-            Cubes[A2.x][A2.y].CalcPressure();                    //
+            Cubes[A2.x][A2.y].calcPressure();                    //
         }
         if (CheckCoordsStillInArea(B1)) {
             Cubes[B1.x][B1.y].setTemperature(newTemperature);  //
-            Cubes[B1.x][B1.y].CalcPressure();                    //
+            Cubes[B1.x][B1.y].calcPressure();                    //
         }
         if (CheckCoordsStillInArea(B2)) {
             Cubes[B2.x][B2.y].setTemperature(newTemperature);  //
-            Cubes[B2.x][B2.y].CalcPressure();                    //
+            Cubes[B2.x][B2.y].calcPressure();                    //
         }
     }
 
@@ -745,9 +745,9 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
             newCube = MixTemperaturesC(Cubes[A1.x][A1.y],Cubes[A2.x][A2.y]);
             newTemperature = newCube.getTemperature();  // getting calculated mixed temperature
             Cubes[A1.x][A1.y].setTemperature(newTemperature);  // set new mixed temperature
-            Cubes[A1.x][A1.y].CalcPressure();                    // calculate pressure depending on new temperature
+            Cubes[A1.x][A1.y].calcPressure();                    // calculate pressure depending on new temperature
             Cubes[A2.x][A2.y].setTemperature(newTemperature);  //
-            Cubes[A2.x][A2.y].CalcPressure();
+            Cubes[A2.x][A2.y].calcPressure();
         }
         left.pop();                 //
     }
@@ -767,9 +767,9 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
             newCube = MixTemperaturesC(Cubes[A1.x][A1.y],Cubes[A2.x][A2.y]);
             newTemperature = newCube.getTemperature();  // getting calculated mixed temperature
             Cubes[A1.x][A1.y].setTemperature(newTemperature);  // set new mixed temperature
-            Cubes[A1.x][A1.y].CalcPressure();                    // calculate pressure depending on new temperature
+            Cubes[A1.x][A1.y].calcPressure();                    // calculate pressure depending on new temperature
             Cubes[A2.x][A2.y].setTemperature(newTemperature);  //
-            Cubes[A2.x][A2.y].CalcPressure();
+            Cubes[A2.x][A2.y].calcPressure();
         }
         right.pop();                 //
     }
@@ -789,9 +789,9 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
             newCube = MixTemperaturesC(Cubes[A1.x][A1.y],Cubes[B1.x][B1.y]);
             newTemperature = newCube.getTemperature();  // getting calculated mixed temperature
             Cubes[A1.x][A1.y].setTemperature(newTemperature);  // set new mixed temperature
-            Cubes[A1.x][A1.y].CalcPressure();                    // calculate pressure depending on new temperature
+            Cubes[A1.x][A1.y].calcPressure();                    // calculate pressure depending on new temperature
             Cubes[B1.x][B1.y].setTemperature(newTemperature);  //
-            Cubes[B1.x][B1.y].CalcPressure();
+            Cubes[B1.x][B1.y].calcPressure();
         }
         up.pop();                 //
     }
@@ -811,9 +811,9 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
             newCube = MixTemperaturesC(Cubes[A1.x][A1.y],Cubes[B1.x][B1.y]);
             newTemperature = newCube.getTemperature();  // getting calculated mixed temperature
             Cubes[A1.x][A1.y].setTemperature(newTemperature);  // set new mixed temperature
-            Cubes[A1.x][A1.y].CalcPressure();                    // calculate pressure depending on new temperature
+            Cubes[A1.x][A1.y].calcPressure();                    // calculate pressure depending on new temperature
             Cubes[B1.x][B1.y].setTemperature(newTemperature);  //
-            Cubes[B1.x][B1.y].CalcPressure();
+            Cubes[B1.x][B1.y].calcPressure();
         }
         down.pop();
     }

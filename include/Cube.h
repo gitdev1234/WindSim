@@ -21,22 +21,64 @@
 using namespace std;
 
 /**
-
-   e-------f
-  /|      /|
- / |     / |
-a--|----b  |
-|  g----|--h
-| /     | /
-|/      |/
-c-------d
-
-x-axis --> width  = c-->d
-y-axis --> length = d-->h
-z-axis --> height = d-->b
-
-
-
+ * Class Cube
+ *
+ * @brief represents a unit within the area class and contains a number of moleculeGroup Objects
+ *
+ * A cube object is a specific volume within the area class.
+ * As a volume it of course has to have attributes, which tell about the size and location of
+ * the cube. These attributes are constant during a simulation - process.
+ *
+ * The following attributes stay constant during one simulation-process :
+ *  - height, length, width : size attributes in meter
+ *  - volume                : volume attributes in meter^3
+ *  - geoCoords             : location referenced to a global map (in decimal degree)
+ *  - coordsInArea          : location within the vector of cubes (of the area class)
+ *  - maxCoordsInArea       : size of vector of cubes (of the area class)
+ *
+ * see the following image for to understand the meaning of height, length, width, x-,y- and z-axis
+ *
+ *      e-------f
+ *     /|      /|
+ *    / |     / |
+ *   a--|----b  |
+ *   |  g----|--h
+ *   | /     | /
+ *   |/      |/
+ *   c-------d
+ *
+ * x-axis --> width  = c-->d
+ * y-axis --> length = d-->h
+ * z-axis --> height = d-->b
+ *
+ *
+ * The following attributes change their values during a simulation-process :
+ *
+ * moleculesCount        : the total amount of all molecules inside the cube
+ *                          -> is initially set by Area.loadBalancedAreaStructure()
+ *                          -> is calculated during simulation by sum of moleculeGroupsPerCube * moleculesPerMoleculeGroup
+ * moleculeGroupsPerCube : the number of all moleculeGroups stored in this cube-object
+ * temperature           : in Kelvin
+ *                          -> changes during simulateMoleculesFlow()
+ *                          -> changes during simulateTemperaturFlow() TODO
+ * pressure              : in hPa
+ *                          -> changes during simulateMoleculesFlow()
+ *                          -> changes during simulateTemperaturFlow() TODO
+ * mass                  : in kg
+ *                          -> changes c
+ *                          -> changes during simulateTemperaturFlow() TODO
+ *
+ * force                 : in Newton
+ *                          -> changes during simulation -> is set by calculateForces() which is called by Area.simulateMoleculesFlow()
+ * moleculeGroups        : list of moleculeGroup Objects, that are currently in the cube
+ *                          -> changes simulateMoleculesFlow()
+ *                           -> if a moleculeGroup leaves the cube it is deleted from the list
+ *                           -> if a moleculeGroup from another cube wants get into this cube, it is added to the list
+ * moleculeGroupsWhichAreLeavingTheCube : list of moleculeGroups which want to leave the cube after a simulation - time - step
+ *                          -> this list is filled by simulateMoleculesFlow()
+ *                          -> the area object takes this list during Area.simulateMoleculesFlow() and hands moleculeGroups over
+ *                             to their new cubes.
+ *
  */
 
 class Cube
@@ -44,45 +86,47 @@ class Cube
     public:
 
         Cube();
-        Cube(int molecules_count, float temperature, float pressure, GeoCoords geoCoords);
         virtual ~Cube();
 
         /* --- miscellaneous --- */
         // temperature
-        void ModifyTemperature(string s);
-
-        // molecules_count
-        void ModifyMolecules_count(float delta);
+        void modifyTemperature(string s_);
 
         // pressure
-        void CalcPressure();
+        void calcPressure();
 
 
         /* --- simulation --- */
         // simulation
-        void initSimulation(int moleculeGroupsPerCube);
+        void initSimulation(int moleculeGroupsPerCube_);
         void simulateTimeStep(float timeStepInSeconds_);
+        void simulateMoleculesFlow(float timeStepInSeconds_);
         void addMoleculeGroup(MoleculeGroup moleculeGroup_);
 
         // calculation of forces
         void clearForce();
-        void addForce(vector3 force);
+        void addForce(vector3 force_);
         vector3 getForce();
 
 
         /* --- getters and setters --- */
         // setters
-        void setMolecules_Count(float val)         {molecules_count = val;           };
-        void setmoleculeGroupsPerCube(float val)   {moleculeGroupsPerCube = val;     };
-        void setTemperature(float val)             {temperature = val;               };
-        void setPressure(float val)                {pressure = val;                  };
-        void setCoordsInArea(coords val_)          {coordsInArea = val_;             };
-        void setMaxCoordsInArea(coords val_)       {maxCoordsInArea = val_;          };
-        void setHeight(float val)                  {height = val;                    };
-        void setLength(float val)                  {length = val;                    };
-        void setWidth (float val)                  {width  = val;                    };
-        void setVolume(float val)                  {volume = val;                    };
-        void setVolume()                           {volume = height * length * width;};
+        void setMolecules_Count(float val_)         {molecules_count = val_;           };
+        void setmoleculeGroupsPerCube(float val_)   {moleculeGroupsPerCube = val_;     };
+        void setTemperature(float val_)             {temperature = val_;               };
+        void setPressure(float val_)                {pressure = val_;                  };
+        void setCoordsInArea(coords val_)           {coordsInArea = val_;              };
+        void setMaxCoordsInArea(coords val_)        {maxCoordsInArea = val_;           };
+        void setHeight(float val_)                  {height = val_;                    };
+        void setLength(float val_)                  {length = val_;                    };
+        void setWidth (float val_)                  {width  = val_;                    };
+        void setVolume(float val_)                  {volume = val_;                    };
+        void setVolume()                            {
+            float tempHeight = getHeigth();
+            float tempLength = getLength();
+            float tempWidth  = getWidth();
+            volume = tempHeight * tempLength * tempWidth;
+        };
         void setMoleculeGroupsWhichAreLeavingTheCube(list<MoleculeGroup> val_) {
             moleculeGroupsWhichAreLeavingTheCube = val_;
         };
@@ -91,7 +135,7 @@ class Cube
         float getMolecules_Count()         {return molecules_count;         };
         float getmoleculeGroupsPerCube()   {return moleculeGroupsPerCube;   };
         float getTemperature()             {return temperature;             };
-        float getPressure()                {CalcPressure(); return pressure;};
+        float getPressure()                {calcPressure(); return pressure;};
         GeoCoords getGeoCoords()           {return geoCoords;               };
         coords getCoordsInArea()           {return coordsInArea;            };
         coords getMaxCoordsInArea()        {return maxCoordsInArea;         };
