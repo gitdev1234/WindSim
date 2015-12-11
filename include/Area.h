@@ -66,7 +66,7 @@ class Area
         vector3 calculateInnerFrictionForce(coords);
 
 
-        // miscellanous
+        // miscellaneous
         string getANSIRGBScaleColor(float min_, float max_, float value_);
         string getANSIEndCode();
         float GetMinMaxValue(string properties, bool max_) ;

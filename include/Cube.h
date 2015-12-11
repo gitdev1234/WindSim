@@ -84,12 +84,23 @@ using namespace std;
 class Cube
 {
     public:
-
+        /* --- constructor and destructor --- */
         Cube();
         virtual ~Cube();
 
         /* --- miscellaneous --- */
         // temperature
+        /**
+         * Cube::modifyTemperature(string s_)
+         *
+         * @brief increments or decrements the temperature of the cube by
+         * @param timeStepInSeconds_ the length in seconds of the simulated timeStep
+         * @return coords : returns the new positionInCube, after the simulated timestep
+         *
+         * executes simulateMoleculesFlow() for to calculate a new positionInCube of
+         * the moleculeGroup
+         *
+         */
         void modifyTemperature(string s_);
 
         // pressure
@@ -111,7 +122,7 @@ class Cube
 
         /* --- getters and setters --- */
         // setters
-        void setMolecules_Count(float val_)         {molecules_count = val_;           };
+        void setMoleculesCount(float val_)          {moleculesCount = val_;            };
         void setmoleculeGroupsPerCube(float val_)   {moleculeGroupsPerCube = val_;     };
         void setTemperature(float val_)             {temperature = val_;               };
         void setPressure(float val_)                {pressure = val_;                  };
@@ -122,7 +133,7 @@ class Cube
         void setWidth (float val_)                  {width  = val_;                    };
         void setVolume(float val_)                  {volume = val_;                    };
         void setVolume()                            {
-            float tempHeight = getHeigth();
+            float tempHeight = getHeight();
             float tempLength = getLength();
             float tempWidth  = getWidth();
             volume = tempHeight * tempLength * tempWidth;
@@ -132,8 +143,8 @@ class Cube
         };
 
         // getters
-        float getMolecules_Count()         {return molecules_count;         };
-        float getmoleculeGroupsPerCube()   {return moleculeGroupsPerCube;   };
+        float getMoleculesCount()          {return moleculesCount;          };
+        float getMoleculeGroupsPerCube()   {return moleculeGroupsPerCube;   };
         float getTemperature()             {return temperature;             };
         float getPressure()                {calcPressure(); return pressure;};
         GeoCoords getGeoCoords()           {return geoCoords;               };
@@ -154,19 +165,18 @@ class Cube
         float height;  // in m
         float length;  // in m
         float width;   // in m
-        float volume;  // in m
+        float volume;  // in m^3
         GeoCoords geoCoords;
         coords coordsInArea;
         coords maxCoordsInArea;
 
-
         // changing properties
-        float molecules_count;
+        float moleculesCount;
         float moleculeGroupsPerCube;
         float temperature;     // in K
         float pressure;        // in hPa
 
-        float mass;
+        float mass;    // in kg
         vector3 force; // in N
         list<MoleculeGroup> moleculeGroups;
         list<MoleculeGroup> moleculeGroupsWhichAreLeavingTheCube;

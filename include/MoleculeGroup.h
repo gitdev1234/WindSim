@@ -46,6 +46,7 @@
 class MoleculeGroup
 {
     public:
+        /* --- constructor and destructor --- */
         MoleculeGroup();
         virtual ~MoleculeGroup();
 

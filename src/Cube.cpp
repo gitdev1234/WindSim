@@ -9,24 +9,32 @@
 #include "../include/Cube.h"
 #include "MoleculeGroup.h"
 
+/* --- constructor and destructor --- */
 
+/**
+ * Constructor of class Cube
+ *
+ * @brief creates a object of class Cube
+ *
+ */
+Cube::Cube() { };
 
-Cube::Cube() {
-    //ctor
-}
-
-Cube::~Cube() {
-    //dtor
-}
+/**
+ * Destructor of class Cube
+ *
+ * @brief destroys a object of class Cube
+ *
+ */
+Cube::~Cube() { };
 
 /* --- miscellaneous --- */
 void Cube::modifyTemperature(string s_){
     float temp = getTemperature();
     if (s_[0] == '+') {
-        temp += ModifyTemperatureDelta;
+        temp += MODIFY_TEMPERATURE_DELTA;
     }
     if (s_[0] == '-') {
-        temp -= ModifyTemperatureDelta;
+        temp -= MODIFY_TEMPERATURE_DELTA;
     }
     setTemperature(temp);
 
@@ -34,11 +42,11 @@ void Cube::modifyTemperature(string s_){
 };
 
 void Cube::calcPressure() {
-    float boltzmann_const = 1.38 * pow(10,-23);
-    float molecules_count_ = getMolecules_Count();
+    float boltzmannConst = 1.38 * pow(10,-23);
+    float moleculesCount_  = getMoleculesCount();
     float temperature_     = getTemperature();
     float volume_         = getVolume();
-    float pressure_ = (molecules_count_ * boltzmann_const * temperature_) / volume_;
+    float pressure_ = (moleculesCount_ * boltzmannConst * temperature_) / volume_;
     setPressure(pressure_);
 };
 

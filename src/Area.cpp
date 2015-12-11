@@ -67,7 +67,7 @@ void Area::LoadBalancedAreaStructure() {
     // x means the direction of width, y means the direction of length
     for (int x = 0; x < Cubes.size(); x++) {
         for (int y = 0; y < Cubes[x].size(); y++) {
-            Cubes[x][y].setMolecules_Count(molecules_count);
+            Cubes[x][y].setMoleculesCount(molecules_count);
             Cubes[x][y].setTemperature(temperature);
             Cubes[x][y].setPressure(pressure);
             coords tempCoords;
@@ -106,10 +106,10 @@ float Area::GetMinMaxValue(string properties, bool max_) {
     for (int x = 0; x < Cubes.size(); x++) {
         for (int y = 0; y < Cubes[x].size(); y++) {
             switch (toupper(properties[0])) {
-                case 'M' : temp = Cubes[x][y].getMolecules_Count();       break;
+                case 'M' : temp = Cubes[x][y].getMoleculesCount();        break;
                 case 'T' : temp = Cubes[x][y].getTemperature();           break;
                 case 'P' : temp = Cubes[x][y].getPressure();              break;
-                case 'G' : temp = Cubes[x][y].getmoleculeGroupsPerCube(); break;
+                case 'G' : temp = Cubes[x][y].getMoleculeGroupsPerCube(); break;
             };
             if (max_) {
                 if (temp > minmaxValue) {
@@ -203,42 +203,42 @@ void Area::PrintCubes(string properties) {
                     lengthStream << "<" << x << ":" << y << ">";
                 }
                 if (printMoleculesCount) {
-                    if (printPretty) {
-                        outStream << getANSIRGBScaleColor(MoleculesCount_Max,MoleculesCount_Min,Cubes[x][y].getMolecules_Count());
+                    if (PRINT_PRETTY) {
+                        outStream << getANSIRGBScaleColor(MoleculesCount_Max,MoleculesCount_Min,Cubes[x][y].getMoleculesCount());
                     }
-                    outStream    << "M:" << Cubes[x][y].getMolecules_Count();
-                    lengthStream << "M:" << Cubes[x][y].getMolecules_Count();
-                    if (printPretty) {
+                    outStream    << "M:" << Cubes[x][y].getMoleculesCount();
+                    lengthStream << "M:" << Cubes[x][y].getMoleculesCount();
+                    if (PRINT_PRETTY) {
                         outStream << getANSIEndCode();
                     }
                 }
                 if (printTemperature) {
-                    if (printPretty) {
+                    if (PRINT_PRETTY) {
                         outStream << getANSIRGBScaleColor(Temperature_Max,Temperature_Min,Cubes[x][y].getTemperature());
                     }
                     outStream    << "T:" << Cubes[x][y].getTemperature();
                     lengthStream << "T:" << Cubes[x][y].getTemperature();
-                    if (printPretty) {
+                    if (PRINT_PRETTY) {
                         outStream << getANSIEndCode();
                     }
                 }
                 if (printPressure) {
-                    if (printPretty) {
+                    if (PRINT_PRETTY) {
                         outStream << getANSIRGBScaleColor(Pressure_Max,Pressure_Min,Cubes[x][y].getPressure());
                     }
                     outStream    << "P:" << Cubes[x][y].getPressure();
                     lengthStream << "P:" << Cubes[x][y].getPressure();
-                    if (printPretty) {
+                    if (PRINT_PRETTY) {
                         outStream << getANSIEndCode();
                     }
                 }
                 if (printMoleculeGroups) {
-                    if (printPretty) {
-                        outStream << getANSIRGBScaleColor(MoleculeGroupsCount_Max,MoleculeGroupsCount_Min,Cubes[x][y].getmoleculeGroupsPerCube());
+                    if (PRINT_PRETTY) {
+                        outStream << getANSIRGBScaleColor(MoleculeGroupsCount_Max,MoleculeGroupsCount_Min,Cubes[x][y].getMoleculeGroupsPerCube());
                     }
-                    outStream    << "G:" << Cubes[x][y].getmoleculeGroupsPerCube();
-                    lengthStream << "G:" << Cubes[x][y].getmoleculeGroupsPerCube();
-                    if (printPretty) {
+                    outStream    << "G:" << Cubes[x][y].getMoleculeGroupsPerCube();
+                    lengthStream << "G:" << Cubes[x][y].getMoleculeGroupsPerCube();
+                    if (PRINT_PRETTY) {
                         outStream << getANSIEndCode();
                     }
                 }
@@ -283,7 +283,7 @@ void Area::ModifyTemperature(int x, int y, string s) {
     AffectSurroundingCubes(x,y);
 
     cout << "[<" << x << ":" << y << ">";
-    cout << "M:" << Cubes[x][y].getMolecules_Count();
+    cout << "M:" << Cubes[x][y].getMoleculesCount();
     cout << "T:" << Cubes[x][y].getTemperature();
     cout << "P:" << Cubes[x][y].getPressure() << "]" << endl;
 };
@@ -393,7 +393,7 @@ void Area::AffectSurroundingCubes(int x, int y){
             Cubes[C3.x][C3.y].calcPressure(); //
         }
 
-        if (showInDetail) {
+        if (SHOW_IN_DETAIL) {
             PrintCubes("T");
         }
 
@@ -603,7 +603,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
     }
 
 
-    if (showInDetail) {
+    if (SHOW_IN_DETAIL) {
         cout << "press any key to go on " << endl;
         string s;
         cin >> s;
@@ -644,7 +644,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         }
     }
 
-    if (showInDetail) {
+    if (SHOW_IN_DETAIL) {
         cout << "press any key to go on " << endl;
         string s;
         cin >> s;
@@ -685,7 +685,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         }
     }
 
-    if (showInDetail) {
+    if (SHOW_IN_DETAIL) {
         cout << "press any key to go on " << endl;
         string s;
         cin >> s;
@@ -728,7 +728,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         }
     }
 
-    if (showInDetail) {
+    if (SHOW_IN_DETAIL) {
         cout << "press any key to go on " << endl;
         string s;
         cin >> s;
@@ -752,7 +752,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         left.pop();                 //
     }
 
-    if (showInDetail) {
+    if (SHOW_IN_DETAIL) {
         cout << "press any key to go on " << endl;
         string s;
         cin >> s;
@@ -774,7 +774,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         right.pop();                 //
     }
 
-    if (showInDetail) {
+    if (SHOW_IN_DETAIL) {
         cout << "press any key to go on " << endl;
         string s;
         cin >> s;
@@ -796,7 +796,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         up.pop();                 //
     }
 
-    if (showInDetail) {
+    if (SHOW_IN_DETAIL) {
         cout << "press any key to go on " << endl;
         string s;
         cin >> s;
@@ -818,7 +818,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
         down.pop();
     }
 
-    if (showInDetail) {
+    if (SHOW_IN_DETAIL) {
         cout << "press any key to go on " << endl;
         string s;
         cin >> s;
@@ -1063,5 +1063,5 @@ uint64 Area::GetTimeMs64() {
 }
 
 float Area::getMoleculesPerCubeAfterStart() {
-    return Cubes[0][0].getMolecules_Count();
+    return Cubes[0][0].getMoleculesCount();
 }

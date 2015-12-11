@@ -13,6 +13,8 @@
 
 #include "MoleculeGroup.h"
 
+/* --- constructor and destructor --- */
+
 /**
  * Constructor of class MoleculeGroup
  *

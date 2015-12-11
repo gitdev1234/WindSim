@@ -17,6 +17,7 @@ int main() {
     programMode ProgramMode = START;
 
     cout << "Welcome to this WindSim-Console UI." << endl;
+    cout << "Welcome to this WindSim-Console UI." << endl;
     cout << "Do you want to load standard-values for your model area";
     cout << " or enter configuration mode? [Press S or C]" << endl;
 
