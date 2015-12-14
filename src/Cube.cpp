@@ -55,51 +55,12 @@ void Cube::modifyTemperature(string s_){
     calcPressure();
 };
 
-// pressure
-/**
- * Cube::calcPressure()
- *
- * @brief calculates the current pressure within the cube
- * @return returns the current pressure within the cube
- *
- * calculates the current pressure within the cube by
- *  --> pressure = (moleculesCount * BOLTZMANN_CONST * temperature) / volume
- *
- */
-float Cube::calcPressure() {
-    float tempMoleculesCount = getMoleculesCount();
-    float tempTemperature    = getTemperature();
-    float tempVolume         = getVolume();
-    float tempPressure = (tempMoleculesCount * BOLTZMANN_CONST * tempTemperature) / tempVolume;
-    setPressure(tempPressure);
-    return tempPressure;
-};
-
-// mass
-/**
- * Cube::calcMass()
- *
- * @brief calculates the current mass of all the air within the cube
- * @return returns the current mass of all the air within the cube
- *
- * calculates the current mass of all the air within the cube by
- *  --> mass = density / volume
- *
- */
-float Cube::calcMass() {
-    float tempPressure    = calcPressure();
-    float tempTemperature = getTemperature();
-    float tempDensity = tempPressure / (INDIVIDUAL_GAS_CONST * tempTemperature);
-    float tempMass = tempDensity * getVolume();
-    return tempMass;
-};
-
 
 /* --- simulation --- */
 
 // simulation
 /**
- * Cube::initSimulation(int moleculeGroupsPerCube_) {
+ * Cube::initSimulation(int moleculeGroupsPerCube_)
  *
  * @brief creates and initializes moleculeGroups
  * @param moleculeGroupsPerCube has to be a square number e.g. 100, 1024, 10000
@@ -129,7 +90,15 @@ float Cube::calcMass() {
  */
 void Cube::initSimulation(int moleculeGroupsPerCube_) {
     MoleculeGroup tempMoleculeGroup;
-    setmoleculeGroupsPerCube(moleculeGroupsPerCube_);
+    setMoleculeGroupsPerCube(moleculeGroupsPerCube_);
+
+    // get temperature of this cube
+    float tempTemperature = getTemperature();
+
+    // calculate moleculesPerMoleculeGroup
+    float tempMoleculesCount = getMoleculesCount();
+    float tempMoleculesPerMoleculeGroup = tempMoleculesCount / moleculeGroupsPerCube_;
+    setMoleculesPerMoleculeGroup(tempMoleculesPerMoleculeGroup);
 
     // calculate mass per moleculeGroup
     float tempMass = calcMass();
@@ -158,8 +127,10 @@ void Cube::initSimulation(int moleculeGroupsPerCube_) {
             tempPosition.x = tempX;
             tempPosition.y = tempY;
             tempPosition.z = 0;
+            tempMoleculeGroup.setTemperature(tempTemperature);
             tempMoleculeGroup.setPositionInCube(tempPosition);
             tempMoleculeGroup.setMass(massPerMoleculeGroup);
+            tempMoleculeGroup.setMoleculesCount(tempMoleculesPerMoleculeGroup);
             coords tempCoordsInArea = getCoordsInArea();
             tempMoleculeGroup.setCoordsOfCube(tempCoordsInArea);
             tempMoleculeGroup.initSimulation();
@@ -169,12 +140,41 @@ void Cube::initSimulation(int moleculeGroupsPerCube_) {
     cout << "created " << moleculeGroups.size() << " molecules." << endl;
 }
 
+/**
+ * Cube::simulateTimeStep(float timeStepInSeconds_)
+ *
+ * @brief executes simulateMoleculesFlow() and simulateTemperatureFlow()
+ * @param timeStepInSeconds_ the length in seconds of the simulated timeStep
+ *
+ * executes the functions simulateMoleculesFlow() and simulateTemperatureFlow()
+ *
+ */
 void Cube::simulateTimeStep(float timeStepInSeconds_) {
     simulateMoleculesFlow(timeStepInSeconds_);
     //simulateTemperatureFlow(timeStepInSeconds_);
 }
 
 /**
+ * Cube::simulateMoleculesFlow(float timeStepInSeconds_)
+ *
+ * @brief simulates the moving of all moleculeGroups within this cube
+ * @param timeStepInSeconds_ the length in seconds of the simulated timeStep
+ *
+ * simulates the moving of all moleculeGroups within this cube depending on
+ * the force attribute of the class.
+ *
+ *
+ *
+     // iterate list of moleculegroups
+      // --> getForce
+      // --> simulateTimeStep
+      // --> check if newPositionInCube is out of cube
+      //      --> check if the moleculeGroup may be handed over to new cube
+      //           --> hand moleculeGroup over to different cube
+      //      --> or if
+ *
+ *
+ *
    e-------f
   /|      /|
  / |     / |
@@ -190,11 +190,7 @@ z-axis --> height = d-->b
 
 */
 void Cube::simulateMoleculesFlow(float timeStepInSeconds_) {
-    // iterate list of moleculegroups
-      // --> setForce
-      // --> simulateTimeStep
-      // --> check if newPositionInCube is out of cube
-      //      --> hand moleculeGroup over to different cube
+
     list<MoleculeGroup> tempMoleculeGroupsWhichAreLeavingTheCube;
     vector3 tempForce = getForce();
     for(auto iterateMoleculeGroups = moleculeGroups.begin(); iterateMoleculeGroups != moleculeGroups.end(); iterateMoleculeGroups++) {
@@ -277,7 +273,6 @@ void Cube::simulateMoleculesFlow(float timeStepInSeconds_) {
             iterateMoleculeGroups->setCoordsOfCube(tempCoordsOfCube);
             tempMoleculeGroupsWhichAreLeavingTheCube.push_front(*iterateMoleculeGroups);
             moleculeGroups.erase(iterateMoleculeGroups--);
-            setmoleculeGroupsPerCube(moleculeGroups.size());
             iterateMoleculeGroups++;
 
         }
@@ -290,7 +285,7 @@ void Cube::simulateMoleculesFlow(float timeStepInSeconds_) {
 
 void Cube::addMoleculeGroup(MoleculeGroup moleculeGroup_) {
     moleculeGroups.push_front(moleculeGroup_);
-    setmoleculeGroupsPerCube(moleculeGroups.size());
+    setMoleculeGroupsPerCube(moleculeGroups.size());
 };
 
 // calculation of forces
@@ -309,4 +304,104 @@ void Cube::addForce(vector3 force_) {
 
 vector3 Cube::getForce() {
     return force;
+};
+
+// calculation of attributes
+/**
+ * Cube::recalculateAttributes(changeType changeType_)
+ *
+ * @brief recalculates the attributes during simulation
+ * @param changeType_ says wether moleculeGroupsPerCube or temperature has changed
+ *
+ * if moleculeGroupsPerCube has changed the following attributes have to be recalculated
+ *  - moleculesCount
+ *  - temperature
+ *  - pressure
+ *  - mass
+ *
+ *
+ */
+void Cube::recalculateAttributes(changeType changeType_) {
+    if (changeType_ == changeType::MOLECULE_FLOW) {
+        calcMoleculeGroupsPerCube();
+        calcMoleculesCount();
+        calcTemperature();
+        calcMass();
+        calcPressure();
+    } else if (changeType_ == changeType::TEMPERATUR_FLOW) {
+        //TODO
+    }
+
+};
+
+// pressure
+/**
+ * Cube::calcPressure()
+ *
+ * @brief calculates the current pressure within the cube
+ * @return returns the current pressure within the cube
+ *
+ * calculates the current pressure within the cube by
+ *  --> pressure = (moleculesCount * BOLTZMANN_CONST * temperature) / volume
+ *
+ */
+float Cube::calcPressure() {
+    float tempMoleculesCount = getMoleculesCount();
+    float tempTemperature    = getTemperature();
+    float tempVolume         = getVolume();
+    float tempPressure = (tempMoleculesCount * BOLTZMANN_CONST * tempTemperature) / tempVolume;
+    setPressure(tempPressure);
+    return tempPressure;
+};
+
+// mass
+/**
+ * Cube::calcMass()
+ *
+ * @brief calculates the current mass of all the air within the cube
+ * @return returns the current mass of all the air within the cube
+ *
+ * calculates the current mass of all the air within the cube by
+ *  --> mass = density / volume
+ *
+ */
+float Cube::calcMass() {
+    float tempPressure    = calcPressure();
+    float tempTemperature = getTemperature();
+    float tempDensity = tempPressure / (INDIVIDUAL_GAS_CONST * tempTemperature);
+    float tempMass = tempDensity * getVolume();
+    setMass(tempMass);
+    return tempMass;
+};
+
+/**
+@brief calculates a new temperature for this cube and for all moleculeGroups within this cube.
+       the new temperature is the average temperature of the temperatures of all moleculeGroups within this cube.
+       this simple calculation can be used, because every moleculegroup represents the same number of molecules and
+       though has the same mass and volume within this cube
+*/
+float Cube::calcTemperature() {
+    float sum = 0;
+    for(auto iterateMoleculeGroups = moleculeGroups.begin(); iterateMoleculeGroups != moleculeGroups.end(); iterateMoleculeGroups++) {
+        MoleculeGroup tempMoleculeGroup = *iterateMoleculeGroups;
+        sum += tempMoleculeGroup.getTemperature();
+    }
+    float tempMoleculeGroupsPerCube = getMoleculeGroupsPerCube();
+    float averageTemperature = sum / tempMoleculeGroupsPerCube;
+    setTemperature(averageTemperature); // this automatically sets the temperature of all moleculeGroups in this cube
+    return averageTemperature;
+}
+
+float Cube::calcMoleculeGroupsPerCube() {
+    float tempMoleculeGroupsPerCube = moleculeGroups.size();
+    setMoleculeGroupsPerCube(tempMoleculeGroupsPerCube);
+    return tempMoleculeGroupsPerCube;
+};
+
+float Cube::calcMoleculesCount() {
+    float tempMoleculeGroupsPerCube = getMoleculeGroupsPerCube();
+    float tempMoleculesPerMoleculeGroup = getMoleculesPerMoleculeGroup();
+    float tempMoleculesCount = tempMoleculeGroupsPerCube * tempMoleculesPerMoleculeGroup;
+    setMoleculesCount(tempMoleculesCount);
+    return tempMoleculesCount;
 };

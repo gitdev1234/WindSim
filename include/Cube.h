@@ -35,6 +35,7 @@ using namespace std;
  *  - geoCoords             : location referenced to a global map (in decimal degree)
  *  - coordsInArea          : location within the vector of cubes (of the area class)
  *  - maxCoordsInArea       : size of vector of cubes (of the area class)
+ *  - moleculesPerMoleculeGroup : number of molecules which are represented by one moleculeGroup
  *
  * see the following image for to understand the meaning of height, length, width, x-,y- and z-axis
  *
@@ -92,13 +93,6 @@ class Cube
         // temperature
         void modifyTemperature(string s_);
 
-        // pressure
-        float calcPressure();
-
-        // mass
-        float calcMass() ;
-
-
         /* --- simulation --- */
         // simulation
         void initSimulation(int moleculeGroupsPerCube_);
@@ -111,20 +105,36 @@ class Cube
         void addForce(vector3 force_);
         vector3 getForce();
 
+        // calculations of attributes
+        void recalculateAttributes(changeType changeType_);
+        float calcMoleculeGroupsPerCube();
+        float calcMoleculesCount();
+        float calcPressure();
+        float calcMass();
+        float calcTemperature();
+
 
         /* --- getters and setters --- */
         // setters
-        void setMoleculesCount(float val_)          {moleculesCount = val_;            };
-        void setmoleculeGroupsPerCube(float val_)   {moleculeGroupsPerCube = val_;     };
-        void setTemperature(float val_)             {temperature = val_;               };
-        void setPressure(float val_)                {pressure = val_;                  };
-        void setCoordsInArea(coords val_)           {coordsInArea = val_;              };
-        void setMaxCoordsInArea(coords val_)        {maxCoordsInArea = val_;           };
-        void setHeight(float val_)                  {height = val_;                    };
-        void setLength(float val_)                  {length = val_;                    };
-        void setWidth (float val_)                  {width  = val_;                    };
-        void setVolume(float val_)                  {volume = val_;                    };
-        void setVolume()                            {
+        void setMoleculesCount(float val_)            {moleculesCount = val_;            };
+        void setMoleculeGroupsPerCube(float val_)     {moleculeGroupsPerCube = val_;     };
+        void setMoleculesPerMoleculeGroup(float val_) {moleculesPerMoleculeGroup = val_; };
+        void setTemperature(float val_)               {
+            temperature = val_;
+            for(auto iterateMoleculeGroups = moleculeGroups.begin(); iterateMoleculeGroups != moleculeGroups.end(); iterateMoleculeGroups++) {
+                MoleculeGroup tempMoleculeGroup = *iterateMoleculeGroups;
+                tempMoleculeGroup.setTemperature(val_);
+            }
+        };
+        void setPressure(float val_)                  {pressure = val_;                  };
+        void setMass(float val_)                      {mass = val_;                      };
+        void setCoordsInArea(coords val_)             {coordsInArea = val_;              };
+        void setMaxCoordsInArea(coords val_)          {maxCoordsInArea = val_;           };
+        void setHeight(float val_)                    {height = val_;                    };
+        void setLength(float val_)                    {length = val_;                    };
+        void setWidth (float val_)                    {width  = val_;                    };
+        void setVolume(float val_)                    {volume = val_;                    };
+        void setVolume()                              {
             float tempHeight = getHeight();
             float tempLength = getLength();
             float tempWidth  = getWidth();
@@ -135,12 +145,13 @@ class Cube
         };
 
         // getters
-        float getMoleculesCount()          {return moleculesCount;          };
-        float getMoleculeGroupsPerCube()   {return moleculeGroupsPerCube;   };
-        float getTemperature()             {return temperature;             };
-        GeoCoords getGeoCoords()           {return geoCoords;               };
-        coords getCoordsInArea()           {return coordsInArea;            };
-        coords getMaxCoordsInArea()        {return maxCoordsInArea;         };
+        float getMoleculesCount()            {return moleculesCount;            };
+        float getMoleculeGroupsPerCube()     {return moleculeGroupsPerCube;     };
+        float getMoleculesPerMoleculeGroup() {return moleculesPerMoleculeGroup; };
+        float getTemperature()               {return temperature;               };
+        GeoCoords getGeoCoords()             {return geoCoords;                 };
+        coords getCoordsInArea()             {return coordsInArea;              };
+        coords getMaxCoordsInArea()          {return maxCoordsInArea;           };
         float getHeight() {return height;};
         float getLength() {return length;};
         float getWidth () {return width ;};
@@ -156,6 +167,7 @@ class Cube
         float length;  // in m
         float width;   // in m
         float volume;  // in m^3
+        float moleculesPerMoleculeGroup;
         GeoCoords geoCoords;
         coords coordsInArea;
         coords maxCoordsInArea;
@@ -165,7 +177,6 @@ class Cube
         float moleculeGroupsPerCube;
         float temperature;     // in K
         float pressure;        // in hPa
-
         float mass;    // in kg
         vector3 force; // in N
         list<MoleculeGroup> moleculeGroups;

@@ -187,8 +187,8 @@ void Area::PrintCubes(string properties) {
     float Temperature_Min    = GetMinMaxValue("T",false);
     float Pressure_Max       = GetMinMaxValue("P",true);
     float Pressure_Min       = GetMinMaxValue("P",false);
-    float MoleculeGroupsCount_Min = GetMinMaxValue("G",true);
     float MoleculeGroupsCount_Max = GetMinMaxValue("G",true);
+    float MoleculeGroupsCount_Min = GetMinMaxValue("G",false);
 
     // calculate width of table coloumns
     int size;
@@ -950,6 +950,11 @@ void Area::simulateMoleculesFlow(float timeStepInSeconds_) {
         }
     }
     simulateMoleculeGroupsHandover();
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+            Cubes[x][y].recalculateAttributes(changeType::MOLECULE_FLOW);
+        }
+    }
 }
 
 void Area::simulateMoleculeGroupsHandover() {
@@ -963,6 +968,7 @@ void Area::simulateMoleculeGroupsHandover() {
             }
         }
     }
+
 }
 
 // calculating forces
@@ -986,6 +992,7 @@ void Area::calculateForces(coords c) {
 };
 
 vector3 Area::calculateGradientForce(coords c) {
+    float mass ;
     // TODO
     vector3 tempForces;
     tempForces.x = 0.00010;

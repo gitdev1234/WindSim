@@ -41,5 +41,10 @@ struct vector3 {
     float x, y, z;
 };
 
+enum changeType {
+    MOLECULE_FLOW   = 0,
+    TEMPERATUR_FLOW = 1
+};
+
 
 #endif // TYPES_H_INCLUDED
