@@ -991,14 +991,80 @@ void Area::calculateForces(coords c) {
     Cubes[c.x][c.y].addForce(calculateInnerFrictionForce(c));
 };
 
+
 vector3 Area::calculateGradientForce(coords c) {
-    float mass ;
-    // TODO
     vector3 tempForces;
+    coords leftUpperCorner  = {.x = c.x - 1, .y = c.y - 1};
+    coords up               = {.x = c.x    , .y = c.y - 1};
+    coords rightUpperCorner = {.x = c.x + 1, .y = c.y - 1};
+    coords right            = {.x = c.x + 1, .y = c.y    };
+    coords rightLowerCorner = {.x = c.x + 1, .y = c.y + 1};
+    coords down             = {.x = c.x    , .y = c.y + 1};
+    coords leftLowerCorner  = {.x = c.x - 1, .y = c.y + 1};
+    coords left             = {.x = c.x - 1, .y = c.y    };
+    tempForces = sumVector3(tempForces,calculateGradientForce(c, leftUpperCorner));
+    tempForces = sumVector3(tempForces,calculateGradientForce(c, up));
+    tempForces = sumVector3(tempForces,calculateGradientForce(c, rightUpperCorner));
+    tempForces = sumVector3(tempForces,calculateGradientForce(c, right));
+    tempForces = sumVector3(tempForces,calculateGradientForce(c, rightLowerCorner));
+    tempForces = sumVector3(tempForces,calculateGradientForce(c, down));
+    tempForces = sumVector3(tempForces,calculateGradientForce(c, leftLowerCorner));
+    tempForces = sumVector3(tempForces,calculateGradientForce(c, left));
+/*    tempForces += calculateGradientForce{c, leftUpperCorner};
+    tempForces += calculateGradientForce{c, up};
+    tempForces += calculateGradientForce{c, rightUpperCorner};
+    tempForces += calculateGradientForce{c, right};
+    tempForces += calculateGradientForce{c, rightLowerCorner};
+    tempForces += calculateGradientForce{c, down};
+    tempForces += calculateGradientForce{c, leftLowerCorner};
+    tempForces += calculateGradientForce{c, left};
+*/
+
+    // TODO
+    /*
     tempForces.x = 0.00010;
     tempForces.y = 0.00040;
-    tempForces.z = 0.0;
+    tempForces.z = 0.0;*/
     return tempForces;
+};
+
+/**
+ * @brief calculates the gradientforce beetween two cubes
+ * @param fromCube_ the cube for which you calculate the force
+ * @param toCube_ the cube the calculation is referencing to
+ */
+vector3 Area::calculateGradientForce(coords fromCube_, coords toCube_) {
+    vector3 tempGradientForce;
+    if (CheckCoordsStillInArea(fromCube_) && CheckCoordsStillInArea(toCube_)) {
+        float tempMass        = Cubes[fromCube_.x][fromCube_.y].calcMass();
+        float tempPressure    = Cubes[fromCube_.x][fromCube_.y].calcPressure();
+        float tempTemperature = Cubes[fromCube_.x][fromCube_.y].getTemperature();
+        float tempDensity     = tempPressure / (INDIVIDUAL_GAS_CONST * tempTemperature);
+        float pressureDifference = Cubes[fromCube_.x][fromCube_.y].calcPressure()-Cubes[toCube_.x][toCube_.y].calcPressure();
+        if (pressureDifference < 0 ) {
+            pressureDifference = pressureDifference * (-1);
+        }
+        vector3 positionOfFromCube;
+        positionOfFromCube.x = (fromCube_.x + 0.5) * (Cubes[fromCube_.x][fromCube_.y].getWidth());
+        positionOfFromCube.y = (fromCube_.y + 0.5) * (Cubes[fromCube_.x][fromCube_.y].getLength());
+        positionOfFromCube.z = (         0  + 0.5) * (Cubes[fromCube_.x][fromCube_.y].getHeight());
+        vector3 positionOfToCube;
+        positionOfToCube.x = (toCube_.x + 0.5) * (Cubes[toCube_.x][toCube_.y].getWidth());
+        positionOfToCube.y = (toCube_.y + 0.5) * (Cubes[toCube_.x][toCube_.y].getLength());
+        positionOfToCube.z = (       0  + 0.5) * (Cubes[toCube_.x][toCube_.y].getHeight());
+
+        float xDifference = positionOfFromCube.x - positionOfToCube.x;
+        float yDifference = positionOfFromCube.y - positionOfToCube.y;
+        float zDifference = positionOfFromCube.z - positionOfToCube.z;
+        tempGradientForce.x = (tempMass / tempDensity) * (pressureDifference / (xDifference));
+        tempGradientForce.y = (tempMass / tempDensity) * (pressureDifference / (yDifference));
+        tempGradientForce.z = (tempMass / tempDensity) * (pressureDifference / (zDifference));
+    } else {
+        tempGradientForce.x = 0;
+        tempGradientForce.y = 0;
+        tempGradientForce.z = 0;
+    }
+    return tempGradientForce;
 };
 
 vector3 Area::calculateCoriolisForce(coords c) {
@@ -1013,8 +1079,8 @@ vector3 Area::calculateCoriolisForce(coords c) {
 vector3 Area::calculateSurfaceFrictionForce(coords c) {
     // TODO
     vector3 tempForces;
-    tempForces.x = -0.00003;
-    tempForces.y = -0.00002;
+    tempForces.x = 0;//-0.00003;
+    tempForces.y = 0;//-0.00002;
     tempForces.z = 0.0;
     return tempForces;
 };
@@ -1069,6 +1135,14 @@ uint64 Area::GetTimeMs64() {
 #endif
 }
 
+vector3 Area::sumVector3(vector3 a, vector3 b) {
+    a.x += b.x;
+    a.y += b.y;
+    a.z += b.z;
+    return a;
+}
+
 float Area::getMoleculesPerCubeAfterStart() {
     return Cubes[0][0].getMoleculesCount();
 }
+

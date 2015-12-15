@@ -61,6 +61,7 @@ class Area
         void calculateForces();
         void calculateForces(coords c);
         vector3 calculateGradientForce(coords c);
+        vector3 calculateGradientForce(coords fromCube_, coords toCube_);
         vector3 calculateCoriolisForce(coords c);
         vector3 calculateSurfaceFrictionForce(coords c);
         vector3 calculateInnerFrictionForce(coords);
@@ -71,6 +72,7 @@ class Area
         string getANSIEndCode();
         float GetMinMaxValue(string properties, bool max_) ;
         uint64 GetTimeMs64();
+        vector3 sumVector3(vector3 a, vector3 b);
 
         // setters
         void SetCubesCountWidth(int val)  { CubesCountWidth = val; }
