@@ -1,4 +1,5 @@
-#Code Refactoring
-- add _ to paramternames
-- change order of functions in cpp-files to order in h-files
-- add h-files docu
+#Bugs 
+
+- mixed the axis x and y at configuration mode creating of area size
+
+

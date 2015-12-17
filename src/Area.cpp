@@ -930,7 +930,7 @@ void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
         timeDelta = 0;
         startTime = GetTimeMs64();
         // TODO output simulation results to console
-        PrintCubes("G");
+        PrintCubes("GP");
         cout << "ShowSimulation [][][][][]" << endl;
 
     }
@@ -989,11 +989,14 @@ void Area::calculateForces(coords c) {
     Cubes[c.x][c.y].addForce(calculateCoriolisForce(c));
     Cubes[c.x][c.y].addForce(calculateSurfaceFrictionForce(c));
     Cubes[c.x][c.y].addForce(calculateInnerFrictionForce(c));
+    //cout << "calculated Forces for [" << c.x << ":" << c.y << "]" << endl;
+    //vector3 tempForce = Cubes[c.x][c.y].getForce();
+    //cout << "--> (" << tempForce.x << "," << tempForce.y << "," << tempForce.z << ") <--" << endl;
 };
 
 
 vector3 Area::calculateGradientForce(coords c) {
-    vector3 tempForces;
+    vector3 tempForces      = {.x = 0, .y = 0, .z = 0};
     coords leftUpperCorner  = {.x = c.x - 1, .y = c.y - 1};
     coords up               = {.x = c.x    , .y = c.y - 1};
     coords rightUpperCorner = {.x = c.x + 1, .y = c.y - 1};
@@ -1053,12 +1056,24 @@ vector3 Area::calculateGradientForce(coords fromCube_, coords toCube_) {
         positionOfToCube.y = (toCube_.y + 0.5) * (Cubes[toCube_.x][toCube_.y].getLength());
         positionOfToCube.z = (       0  + 0.5) * (Cubes[toCube_.x][toCube_.y].getHeight());
 
-        float xDifference = positionOfFromCube.x - positionOfToCube.x;
-        float yDifference = positionOfFromCube.y - positionOfToCube.y;
-        float zDifference = positionOfFromCube.z - positionOfToCube.z;
-        tempGradientForce.x = (tempMass / tempDensity) * (pressureDifference / (xDifference));
-        tempGradientForce.y = (tempMass / tempDensity) * (pressureDifference / (yDifference));
-        tempGradientForce.z = (tempMass / tempDensity) * (pressureDifference / (zDifference));
+        float xDifference = positionOfToCube.x - positionOfFromCube.x;
+        float yDifference = positionOfToCube.y - positionOfFromCube.y;
+        float zDifference = positionOfToCube.z - positionOfFromCube.z;
+        if (xDifference != 0) {
+            tempGradientForce.x = - (tempMass / tempDensity) * (pressureDifference / (xDifference)) * (-1);
+        } else {
+            tempGradientForce.x = 0;
+        }
+        if (yDifference != 0) {
+            tempGradientForce.y = - (tempMass / tempDensity) * (pressureDifference / (yDifference)) * (-1);
+        } else {
+            tempGradientForce.y = 0;
+        }
+        if (zDifference != 0) {
+            tempGradientForce.z = - (tempMass / tempDensity) * (pressureDifference / (zDifference)) * (-1);
+        } else  {
+            tempGradientForce.z = 0;
+        }
     } else {
         tempGradientForce.x = 0;
         tempGradientForce.y = 0;

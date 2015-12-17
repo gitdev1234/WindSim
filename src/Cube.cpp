@@ -193,8 +193,12 @@ void Cube::simulateMoleculesFlow(float timeStepInSeconds_) {
 
     list<MoleculeGroup> tempMoleculeGroupsWhichAreLeavingTheCube;
     vector3 tempForce = getForce();
+    vector3 tempForcePerMoleculeGroup;
+    tempForcePerMoleculeGroup.x = tempForce.x / getMoleculeGroupsPerCube();
+    tempForcePerMoleculeGroup.y = tempForce.y / getMoleculeGroupsPerCube();
+    tempForcePerMoleculeGroup.z = tempForce.z / getMoleculeGroupsPerCube();
     for(auto iterateMoleculeGroups = moleculeGroups.begin(); iterateMoleculeGroups != moleculeGroups.end(); iterateMoleculeGroups++) {
-        iterateMoleculeGroups->setForce(tempForce);
+        iterateMoleculeGroups->setForce(tempForcePerMoleculeGroup);
         vector3 newPositionInCube = iterateMoleculeGroups->simulateTimeStep(timeStepInSeconds_);
 
         // check if newPositionInCube is out of Cube
