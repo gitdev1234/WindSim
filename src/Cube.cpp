@@ -61,33 +61,9 @@ void Cube::modifyTemperature(string s_){
 /**
  * Cube::initSimulation(int moleculeGroupsPerCube_)
  *
- * @brief creates and initializes moleculeGroups
- * @param moleculeGroupsPerCube has to be a square number e.g. 100, 1024, 10000
- * @todo later versions : z coordinate is not used
- *
- *
- * --> sets moleculeGroupsPerCube
- * --> creates and initializes moleculeGroups
- *      --> sets attributes
- *      --> for example : calculate position of every moleculeGroup within the cube
- *      --> executes moleculeGroup.initSimulation() for ever moleculeGroup
- *
- * the moleculeGroups are distributed linear in the cube
- * for example see the following pictures
- *
- *  +------------+  +-----------+
- +  |            |  | M   M   M |
- *  |   M    M   |  |           |
- *  |            |  | M   M   M |
- *  |   M    M   |  |           |
- *  |            |  | M   M   M |
- *  +------------+  +-----------+
- *
- * ATTENTION : NOTE THAT THE PARAMETER moleculeGroupsPerCube HAS TO BE A SQUARE NUMBER
- *
- *
+ * TODO v1.0
  */
-void Cube::initSimulation(int moleculeGroupsPerCube_) {
+void Cube::initSimulation() {
 
 }
 
@@ -114,20 +90,20 @@ vector3 Cube::getForce() {
  * Cube::recalculateAttributes(changeType changeType_)
  *
  * @brief recalculates the attributes during simulation
- * @param changeType_ says wether moleculeGroupsPerCube or temperature has changed
+ * @param changeType_ says wether air or temperature has exchanged
  *
- * if moleculeGroupsPerCube has changed the following attributes have to be recalculated
- *  - moleculesCount
+ * if air has exchanged the following attributes have to be recalculated
+ *  - moleculesCount (is already set during simulateAirExchange())
  *  - temperature
+ *  - density
  *  - pressure
  *  - mass
- *
  *
  */
 void Cube::recalculateAttributes(changeType changeType_) {
     if (changeType_ == changeType::MOLECULE_FLOW) {
-        calcMoleculesCount();
         calcTemperature();
+        calcDensity();
         calcMass();
         calcPressure();
     } else if (changeType_ == changeType::TEMPERATUR_FLOW) {
@@ -156,6 +132,25 @@ float Cube::calcPressure() {
     return tempPressure;
 };
 
+// density
+/**
+ * Cube::calcDensity()
+ *
+ * @brief calculates the current density of the air within the cube
+ * @return returns the current density of all the air within the cube
+ *
+ * calculates the current density of all the air within the cube by
+ *  --> density = pressure / (individual_gas_const * temperature)
+ *
+ */
+float Cube::calcDensity() {
+    float tempTemperature = getTemperature();
+    float tempPressure = calcPressure();
+    float tempDensity = tempPressure / (INDIVIDUAL_GAS_CONST * tempTemperature);
+    setDensity(tempDensity);
+    return tempDensity;
+};
+
 // mass
 /**
  * Cube::calcMass()
@@ -168,9 +163,7 @@ float Cube::calcPressure() {
  *
  */
 float Cube::calcMass() {
-    float tempPressure    = calcPressure();
-    float tempTemperature = getTemperature();
-    float tempDensity = tempPressure / (INDIVIDUAL_GAS_CONST * tempTemperature);
+    float tempDensity = calcDensity();
     float tempMass = tempDensity * getVolume();
     setMass(tempMass);
     return tempMass;
@@ -183,16 +176,13 @@ float Cube::calcMass() {
        though has the same mass and volume within this cube
 */
 float Cube::calcTemperature() {
-    // TODO
+    // TODO v1.0
     float averageTemperature = 0;
     return averageTemperature;
 }
 
 
 float Cube::calcMoleculesCount() {
-    float tempMoleculeGroupsPerCube = getMoleculeGroupsPerCube();
-    float tempMoleculesPerMoleculeGroup = getMoleculesPerMoleculeGroup();
-    float tempMoleculesCount = tempMoleculeGroupsPerCube * tempMoleculesPerMoleculeGroup;
-    setMoleculesCount(tempMoleculesCount);
-    return tempMoleculesCount;
+    //todo v1.0
+    return 0;
 };

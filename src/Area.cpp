@@ -108,8 +108,7 @@ float Area::GetMinMaxValue(string properties, bool max_) {
             switch (toupper(properties[0])) {
                 case 'M' : temp = Cubes[x][y].getMoleculesCount();        break;
                 case 'T' : temp = Cubes[x][y].getTemperature();           break;
-                case 'P' : temp = Cubes[x][y].calcPressure();              break;
-                case 'G' : temp = Cubes[x][y].getMoleculeGroupsPerCube(); break;
+                case 'P' : temp = Cubes[x][y].calcPressure();             break;
             };
             if (max_) {
                 if (temp > minmaxValue) {
@@ -228,16 +227,6 @@ void Area::PrintCubes(string properties) {
                     }
                     outStream    << "P:" << Cubes[x][y].calcPressure();
                     lengthStream << "P:" << Cubes[x][y].calcPressure();
-                    if (PRINT_PRETTY) {
-                        outStream << getANSIEndCode();
-                    }
-                }
-                if (printMoleculeGroups) {
-                    if (PRINT_PRETTY) {
-                        outStream << getANSIRGBScaleColor(MoleculeGroupsCount_Max,MoleculeGroupsCount_Min,Cubes[x][y].getMoleculeGroupsPerCube());
-                    }
-                    outStream    << "G:" << Cubes[x][y].getMoleculeGroupsPerCube();
-                    lengthStream << "G:" << Cubes[x][y].getMoleculeGroupsPerCube();
                     if (PRINT_PRETTY) {
                         outStream << getANSIEndCode();
                     }
@@ -901,7 +890,7 @@ void Area::initSimulation(int moleculeGroupsPerCube_) {
 
     for (int x = 0; x < Cubes.size(); x++) {
         for (int y = 0; y < Cubes[x].size(); y++) {
-            Cubes[x][y].initSimulation(moleculeGroupsPerCube_);
+            Cubes[x][y].initSimulation();
         }
     }
 };
