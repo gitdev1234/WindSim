@@ -61,11 +61,30 @@ void Cube::modifyTemperature(string s_){
 /**
  * Cube::initSimulation(int moleculeGroupsPerCube_)
  *
- * TODO v1.0
+ * @brief sets speed to 0;
  */
 void Cube::initSimulation() {
-
+    vector3 tempSpeed;
+    tempSpeed.x = 0;
+    tempSpeed.y = 0;
+    tempSpeed.z = 0;
+    setSpeed(tempSpeed);
 }
+
+void Cube::calcLeavingAirDeltas() {
+ // TODO v1.0
+}
+
+// calculation of attributes
+/**
+ * Cube::recalculateAttributes()
+ *
+ * @brief recalculates the attributes during simulation
+ *
+ */
+void Cube::recalculateAttributes() {
+    // TODO v1.0
+};
 
 // calculation of forces
 
@@ -85,31 +104,47 @@ vector3 Cube::getForce() {
     return force;
 };
 
-// calculation of attributes
-/**
- * Cube::recalculateAttributes(changeType changeType_)
- *
- * @brief recalculates the attributes during simulation
- * @param changeType_ says wether air or temperature has exchanged
- *
- * if air has exchanged the following attributes have to be recalculated
- *  - moleculesCount (is already set during simulateAirExchange())
- *  - temperature
- *  - density
- *  - pressure
- *  - mass
- *
- */
-void Cube::recalculateAttributes(changeType changeType_) {
-    if (changeType_ == changeType::MOLECULE_FLOW) {
-        calcTemperature();
-        calcDensity();
-        calcMass();
-        calcPressure();
-    } else if (changeType_ == changeType::TEMPERATUR_FLOW) {
-        //TODO
-    }
+// calculation of acceleration and speed (depending on current forces)
 
+/**
+ * Cube::calcAcceleration()
+ *
+ * @brief calculates the current acceleration of the air within the cube
+ *
+ * calculates the current acceleration of the air within the cube:
+ *  --> acceleration = force / mass
+ */
+void Cube::calcAcceleration() {
+    vector3 tempForce = getForce();
+    float tempMass = getMass();
+    vector3 tempAcceleration;
+    tempAcceleration.x = tempForce.x / tempMass;
+    tempAcceleration.y = tempForce.y / tempMass;
+    tempAcceleration.z = tempForce.z / tempMass;
+    setAcceleration(tempAcceleration);
+};
+
+/**
+ * Cube::calcSpeed()
+ *
+ * @brief calculates the current speed of the air within the cube
+ *
+ * calculates the current speed of the air within the cube:
+ *  --> newSpeed = speed_before_timeStep + (acceleration * time)
+ *
+ * !!! ATTENTION !!!
+ * always call init-simulation at the beginning of every simulation
+ * --> this sets the speed back to 0
+ * always call calcAcceleration before calcSpeed
+ * --> this ensures, that calcSpeed uses the right acceleration-value
+ */
+void Cube::calcSpeed(float timeStepInSeconds_){
+    vector3 tempSpeed = getSpeed();
+    vector3 tempAcceleration = getAcceleration();
+    tempSpeed.x += (tempAcceleration.x * timeStepInSeconds_);
+    tempSpeed.y += (tempAcceleration.y * timeStepInSeconds_);
+    tempSpeed.z += (tempAcceleration.z * timeStepInSeconds_);
+    setSpeed(tempSpeed);
 };
 
 // pressure

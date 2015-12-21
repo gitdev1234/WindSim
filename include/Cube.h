@@ -87,15 +87,20 @@ class Cube
         // simulation
         void initSimulation();
         void simulateAirExchange(float timeStepInSeconds_);
+        void calcLeavingAirDeltas();
         void simulateTemperatureExchange(float timeStepInSeconds_);
+        void recalculateAttributes();
 
         // calculation of forces
         void clearForce();
         void addForce(vector3 force_);
         vector3 getForce();
 
+        // calculation of acceleration and speed (depending on current forces)
+        void calcAcceleration();
+        void calcSpeed(float timeStepInSeconds_);
+
         // calculations of attributes
-        void recalculateAttributes(changeType changeType_);
         float calcMoleculesCount();
         float calcPressure();
         float calcDensity();
@@ -122,6 +127,8 @@ class Cube
             volume = tempHeight * tempLength * tempWidth;
         };
         void setDensity(float val_)                   {density = val_;                   };
+        void setAcceleration(vector3 val_)            {acceleration = val_;              };
+        void setSpeed(vector3 val_)                   {speed = val_;                     };
 
         // getters
         float getMoleculesCount()            {return moleculesCount;            };
@@ -134,7 +141,9 @@ class Cube
         float getWidth ()  {return width ; };
         float getVolume()  {return volume; };
         float getDensity() {return density;};
-
+        float getMass()    {return mass;   };
+        vector3 getSpeed() {return speed;  };
+        vector3 getAcceleration() {return acceleration; };
 
     protected:
 
@@ -152,9 +161,11 @@ class Cube
         float moleculesCount;
         float temperature;     // in K
         float pressure;        // in hPa
-        float mass;    // in kg
-        float density; // in kg/m^3
-        vector3 force; // in N
+        float mass;            // in kg
+        float density;         // in kg/m^3
+        vector3 force;         // in N
+        vector3 acceleration;  // in m/s^2
+        vector3 speed;         // in m/s
 
 };
 

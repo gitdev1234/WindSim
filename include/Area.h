@@ -50,22 +50,19 @@ class Area
 
         /* --- simulation --- */
         // simulation
-        void initSimulation(int moleculeGroupsPerCube_);
+        void initSimulation();
         void simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_);
         void simulateTimeStep(float timeStepInSeconds_);
-
-        void simulateMoleculesFlow(float timeStepInSeconds_);
-        void simulateMoleculeGroupsHandover();
+        void simulateAirExchange(float timeStepInSeconds_);
+        void simulateTemperatureExchange(float timeStepInSeconds_);
+        void recalculateAttributes();
 
         // calculating forces
-        void calculateForces();
         void calculateForces(coords c);
         vector3 calculateGradientForce(coords c);
         vector3 calculateGradientForce(coords fromCube_, coords toCube_);
         vector3 calculateCoriolisForce(coords c);
-        vector3 calculateSurfaceFrictionForce(coords c);
-        vector3 calculateInnerFrictionForce(coords);
-
+        vector3 calculateFrictionForce(coords c);
 
         // miscellaneous
         string getANSIRGBScaleColor(float min_, float max_, float value_);
@@ -80,8 +77,6 @@ class Area
         void Setheight(float val)         { height = val; }
         void Setlength(float val)         { length = val; }
         void Setwidth(float val)          { width = val; }
-        void setMoleculeGroupsPerCube(float val_) {moleculeGroupsPerCube = val_;};
-        void setMassPerMoleculeGroup(float val_) {massPerMoleculeGroup = val_;};
 
         // getters
         int GetCubesCountWidth()  { return CubesCountWidth; }
@@ -89,13 +84,6 @@ class Area
         float Getheight()         { return height; }
         float Getlength()         { return length; }
         float Getwidth()          { return width; }
-        float getMoleculeGroupsPerCube() {return moleculeGroupsPerCube;};
-        float GetMassPerMoleculeGroup() {return massPerMoleculeGroup;};
-
-
-        // use this only directly after loading the area!
-        float getMoleculesPerCubeAfterStart();
-
 
     protected:
 
@@ -105,11 +93,9 @@ class Area
         float height;
         float length;
         float width;
-        float moleculeGroupsPerCube;
-        float massPerMoleculeGroup;
         GeoCoords geoCoordsUpperLeftCube;
         std::vector<std::vector<Cube> > Cubes; // 2-dimensional array of Cube objects
-        std::stack<coords> temperatureModifications;
+
 };
 
 #endif // AREA_H

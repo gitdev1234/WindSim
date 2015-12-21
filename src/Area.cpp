@@ -423,12 +423,12 @@ void Area::AffectSurroundingCubes(int x, int y){
 
 /**
 
-  0________> x-axis
+  0--------> x-axis
  0|
   |
   |
   |
-  v  y-axis
+  v y-axis
 
 
   first step:
@@ -883,11 +883,12 @@ Cube Area::MixTemperaturesC(Cube Cube1, Cube Cube2) {
 
 /* --- simulation --- */
 // simulation
-void Area::initSimulation(int moleculeGroupsPerCube_) {
-    float tempMassPerCube = Cubes[0][0].calcMass();
-    float tempMassPerMoleculeGroup = tempMassPerCube / moleculeGroupsPerCube_;
-    setMassPerMoleculeGroup(tempMassPerMoleculeGroup);
-
+/**
+ * Area::initSimulation()
+ *
+ * @brief sets speed of all cubes to 0;
+ */
+void Area::initSimulation() {
     for (int x = 0; x < Cubes.size(); x++) {
         for (int y = 0; y < Cubes[x].size(); y++) {
             Cubes[x][y].initSimulation();
@@ -928,35 +929,43 @@ void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
 void Area::simulateTimeStep(float timeStepInSeconds_) {
     //TODO
     cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
-    simulateMoleculesFlow(timeStepInSeconds_);
+    simulateAirExchange(timeStepInSeconds_);
+    simulateTemperatureExchange(timeStepInSeconds_);
 };
 
-void Area::simulateMoleculesFlow(float timeStepInSeconds_) {
-    calculateForces(); // calculates all forces for every cube
-    // TODO
-}
-
-// calculating forces
-void Area::calculateForces() {
+void Area::simulateAirExchange(float timeStepInSeconds_) {
     coords c;
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
             c.x = x;
             c.y = y;
             calculateForces(c);
+            Cubes[c.x][c.y].calcAcceleration();
+            Cubes[c.x][c.y].calcSpeed(timeStepInSeconds_);
+            Cubes[c.x][c.y].calcLeavingAirDeltas();
         }
     }
 };
+
+void Area::simulateTemperatureExchange(float timeStepInSeconds_) {
+
+};
+
+void Area::recalculateAttributes() {
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+            Cubes[x][y].recalculateAttributes();
+        }
+    }
+};
+
+// calculating forces
 
 void Area::calculateForces(coords c) {
     Cubes[c.x][c.y].clearForce();
     Cubes[c.x][c.y].addForce(calculateGradientForce(c));
     Cubes[c.x][c.y].addForce(calculateCoriolisForce(c));
-    Cubes[c.x][c.y].addForce(calculateSurfaceFrictionForce(c));
-    Cubes[c.x][c.y].addForce(calculateInnerFrictionForce(c));
-    //cout << "calculated Forces for [" << c.x << ":" << c.y << "]" << endl;
-    //vector3 tempForce = Cubes[c.x][c.y].getForce();
-    //cout << "--> (" << tempForce.x << "," << tempForce.y << "," << tempForce.z << ") <--" << endl;
+    Cubes[c.x][c.y].addForce(calculateFrictionForce(c));
 };
 
 
@@ -1005,9 +1014,7 @@ vector3 Area::calculateGradientForce(coords fromCube_, coords toCube_) {
     vector3 tempGradientForce;
     if (CheckCoordsStillInArea(fromCube_) && CheckCoordsStillInArea(toCube_)) {
         float tempMass        = Cubes[fromCube_.x][fromCube_.y].calcMass();
-        float tempPressure    = Cubes[fromCube_.x][fromCube_.y].calcPressure();
-        float tempTemperature = Cubes[fromCube_.x][fromCube_.y].getTemperature();
-        float tempDensity     = tempPressure / (INDIVIDUAL_GAS_CONST * tempTemperature);
+        float tempDensity     = Cubes[fromCube_.x][fromCube_.y].calcDensity();
         float pressureDifference = Cubes[fromCube_.x][fromCube_.y].calcPressure()-Cubes[toCube_.x][toCube_.y].calcPressure();
         if (pressureDifference < 0 ) {
             pressureDifference = pressureDifference * (-1);
@@ -1056,20 +1063,11 @@ vector3 Area::calculateCoriolisForce(coords c) {
     return tempForces;
 };
 
-vector3 Area::calculateSurfaceFrictionForce(coords c) {
+vector3 Area::calculateFrictionForce(coords c) {
     // TODO
     vector3 tempForces;
     tempForces.x = 0;//-0.00003;
     tempForces.y = 0;//-0.00002;
-    tempForces.z = 0.0;
-    return tempForces;
-};
-
-vector3 Area::calculateInnerFrictionForce(coords) {
-    // TODO
-    vector3 tempForces;
-    tempForces.x = 0.0;
-    tempForces.y = 0.0;
     tempForces.z = 0.0;
     return tempForces;
 };
@@ -1122,7 +1120,4 @@ vector3 Area::sumVector3(vector3 a, vector3 b) {
     return a;
 }
 
-float Area::getMoleculesPerCubeAfterStart() {
-    return Cubes[0][0].getMoleculesCount();
-}
 

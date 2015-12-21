@@ -167,42 +167,21 @@ int main() {
             } else if (toupper(s[0]) == 'S') {
                 int moleculeGroupsPerCube;
                 float moleculesPerMoleculeGroup, timeStepInSeconds, simulationSpeedInSeconds;
-                cout << "At current speed of most of the computers, this program can not simulate ";
-                cout << "every molecule in our Model-Area." << endl;
-                cout << "Thus we have to abstract our simulation a bit." << endl;
-                cout << "Please enter how many molecule-groups shall be simulated in one cube." << endl;
-                cout << "For example, if you enter 1000, then every cube contains 1000 molecule-groups." << endl;
-                cout << "Every molecule-group represents a number of molecules and all moleules within a ";
-                cout << "molecule-group behave equal." << endl;
-                cout << "Notice that the number of molecule-groups has to be a square number. ";
-                cout << "Other values can not be simulated. If you enter another value it is ";
-                cout << "automatically transformed to a square number." << endl;
-                cout << "So please enter an number of molecules per cube." << endl;
-                cin  >> moleculeGroupsPerCube;
-                float quadraticMoleculeGroupsPerCube = round(sqrt(moleculeGroupsPerCube)) * round(sqrt(moleculeGroupsPerCube));
-                if (quadraticMoleculeGroupsPerCube != moleculeGroupsPerCube) {
-                    cout << "Your value was automatically transformed to the quadratic value " << quadraticMoleculeGroupsPerCube << endl;
-                }
-                moleculesPerMoleculeGroup = MA.getMoleculesPerCubeAfterStart() / quadraticMoleculeGroupsPerCube;
-                cout << "Okay you entered : " << quadraticMoleculeGroupsPerCube << ". This means that every molecule group within a cube ";
-                cout << "represents " << moleculesPerMoleculeGroup << " molecules." << endl;
                 cout << "For simulation we still need two parameters:" << endl;
                 cout << "1. The length of one timestep in seconds. This tells how detailed the simulation is calculated." << endl;
-                cout << "2. The length of how long every timestep shall be displayed. This tells how slow or fast the simulation ";
+                cout << "2. The length of how long every timestep shall be displayed. This tells how slow or fast the simulation " << endl;;
                 cout << "is shown on display." << endl;
-                cout << "For example if you enter first a 0.25 and second a 1 the programm calculates all moving of molecules and ";
-                cout << "changing of air pressure and so on for always a timestep of 0.25seconds (250 ms), but it displays every ";
-                cout << "timestep for 1 second on the screen. This means you are seeing the simulation not in real-time, but four ";
-                cout << "times slower." << endl;
-                cout << "If you would enter first a 0.5 and second a 0.5, then you have a real-time simulation in which the ";
-                cout << "programm simulates always timesteps of 0.5 seconds (500 ms) and shows every timestep for 0.5 seconds on ";
-                cout << "the screen." << endl;
+                cout << "For example if you enter first a 0.25 and second a 1 the programm calculates all exchange of air and " << endl;
+                cout << "changing of air pressure and so on for always a timestep of 0.25seconds (250 ms), but it displays every " << endl;
+                cout << "timestep for 1 second on the screen. This means you are seeing the simulation not in real-time, but four times slower." << endl;
+                cout << "If you enter first a 0.5 and second a 0.5, then you have a real-time simulation in which the " << endl;
+                cout << "programm simulates always timesteps of 0.5 seconds (500 ms) and shows every timestep for 0.5 seconds on the screen." << endl;
                 cout << "So now please enter first value." << endl;
                 cin  >> timeStepInSeconds;
                 cout << "And now please enter second value." << endl;
                 cin  >> simulationSpeedInSeconds;
                 cout << "Simulation starts now, if you want to stop simulation press [X]" << endl;
-                MA.initSimulation(quadraticMoleculeGroupsPerCube);
+                MA.initSimulation();
                 MA.simulate(timeStepInSeconds,simulationSpeedInSeconds);
                 do {
                     ProgramMode = STAY_IN_LOOP;
