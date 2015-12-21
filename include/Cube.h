@@ -15,7 +15,6 @@
 #include <list>
 #include <math.h>
 #include "Types.h"
-#include "MoleculeGroup.h"
 
 
 using namespace std;
@@ -97,8 +96,6 @@ class Cube
         // simulation
         void initSimulation(int moleculeGroupsPerCube_);
         void simulateTimeStep(float timeStepInSeconds_);
-        void simulateMoleculesFlow(float timeStepInSeconds_);
-        void addMoleculeGroup(MoleculeGroup moleculeGroup_);
 
         // calculation of forces
         void clearForce();
@@ -119,13 +116,7 @@ class Cube
         void setMoleculesCount(float val_)            {moleculesCount = val_;            };
         void setMoleculeGroupsPerCube(float val_)     {moleculeGroupsPerCube = val_;     };
         void setMoleculesPerMoleculeGroup(float val_) {moleculesPerMoleculeGroup = val_; };
-        void setTemperature(float val_)               {
-            temperature = val_;
-            for(auto iterateMoleculeGroups = moleculeGroups.begin(); iterateMoleculeGroups != moleculeGroups.end(); iterateMoleculeGroups++) {
-                MoleculeGroup tempMoleculeGroup = *iterateMoleculeGroups;
-                tempMoleculeGroup.setTemperature(val_);
-            }
-        };
+        void setTemperature(float val_)               {temperature = val_;               };
         void setPressure(float val_)                  {pressure = val_;                  };
         void setMass(float val_)                      {mass = val_;                      };
         void setCoordsInArea(coords val_)             {coordsInArea = val_;              };
@@ -140,9 +131,6 @@ class Cube
             float tempWidth  = getWidth();
             volume = tempHeight * tempLength * tempWidth;
         };
-        void setMoleculeGroupsWhichAreLeavingTheCube(list<MoleculeGroup> val_) {
-            moleculeGroupsWhichAreLeavingTheCube = val_;
-        };
 
         // getters
         float getMoleculesCount()            {return moleculesCount;            };
@@ -156,7 +144,6 @@ class Cube
         float getLength() {return length;};
         float getWidth () {return width ;};
         float getVolume() {return volume;};
-        list<MoleculeGroup> getMoleculeGroupsWhichAreLeavingTheCube() {return moleculeGroupsWhichAreLeavingTheCube;};
 
 
     protected:
@@ -179,8 +166,6 @@ class Cube
         float pressure;        // in hPa
         float mass;    // in kg
         vector3 force; // in N
-        list<MoleculeGroup> moleculeGroups;
-        list<MoleculeGroup> moleculeGroupsWhichAreLeavingTheCube;
 
 };
 
