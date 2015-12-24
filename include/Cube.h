@@ -82,12 +82,15 @@ class Cube
         /* --- miscellaneous --- */
         // temperature
         void modifyTemperature(string s_);
+        // coords
+        bool checkCoordsStillInArea(coords c_);
 
         /* --- simulation --- */
         // simulation
         void initSimulation();
         void simulateAirExchange(float timeStepInSeconds_);
-        void calcLeavingAirDeltas();
+        list<airDelta> calcLeavingAirDeltas(float timeStepInSeconds_);
+        float calcAirDeltaMoleculesCount(float phi_, float timeStepInSeconds_);
         void simulateTemperatureExchange(float timeStepInSeconds_);
         void recalculateAttributes();
 
@@ -129,6 +132,9 @@ class Cube
         void setDensity(float val_)                   {density = val_;                   };
         void setAcceleration(vector3 val_)            {acceleration = val_;              };
         void setSpeed(vector3 val_)                   {speed = val_;                     };
+        void setInAirDeltas(list<airDelta> val_)      {inAirDeltas = val_;               };
+        void addInAirDelta(airDelta val_)             {inAirDeltas.push_front(val_);     };
+        void setOutAirDeltas(list<airDelta> val_)     {outAirDeltas = val_;              };
 
         // getters
         float getMoleculesCount()            {return moleculesCount;            };
@@ -143,7 +149,9 @@ class Cube
         float getDensity() {return density;};
         float getMass()    {return mass;   };
         vector3 getSpeed() {return speed;  };
-        vector3 getAcceleration() {return acceleration; };
+        vector3 getAcceleration()        {return acceleration; };
+        list<airDelta> getInAirDeltas()  {return inAirDeltas;  };
+        list<airDelta> getOutAirDeltas() {return outAirDeltas; };
 
     protected:
 
@@ -166,6 +174,9 @@ class Cube
         vector3 force;         // in N
         vector3 acceleration;  // in m/s^2
         vector3 speed;         // in m/s
+
+        list<airDelta> inAirDeltas;
+        list<airDelta> outAirDeltas;
 
 };
 

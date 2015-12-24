@@ -25,7 +25,7 @@ typedef long long int64; typedef unsigned long long uint64;
 // const:
 const bool SHOW_IN_DETAIL = false;
 const bool PRINT_PRETTY  = true;
-const float MODIFY_TEMPERATURE_DELTA = 25.0;
+const float MODIFY_TEMPERATURE_DELTA = 0.001;
 const float BOLTZMANN_CONST = 1.38 * pow(10,-23);
 const float INDIVIDUAL_GAS_CONST = 287.05; // [J / (Kg * K)]
 
@@ -41,9 +41,10 @@ struct vector3 {
     float x, y, z;
 };
 
-enum changeType {
-    MOLECULE_FLOW   = 0,
-    TEMPERATUR_FLOW = 1
+struct airDelta {
+    coords newCoords;
+    float moleculesCount;
+    float temperature;
 };
 
 

@@ -75,8 +75,8 @@ void Area::LoadBalancedAreaStructure() {
             tempCoords.y = y;
             Cubes[x][y].setCoordsInArea(tempCoords);
             coords maxCoords;
-            maxCoords.x = Cubes.size();
-            maxCoords.y = Cubes[x].size();
+            maxCoords.x = Cubes.size()-1;
+            maxCoords.y = Cubes[x].size()-1;
             Cubes[x][y].setMaxCoordsInArea(maxCoords);
             Cubes[x][y].setHeight(height_cube);
             Cubes[x][y].setLength(length_cube);
@@ -920,7 +920,7 @@ void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
         timeDelta = 0;
         startTime = GetTimeMs64();
         // TODO output simulation results to console
-        PrintCubes("GP");
+        PrintCubes("M");
         cout << "ShowSimulation [][][][][]" << endl;
 
     }
@@ -933,6 +933,24 @@ void Area::simulateTimeStep(float timeStepInSeconds_) {
     simulateTemperatureExchange(timeStepInSeconds_);
 };
 
+/**
+ * Area::simulateAirExchange(float timeStepInSeconds_)
+ *
+ * @brief
+ *
+ * iterate all Cubes
+ *   | Cube.calcForces()
+ *   | Cube.calcAcceleration()
+ *   | Cube.calcSpeed()
+ *   | list of airDeltas = calcOutAirDeltas()
+ *   | iterate all airDeltas // always 1 or two per cube
+ *   |   | NewCube.addInAirDelta(airDelta)
+ *
+ * iterate all Cubes
+ *   | Cube.recalculateAttributes()
+ *
+ *
+ */
 void Area::simulateAirExchange(float timeStepInSeconds_) {
     coords c;
     for (int y = 0; y < Cubes.size(); y++) {
@@ -942,21 +960,23 @@ void Area::simulateAirExchange(float timeStepInSeconds_) {
             calculateForces(c);
             Cubes[c.x][c.y].calcAcceleration();
             Cubes[c.x][c.y].calcSpeed(timeStepInSeconds_);
-            Cubes[c.x][c.y].calcLeavingAirDeltas();
+            list<airDelta> tempOutAirDeltas = Cubes[c.x][c.y].calcLeavingAirDeltas(timeStepInSeconds_);
+            for(auto iterateOutAirDeltas = tempOutAirDeltas.begin(); iterateOutAirDeltas != tempOutAirDeltas.end(); iterateOutAirDeltas++) {
+                airDelta tempAirDelta = *iterateOutAirDeltas;
+                Cubes[tempAirDelta.newCoords.x][tempAirDelta.newCoords.y].addInAirDelta(tempAirDelta);
+            }
+        }
+    }
+
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+            Cubes[x][y].recalculateAttributes();
         }
     }
 };
 
 void Area::simulateTemperatureExchange(float timeStepInSeconds_) {
 
-};
-
-void Area::recalculateAttributes() {
-    for (int y = 0; y < Cubes.size(); y++) {
-        for (int x = 0; x < Cubes[y].size(); x++) {
-            Cubes[x][y].recalculateAttributes();
-        }
-    }
 };
 
 // calculating forces

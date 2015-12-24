@@ -55,7 +55,6 @@ class Area
         void simulateTimeStep(float timeStepInSeconds_);
         void simulateAirExchange(float timeStepInSeconds_);
         void simulateTemperatureExchange(float timeStepInSeconds_);
-        void recalculateAttributes();
 
         // calculating forces
         void calculateForces(coords c);

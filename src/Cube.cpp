@@ -54,6 +54,18 @@ void Cube::modifyTemperature(string s_){
     calcPressure();
 };
 
+bool  Cube::checkCoordsStillInArea(coords c_) {
+    bool temp = true;
+    coords tempMaxCoordsInArea = getMaxCoordsInArea();
+    if ( (c_.x < 0) || (c_.x > tempMaxCoordsInArea.x)) {
+        temp = false;
+    }
+    if ( (c_.y < 0) || (c_.y > tempMaxCoordsInArea.y)) {
+        temp = false;
+    }
+    return temp;
+};
+
 
 /* --- simulation --- */
 
@@ -69,10 +81,129 @@ void Cube::initSimulation() {
     tempSpeed.y = 0;
     tempSpeed.z = 0;
     setSpeed(tempSpeed);
+
 }
 
-void Cube::calcLeavingAirDeltas() {
- // TODO v1.0
+/**
+ *
+ *
+ *                    x=0,y<0,z=0 up
+ *                   |
+ *  x<0,y<0,z=0  ^   ^   ^  x>0,y<0,z=0 rightUp
+ *   leftUp       \  |  /
+ *                 \ | /
+ *                  \|/
+ *  x<0,y=0,z=0 <----|----> x>0,y=0,z=0 right
+ *   left           /|\
+ *                 / | \
+ *                /  |  \
+ *  x<0,y>0,z=0  v   v   v  x>0,y>0,z=0 rightDown
+ *   leftDown        |
+ *                    x=0,y>0,z=0 down
+ *
+ *
+ *
+ *
+ *  -------------------- --------------------
+ * | Cube_1.1      ->   | Cube_1.2           |
+ * |              v_1.1 |                    |
+ * |                \   |                    |
+ * |       ->      ( \  |                    |
+ * |      v_1.1   (   \ |A_1.1               |
+ * |         \   (alpha\|                    |
+ * |       (  \  -------\                    |
+ * |      (    \        |\                   |
+ * |     (alpha \       | v                  |
+ *  -------------\------ --------------------
+ * |      A_2.1   \     |                    |
+ * |               v    |                    |
+ * |                    |                    |
+ * |                    |                    |
+ * |                    |                    |
+ * |                    |                    |
+ * |                    |                    |
+ * |                    |                    |
+ * | Cube_2.1           | Cube_2.2           |
+ *  -------------------- --------------------
+ *                                    -->
+ * phi_Cube_1.2 = density * A_1.1 * |v_1.1| * cos(alpha)
+ *                                   -->
+ * phi_Cube_1.2 = density * A_1.1 * v_1.1.x
+ *
+ *                                    -->
+ * phi_Cube_2.1 = density * A_2.1 * |v_1.1| * sin(alpha)
+ *                                   -->
+ * phi_Cube_2.1 = density * A_2.1 * v_1.1.y
+ *
+ * [kg * m^2 * m]   [kg]
+ * [------------] = [--]
+ * [m^3 * s     ]   [s ]
+ *
+ */
+list<airDelta> Cube::calcLeavingAirDeltas(float timeStepInSeconds_) {
+    inAirDeltas.clear();
+    outAirDeltas.clear();
+    airDelta tempAirDelta;
+    tempAirDelta.temperature = getTemperature();
+
+    coords tempCoordsInArea = getCoordsInArea();
+    vector3 tempSpeed = getSpeed();
+    float tempDensity = calcDensity();
+    float tempWidth   = getWidth();
+    float tempLength  = getLength();
+    bool up = (tempSpeed.y < 0);
+    bool left = (tempSpeed.x < 0);
+    float tempPhi; // exchange air in kg/s
+
+    if (tempSpeed.y != 0) {
+        if (up) {
+            tempAirDelta.newCoords.x = tempCoordsInArea.x;
+            tempAirDelta.newCoords.y = tempCoordsInArea.y - 1;
+
+        } else { // down
+            tempAirDelta.newCoords.x = tempCoordsInArea.x;
+            tempAirDelta.newCoords.y = tempCoordsInArea.y + 1;
+        }
+        if (checkCoordsStillInArea(tempAirDelta.newCoords)) {
+            if (tempSpeed.y < 0) {
+                    tempSpeed.y *= -1;
+            }
+            tempPhi = tempDensity * tempWidth * tempSpeed.y; // in [kg/s]
+            tempAirDelta.moleculesCount = calcAirDeltaMoleculesCount(tempPhi,timeStepInSeconds_);
+            outAirDeltas.push_front(tempAirDelta);
+        }
+    }
+
+    if (tempSpeed.x != 0) {
+        if (left) {
+            tempAirDelta.newCoords.x = tempCoordsInArea.x - 1;
+            tempAirDelta.newCoords.y = tempCoordsInArea.y;
+        } else { // right
+            tempAirDelta.newCoords.x = tempCoordsInArea.x + 1;
+            tempAirDelta.newCoords.y = tempCoordsInArea.y;
+        }
+        if (checkCoordsStillInArea(tempAirDelta.newCoords)) {
+            if (tempSpeed.x < 0) {
+                    tempSpeed.x *= -1;
+            }
+            tempPhi = tempDensity * tempLength * tempSpeed.x; // in [kg/s]
+            tempAirDelta.moleculesCount = calcAirDeltaMoleculesCount(tempPhi,timeStepInSeconds_);
+            outAirDeltas.push_front(tempAirDelta);
+        }
+    }
+
+    return outAirDeltas;
+}
+
+float Cube::calcAirDeltaMoleculesCount(float phi_, float timeStepInSeconds_) {
+    float deltaMass = phi_ * timeStepInSeconds_;    // in [kg/s * s] = [kg]
+    float tempMass = calcMass();
+    if (deltaMass > tempMass) { // TODO
+        deltaMass = tempMass;
+    }
+    float tempMoleculesPerMass = getMoleculesCount() / tempMass;
+    float deltaMoleculesCount = deltaMass * tempMoleculesPerMass;
+    return deltaMoleculesCount;
 }
 
 // calculation of attributes
@@ -81,9 +212,37 @@ void Cube::calcLeavingAirDeltas() {
  *
  * @brief recalculates the attributes during simulation
  *
+ * adds the molecules within the inAirDelta-list
+ * adds the temperature of the molecules by proportion
+ * calculates mass, density and pressure
+ *
  */
 void Cube::recalculateAttributes() {
-    // TODO v1.0
+    float oldMoleculesCount = getMoleculesCount();
+    float newMoleculesCount = oldMoleculesCount;
+    float newTemperature = getTemperature();
+
+    // subtract outAirDeltas
+    for(auto iterateOutAirDeltas = outAirDeltas.begin(); iterateOutAirDeltas != outAirDeltas.end(); iterateOutAirDeltas++) {
+        airDelta tempAirDelta = *iterateOutAirDeltas;
+        newMoleculesCount -= tempAirDelta.moleculesCount;
+    }
+
+    // add inAirDeltas
+    for(auto iterateInAirDeltas = inAirDeltas.begin(); iterateInAirDeltas != inAirDeltas.end(); iterateInAirDeltas++) {
+        airDelta tempAirDelta = *iterateInAirDeltas;
+        float proportionDeltaToCube = tempAirDelta.moleculesCount / newMoleculesCount;
+        float oldTemperature = getTemperature();
+        newTemperature = (proportionDeltaToCube * tempAirDelta.temperature) + ((1-proportionDeltaToCube) * oldTemperature);
+        newMoleculesCount += tempAirDelta.moleculesCount;
+    }
+
+    // set new values
+    setMoleculesCount(newMoleculesCount);
+    setTemperature(newTemperature);
+    calcMass();
+    calcDensity();
+    calcPressure();
 };
 
 // calculation of forces
