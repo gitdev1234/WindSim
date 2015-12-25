@@ -1036,9 +1036,6 @@ vector3 Area::calculateGradientForce(coords fromCube_, coords toCube_) {
         float tempMass        = Cubes[fromCube_.x][fromCube_.y].calcMass();
         float tempDensity     = Cubes[fromCube_.x][fromCube_.y].calcDensity();
         float pressureDifference = Cubes[fromCube_.x][fromCube_.y].calcPressure()-Cubes[toCube_.x][toCube_.y].calcPressure();
-        if (pressureDifference < 0 ) {
-            pressureDifference = pressureDifference * (-1);
-        }
         vector3 positionOfFromCube;
         positionOfFromCube.x = (fromCube_.x + 0.5) * (Cubes[fromCube_.x][fromCube_.y].getWidth());
         positionOfFromCube.y = (fromCube_.y + 0.5) * (Cubes[fromCube_.x][fromCube_.y].getLength());
