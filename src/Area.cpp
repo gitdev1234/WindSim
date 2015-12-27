@@ -897,7 +897,9 @@ void Area::initSimulation() {
 };
 
 
-
+/**
+ @todo doc
+ */
 void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
     int startTime = GetTimeMs64();
     float timeDelta = 0;
@@ -907,9 +909,9 @@ void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
     //     and (simulationSpeedInSeconds / timeStepInSeconds) simulation steps for calculation
     while (1) {
 
-        for (int i = 0; i < (simulationSpeedInSeconds_ / timeStepInSeconds_); i++) { //
+        //for (int i = 0; i < (simulationSpeedInSeconds_ / timeStepInSeconds_); i++) { //
             simulateTimeStep(timeStepInSeconds_);                                   // calculations
-        }                                                                          //
+        //}                                                                          //
 
         while (timeDelta <= simulationSpeedInSeconds_ * 1000) { // wait until display simulation time has ended
             // wait
@@ -955,6 +957,9 @@ void Area::simulateAirExchange(float timeStepInSeconds_) {
     coords c;
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
+            if ((x == 1) && (y == 1)) {  // todo delete debug code
+             float todo = 1;
+            }
             c.x = x;
             c.y = y;
             calculateForces(c);
@@ -967,12 +972,13 @@ void Area::simulateAirExchange(float timeStepInSeconds_) {
             }
         }
     }
-
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
             Cubes[x][y].recalculateAttributes();
+            Cubes[x][y].clearAirDeltas();
         }
     }
+
 };
 
 void Area::simulateTemperatureExchange(float timeStepInSeconds_) {

@@ -26,7 +26,7 @@ typedef long long int64; typedef unsigned long long uint64;
 const bool SHOW_IN_DETAIL = false;
 const bool PRINT_PRETTY  = true;
 const float MODIFY_TEMPERATURE_DELTA = 0.001;
-const float BOLTZMANN_CONST = 1.38 * pow(10,-23);
+const float BOLTZMANN_CONST = 1.38 * pow(10,-23); //BOLTZMANN_CONST = 1.38064852 * pow(10,-23);
 const float INDIVIDUAL_GAS_CONST = 287.05; // [J / (Kg * K)]
 
 struct GeoCoords {

@@ -91,6 +91,7 @@ class Cube
         void simulateAirExchange(float timeStepInSeconds_);
         list<airDelta> calcLeavingAirDeltas(float timeStepInSeconds_);
         float calcAirDeltaMoleculesCount(float phi_, float timeStepInSeconds_);
+        void clearAirDeltas();
         void simulateTemperatureExchange(float timeStepInSeconds_);
         void recalculateAttributes();
 

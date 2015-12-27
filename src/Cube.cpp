@@ -141,8 +141,6 @@ void Cube::initSimulation() {
  *
  */
 list<airDelta> Cube::calcLeavingAirDeltas(float timeStepInSeconds_) {
-    inAirDeltas.clear();
-    outAirDeltas.clear();
     airDelta tempAirDelta;
     tempAirDelta.temperature = getTemperature();
 
@@ -205,6 +203,12 @@ float Cube::calcAirDeltaMoleculesCount(float phi_, float timeStepInSeconds_) {
     float deltaMoleculesCount = deltaMass * tempMoleculesPerMass;
     return deltaMoleculesCount;
 }
+
+void Cube::clearAirDeltas(){
+    inAirDeltas.clear();
+    outAirDeltas.clear();
+};
+
 
 // calculation of attributes
 /**
