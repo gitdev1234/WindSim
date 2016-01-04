@@ -12,7 +12,6 @@
 #include <math.h>
 #include "Area.h"
 #include "Types.h"
-#include "float.h"
 #include <thread>
 
 using namespace std;
@@ -33,7 +32,7 @@ void Area::createStandardArea() {
     createArea(10,10,1,10,10,UpperLeftCube);
 };
 
-void Area::createArea(int CubesCountWidth_, int CubesCountLength_, float heightArea_, float widthArea_, float lengthArea_, GeoCoords UpperLeftCube_) {
+void Area::createArea(int CubesCountWidth_, int CubesCountLength_, double heightArea_, double widthArea_, double lengthArea_, GeoCoords UpperLeftCube_) {
     CubesCountWidth = CubesCountWidth_;
     CubesCountLength = CubesCountLength_;
     height = heightArea_;
@@ -49,14 +48,14 @@ void Area::DestroyArea() {
 
 void Area::LoadBalancedAreaStructure() {
     // calculation of initial values for cubes
-    float height_cube        = height;
-    float width_cube         = width / CubesCountWidth;
-    float length_cube        = length / CubesCountLength;
-    float volume_cube             = height_cube * width_cube * length_cube;
-    float temperature   = 288;     // 288 Kelvin = 15 degree celcius = average temp. on earth
-    float pressure      = 1013.25; //101325 Pa = 1012.25 hPa = standard pressure on earth / of the atmosphere
-    float boltzmann_const = 1.38 * pow(10,-23);
-    float molecules_count = (pressure * volume_cube) / (boltzmann_const * temperature);
+    double height_cube        = height;
+    double width_cube         = width / CubesCountWidth;
+    double length_cube        = length / CubesCountLength;
+    double volume_cube             = height_cube * width_cube * length_cube;
+    double temperature   = 288;     // 288 Kelvin = 15 degree celcius = average temp. on earth
+    double pressure      = 1013.25; //101325 Pa = 1012.25 hPa = standard pressure on earth / of the atmosphere
+    double boltzmann_const = 1.38 * pow(10,-23);
+    double molecules_count = (pressure * volume_cube) / (boltzmann_const * temperature);
 
     // create a 2-dimensional vector of cubes with the size CubesCountLength x CubesCountWidth
     if (CubesCountLength <= 0) {
@@ -97,14 +96,14 @@ void Area::LoadAreaStructureTemplate(string path){
     // TODO
 };
 
-float Area::GetMinMaxValue(string properties, bool max_) {
+double Area::GetMinMaxValue(string properties, bool max_) {
 
-    float minmaxValue, temp = 0.0;
+    double minmaxValue, temp = 0.0;
 
     if (max_) {
         minmaxValue = 0.0;
     } else {
-        minmaxValue = FLT_MAX;
+        minmaxValue = DBL_MAX;
     }
 
     // iterate all cubes and initialize them
@@ -135,15 +134,15 @@ float Area::GetMinMaxValue(string properties, bool max_) {
 /**
 only to use for positive numbers!!!
 */
-string Area::getANSIRGBScaleColor(float min_, float max_, float value_) {
+string Area::getANSIRGBScaleColor(double min_, double max_, double value_) {
     int red,green,blue;
     if (min_ == max_) {
         red = 0;
         green = 0;
         blue = 255;
     } else {
-        float ratio = (value_ - min_) / (max_ - min_);
-        float rgbvalue = 255 * ratio;
+        double ratio = (value_ - min_) / (max_ - min_);
+        double rgbvalue = 255 * ratio;
         red = round(rgbvalue);
         green = 0;
         blue = round(255-rgbvalue);
@@ -184,14 +183,14 @@ void Area::PrintCubes(string properties) {
     };
 
     // pretty
-    float MoleculesCount_Max = GetMinMaxValue("M",true);
-    float MoleculesCount_Min = GetMinMaxValue("M",false);
-    float Temperature_Max    = GetMinMaxValue("T",true);
-    float Temperature_Min    = GetMinMaxValue("T",false);
-    float Pressure_Max       = GetMinMaxValue("P",true);
-    float Pressure_Min       = GetMinMaxValue("P",false);
-    float MoleculeGroupsCount_Max = GetMinMaxValue("G",true);
-    float MoleculeGroupsCount_Min = GetMinMaxValue("G",false);
+    double MoleculesCount_Max = GetMinMaxValue("M",true);
+    double MoleculesCount_Min = GetMinMaxValue("M",false);
+    double Temperature_Max    = GetMinMaxValue("T",true);
+    double Temperature_Min    = GetMinMaxValue("T",false);
+    double Pressure_Max       = GetMinMaxValue("P",true);
+    double Pressure_Min       = GetMinMaxValue("P",false);
+    double MoleculeGroupsCount_Max = GetMinMaxValue("G",true);
+    double MoleculeGroupsCount_Min = GetMinMaxValue("G",false);
 
 
 
@@ -314,8 +313,8 @@ void Area::AffectSurroundingCubes(int x, int y){
 
     if (CheckCoordsStillInArea(B2)) {  // if coordinate of B2 is not valid, do not go on
 
-        float volume_ = Cubes[B2.y][B2.x].getVolume(); // volume is equal for every cube
-        float newTemperature_, mass_;
+        double volume_ = Cubes[B2.y][B2.x].getVolume(); // volume is equal for every cube
+        double newTemperature_, mass_;
         Cube newCube;
 
         A1 = {.x = B2.x - 1, .y = B2.y - 1};
@@ -566,7 +565,7 @@ void Area::AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner
 
     coords A1, A2, B1, B2;
     Cube newCube;
-    float newTemperature;
+    double newTemperature;
 
     // left upper corner
     B2 = leftUpperCorner;             // calculation
@@ -852,13 +851,13 @@ bool  Area::CheckCoordsStillInArea(coords c) {
 
 returns new Temperature
 */
-float Area::MixTemperatures(Cube Cube1, Cube Cube2) {
-    float Temp1 = Cube1.getTemperature();
-    float Mass1 = Cube1.calcMass();
-    float Volume1 = Cube1.getVolume();
-    float Temp2 = Cube2.getTemperature();
-    float Mass2 = Cube2.calcMass();
-    float Volume2 = Cube2.getVolume();
+double Area::MixTemperatures(Cube Cube1, Cube Cube2) {
+    double Temp1 = Cube1.getTemperature();
+    double Mass1 = Cube1.calcMass();
+    double Volume1 = Cube1.getVolume();
+    double Temp2 = Cube2.getTemperature();
+    double Mass2 = Cube2.calcMass();
+    double Volume2 = Cube2.getVolume();
     return MixTemperatures(Temp1, Mass1, Volume1, Temp2, Mass2, Volume2);
 };
 
@@ -866,8 +865,8 @@ float Area::MixTemperatures(Cube Cube1, Cube Cube2) {
 
 returns new Temperature
 */
-float Area::MixTemperatures(float Temp1, float Mass1, float Volume1, float Temp2, float Mass2, float Volume2) {
-    float newTemperature_ = ( (Mass1 * Temp1) + (Mass2 * Temp2) ) / (Mass1 + Mass2);
+double Area::MixTemperatures(double Temp1, double Mass1, double Volume1, double Temp2, double Mass2, double Volume2) {
+    double newTemperature_ = ( (Mass1 * Temp1) + (Mass2 * Temp2) ) / (Mass1 + Mass2);
     return newTemperature_;
 };
 
@@ -879,12 +878,12 @@ returns new cube object which has
  -> new Mass        = Cube1.Mass + Cube2.Mass
 */
 Cube Area::MixTemperaturesC(Cube Cube1, Cube Cube2) {
-    float Temp1 = Cube1.getTemperature();
-    float Mass1 = Cube1.calcMass();
-    float Volume1 = Cube1.getVolume();
-    float Temp2 = Cube2.getTemperature();
-    float Mass2 = Cube2.calcMass();
-    float Volume2 = Cube2.getVolume();
+    double Temp1 = Cube1.getTemperature();
+    double Mass1 = Cube1.calcMass();
+    double Volume1 = Cube1.getVolume();
+    double Temp2 = Cube2.getTemperature();
+    double Mass2 = Cube2.calcMass();
+    double Volume2 = Cube2.getVolume();
     Cube newCube = Cube1;
     newCube.setTemperature(MixTemperatures(Temp1, Mass1, Volume1, Temp2, Mass2, Volume2));
     newCube.setVolume(Volume1 + Volume2);
@@ -911,9 +910,9 @@ void Area::initSimulation() {
 /**
  @todo doc
  */
-void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
+void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_) {
     int startTime = GetTimeMs64();
-    float timeDelta = 0;
+    double timeDelta = 0;
 
     // while-loop == whole simulation
     // --> one loop execution is one simulationStep for displaying
@@ -939,7 +938,7 @@ void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
     }
 };
 
-void Area::simulateTimeStep(float timeStepInSeconds_) {
+void Area::simulateTimeStep(double timeStepInSeconds_) {
     //TODO
     cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
     simulateAirExchange(timeStepInSeconds_);
@@ -947,7 +946,7 @@ void Area::simulateTimeStep(float timeStepInSeconds_) {
 };
 
 /**
- * Area::simulateAirExchange(float timeStepInSeconds_)
+ * Area::simulateAirExchange(double timeStepInSeconds_)
  *
  * @brief
  *
@@ -964,12 +963,12 @@ void Area::simulateTimeStep(float timeStepInSeconds_) {
  *
  *
  */
-void Area::simulateAirExchange(float timeStepInSeconds_) {
+void Area::simulateAirExchange(double timeStepInSeconds_) {
     coords c;
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
             if ((x == 3) && (y == 0)) {  // todo delete debug code
-              float todo = 1;
+              double todo = 1;
             }
             c.x = x;
             c.y = y;
@@ -992,7 +991,7 @@ void Area::simulateAirExchange(float timeStepInSeconds_) {
 
 };
 
-void Area::simulateTemperatureExchange(float timeStepInSeconds_) {
+void Area::simulateTemperatureExchange(double timeStepInSeconds_) {
 
 };
 
@@ -1050,9 +1049,9 @@ vector3 Area::calculateGradientForce(coords c) {
 vector3 Area::calculateGradientForce(coords fromCube_, coords toCube_) {
     vector3 tempGradientForce;
     if (CheckCoordsStillInArea(fromCube_) && CheckCoordsStillInArea(toCube_)) {
-        float tempMass        = Cubes[fromCube_.y][fromCube_.x].calcMass();
-        float tempDensity     = Cubes[fromCube_.y][fromCube_.x].calcDensity();
-        float pressureDifference = Cubes[fromCube_.y][fromCube_.x].calcPressure()-Cubes[toCube_.y][toCube_.x].calcPressure();
+        double tempMass        = Cubes[fromCube_.y][fromCube_.x].calcMass();
+        double tempDensity     = Cubes[fromCube_.y][fromCube_.x].calcDensity();
+        double pressureDifference = Cubes[fromCube_.y][fromCube_.x].calcPressure()-Cubes[toCube_.y][toCube_.x].calcPressure();
         vector3 positionOfFromCube;
         positionOfFromCube.x = (fromCube_.x + 0.5) * (Cubes[fromCube_.y][fromCube_.x].getWidth());
         positionOfFromCube.y = (fromCube_.y + 0.5) * (Cubes[fromCube_.y][fromCube_.x].getLength());
@@ -1062,9 +1061,9 @@ vector3 Area::calculateGradientForce(coords fromCube_, coords toCube_) {
         positionOfToCube.y = (toCube_.y + 0.5) * (Cubes[toCube_.y][toCube_.x].getLength());
         positionOfToCube.z = (       0  + 0.5) * (Cubes[toCube_.y][toCube_.x].getHeight());
 
-        float xDifference = positionOfToCube.x - positionOfFromCube.x;
-        float yDifference = positionOfToCube.y - positionOfFromCube.y;
-        float zDifference = positionOfToCube.z - positionOfFromCube.z;
+        double xDifference = positionOfToCube.x - positionOfFromCube.x;
+        double yDifference = positionOfToCube.y - positionOfFromCube.y;
+        double zDifference = positionOfToCube.z - positionOfFromCube.z;
         if (xDifference != 0) {
             tempGradientForce.x = - (tempMass / tempDensity) * (pressureDifference / (xDifference)) * (-1);
         } else {

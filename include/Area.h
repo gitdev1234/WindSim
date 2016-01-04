@@ -17,6 +17,7 @@
 #include "sstream"
 #include <iomanip>  // for cout << setprecision
 #include <limits>   //    -- || --
+#include <float.h>
 
 using namespace std;
 
@@ -77,12 +78,12 @@ using namespace std;
 class Area {
     public:
         Area();
-        //Area(int CubesCountWidth, int CubesCountLength, float heightCube, float widthCube, float lengthCube);
+        //Area(int CubesCountWidth, int CubesCountLength, double heightCube, double widthCube, double lengthCube);
         virtual ~Area();
 
         // creating Areas
         void createStandardArea();
-        void createArea(int CubesCountWidth_, int CubesCountLength_, float heightArea_, float widthArea_, float lengthArea_, GeoCoords UpperLeftCube_);
+        void createArea(int CubesCountWidth_, int CubesCountLength_, double heightArea_, double widthArea_, double lengthArea_, GeoCoords UpperLeftCube_);
         void DestroyArea();
 
         // loading area pressure and temperature structure
@@ -98,18 +99,18 @@ class Area {
         void AffectSurroundingCubes(int x, int y);
         void AffectSurroundingCubes(coords leftUpperCorner, coords leftLowerCorner, coords rightUpperCorner, coords rightLowerCorner,
                                     stack <coords> left, stack <coords> right, stack <coords> up, stack <coords> down);
-        float MixTemperatures(Cube Cube1, Cube Cube2);
-        float MixTemperatures(float Temp1, float Mass1, float Volume1, float Temp2, float Mass2, float Volume2);
+        double MixTemperatures(Cube Cube1, Cube Cube2);
+        double MixTemperatures(double Temp1, double Mass1, double Volume1, double Temp2, double Mass2, double Volume2);
         Cube MixTemperaturesC(Cube Cube1, Cube Cube2);
         bool  CheckCoordsStillInArea(coords c);
 
         /* --- simulation --- */
         // simulation
         void initSimulation();
-        void simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_);
-        void simulateTimeStep(float timeStepInSeconds_);
-        void simulateAirExchange(float timeStepInSeconds_);
-        void simulateTemperatureExchange(float timeStepInSeconds_);
+        void simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_);
+        void simulateTimeStep(double timeStepInSeconds_);
+        void simulateAirExchange(double timeStepInSeconds_);
+        void simulateTemperatureExchange(double timeStepInSeconds_);
 
         // calculating forces
         void calculateForces(coords c);
@@ -119,34 +120,34 @@ class Area {
         vector3 calculateFrictionForce(coords c);
 
         // miscellaneous
-        string getANSIRGBScaleColor(float min_, float max_, float value_);
+        string getANSIRGBScaleColor(double min_, double max_, double value_);
         string getANSIEndCode();
-        float GetMinMaxValue(string properties, bool max_) ;
+        double GetMinMaxValue(string properties, bool max_) ;
         uint64 GetTimeMs64();
         vector3 sumVector3(vector3 a, vector3 b);
 
         // setters
         void SetCubesCountWidth(int val)  { CubesCountWidth = val; }
         void SetCubesCountLength(int val) { CubesCountLength = val; }
-        void Setheight(float val)         { height = val; }
-        void Setlength(float val)         { length = val; }
-        void Setwidth(float val)          { width = val; }
+        void Setheight(double val)         { height = val; }
+        void Setlength(double val)         { length = val; }
+        void Setwidth(double val)          { width = val; }
 
         // getters
         int GetCubesCountWidth()  { return CubesCountWidth; }
         int GetCubesCountLength() { return CubesCountLength; }
-        float Getheight()         { return height; }
-        float Getlength()         { return length; }
-        float Getwidth()          { return width; }
+        double Getheight()         { return height; }
+        double Getlength()         { return length; }
+        double Getwidth()          { return width; }
 
     protected:
 
     private:
         int CubesCountWidth;
         int CubesCountLength;
-        float height;
-        float length;
-        float width;
+        double height;
+        double length;
+        double width;
         GeoCoords geoCoordsUpperLeftCube;
         std::vector<std::vector<Cube> > Cubes; // 2-dimensional array of Cube objects
 

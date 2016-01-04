@@ -10,7 +10,7 @@ enum programMode {START, ABORT, STAY_IN_LOOP, LOAD_STANDARD, CONFIGURE_AREA, LOA
 
 int main() {
     int w_count, l_count, x, y;
-    float w_total, l_total, h_total, w_cube, l_cube;
+    double w_total, l_total, h_total, w_cube, l_cube;
     GeoCoords geoCoords;
     string s;
     Area MA;
@@ -166,7 +166,7 @@ int main() {
                 } while (ProgramMode == STAY_IN_LOOP);
             } else if (toupper(s[0]) == 'S') {
                 int moleculeGroupsPerCube;
-                float moleculesPerMoleculeGroup, timeStepInSeconds, simulationSpeedInSeconds;
+                double moleculesPerMoleculeGroup, timeStepInSeconds, simulationSpeedInSeconds;
                 cout << "For simulation we still need two parameters:" << endl;
                 cout << "1. The length of one timestep in seconds. This tells how detailed the simulation is calculated." << endl;
                 cout << "2. The length of how long every timestep shall be displayed. This tells how slow or fast the simulation " << endl;;

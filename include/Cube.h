@@ -88,11 +88,11 @@ class Cube
         /* --- simulation --- */
         // simulation
         void initSimulation();
-        void simulateAirExchange(float timeStepInSeconds_);
-        list<airDelta> calcLeavingAirDeltas(float timeStepInSeconds_);
-        float calcAirDeltaMoleculesCount(float phi_, float timeStepInSeconds_);
+        void simulateAirExchange(double timeStepInSeconds_);
+        list<airDelta> calcLeavingAirDeltas(double timeStepInSeconds_);
+        double calcAirDeltaMoleculesCount(double phi_, double timeStepInSeconds_);
         void clearAirDeltas();
-        void simulateTemperatureExchange(float timeStepInSeconds_);
+        void simulateTemperatureExchange(double timeStepInSeconds_);
         void recalculateAttributes();
 
         // calculation of forces
@@ -102,35 +102,35 @@ class Cube
 
         // calculation of acceleration and speed (depending on current forces)
         void calcAcceleration();
-        void calcSpeed(float timeStepInSeconds_);
+        void calcSpeed(double timeStepInSeconds_);
 
         // calculations of attributes
-        float calcMoleculesCount();
-        float calcPressure();
-        float calcDensity();
-        float calcMass();
-        float calcTemperature();
+        double calcMoleculesCount();
+        double calcPressure();
+        double calcDensity();
+        double calcMass();
+        double calcTemperature();
 
 
         /* --- getters and setters --- */
         // setters
-        void setMoleculesCount(float val_)            {moleculesCount = val_;            };
-        void setTemperature(float val_)               {temperature = val_;               };
-        void setPressure(float val_)                  {pressure = val_;                  };
-        void setMass(float val_)                      {mass = val_;                      };
+        void setMoleculesCount(double val_)            {moleculesCount = val_;            };
+        void setTemperature(double val_)               {temperature = val_;               };
+        void setPressure(double val_)                  {pressure = val_;                  };
+        void setMass(double val_)                      {mass = val_;                      };
         void setCoordsInArea(coords val_)             {coordsInArea = val_;              };
         void setMaxCoordsInArea(coords val_)          {maxCoordsInArea = val_;           };
-        void setHeight(float val_)                    {height = val_;                    };
-        void setLength(float val_)                    {length = val_;                    };
-        void setWidth (float val_)                    {width  = val_;                    };
-        void setVolume(float val_)                    {volume = val_;                    };
+        void setHeight(double val_)                    {height = val_;                    };
+        void setLength(double val_)                    {length = val_;                    };
+        void setWidth (double val_)                    {width  = val_;                    };
+        void setVolume(double val_)                    {volume = val_;                    };
         void setVolume()                              {
-            float tempHeight = getHeight();
-            float tempLength = getLength();
-            float tempWidth  = getWidth();
+            double tempHeight = getHeight();
+            double tempLength = getLength();
+            double tempWidth  = getWidth();
             volume = tempHeight * tempLength * tempWidth;
         };
-        void setDensity(float val_)                   {density = val_;                   };
+        void setDensity(double val_)                   {density = val_;                   };
         void setAcceleration(vector3 val_)            {acceleration = val_;              };
         void setSpeed(vector3 val_)                   {speed = val_;                     };
         void setInAirDeltas(list<airDelta> val_)      {inAirDeltas = val_;               };
@@ -138,17 +138,17 @@ class Cube
         void setOutAirDeltas(list<airDelta> val_)     {outAirDeltas = val_;              };
 
         // getters
-        float getMoleculesCount()            {return moleculesCount;            };
-        float getTemperature()               {return temperature;               };
+        double getMoleculesCount()            {return moleculesCount;            };
+        double getTemperature()               {return temperature;               };
         GeoCoords getGeoCoords()             {return geoCoords;                 };
         coords getCoordsInArea()             {return coordsInArea;              };
         coords getMaxCoordsInArea()          {return maxCoordsInArea;           };
-        float getHeight()  {return height; };
-        float getLength()  {return length; };
-        float getWidth ()  {return width ; };
-        float getVolume()  {return volume; };
-        float getDensity() {return density;};
-        float getMass()    {return mass;   };
+        double getHeight()  {return height; };
+        double getLength()  {return length; };
+        double getWidth ()  {return width ; };
+        double getVolume()  {return volume; };
+        double getDensity() {return density;};
+        double getMass()    {return mass;   };
         vector3 getSpeed() {return speed;  };
         vector3 getAcceleration()        {return acceleration; };
         list<airDelta> getInAirDeltas()  {return inAirDeltas;  };
@@ -158,20 +158,20 @@ class Cube
 
     private:
         // constant properties
-        float height;  // in m
-        float length;  // in m
-        float width;   // in m
-        float volume;  // in m^3
+        double height;  // in m
+        double length;  // in m
+        double width;   // in m
+        double volume;  // in m^3
         GeoCoords geoCoords;
         coords coordsInArea;
         coords maxCoordsInArea;
 
         // changing properties
-        float moleculesCount;
-        float temperature;     // in K
-        float pressure;        // in hPa
-        float mass;            // in kg
-        float density;         // in kg/m^3
+        double moleculesCount;
+        double temperature;     // in K
+        double pressure;        // in hPa
+        double mass;            // in kg
+        double density;         // in kg/m^3
         vector3 force;         // in N
         vector3 acceleration;  // in m/s^2
         vector3 speed;         // in m/s

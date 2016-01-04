@@ -42,7 +42,7 @@ Cube::~Cube() { };
  *
  */
 void Cube::modifyTemperature(string s_){
-    float temp = getTemperature();
+    double temp = getTemperature();
     if (s_[0] == '+') {
         temp += MODIFY_TEMPERATURE_DELTA;
     }
@@ -140,18 +140,18 @@ void Cube::initSimulation() {
  * [m^3 * s     ]   [s ]
  *
  */
-list<airDelta> Cube::calcLeavingAirDeltas(float timeStepInSeconds_) {
+list<airDelta> Cube::calcLeavingAirDeltas(double timeStepInSeconds_) {
     airDelta tempAirDelta;
     tempAirDelta.temperature = getTemperature();
 
     coords tempCoordsInArea = getCoordsInArea();
     vector3 tempSpeed = getSpeed();
-    float tempDensity = calcDensity();
-    float tempWidth   = getWidth();
-    float tempLength  = getLength();
+    double tempDensity = calcDensity();
+    double tempWidth   = getWidth();
+    double tempLength  = getLength();
     bool up = (tempSpeed.y < 0);
     bool left = (tempSpeed.x < 0);
-    float tempPhi; // exchange air in kg/s
+    double tempPhi; // exchange air in kg/s
 
     if (tempSpeed.y != 0) {
         if (up) {
@@ -193,15 +193,15 @@ list<airDelta> Cube::calcLeavingAirDeltas(float timeStepInSeconds_) {
     return outAirDeltas;
 }
 
-float Cube::calcAirDeltaMoleculesCount(float phi_, float timeStepInSeconds_) {
-    float deltaMass = phi_ * timeStepInSeconds_;    // in [kg/s * s] = [kg]
-    float deltaMoleculesCount;
-    float tempMass = calcMass();
+double Cube::calcAirDeltaMoleculesCount(double phi_, double timeStepInSeconds_) {
+    double deltaMass = phi_ * timeStepInSeconds_;    // in [kg/s * s] = [kg]
+    double deltaMoleculesCount;
+    double tempMass = calcMass();
     if (deltaMass > tempMass) { // TODO
         deltaMass = tempMass;
     }
     if (tempMass > 0) {
-        float tempMoleculesPerMass = getMoleculesCount() / tempMass;
+        double tempMoleculesPerMass = getMoleculesCount() / tempMass;
         deltaMoleculesCount = deltaMass * tempMoleculesPerMass;
     } else {
         deltaMoleculesCount = 0;
@@ -227,9 +227,9 @@ void Cube::clearAirDeltas(){
  *
  */
 void Cube::recalculateAttributes() {
-    float oldMoleculesCount = getMoleculesCount();
-    float newMoleculesCount = oldMoleculesCount;
-    float newTemperature = getTemperature();
+    double oldMoleculesCount = getMoleculesCount();
+    double newMoleculesCount = oldMoleculesCount;
+    double newTemperature = getTemperature();
 
     // subtract outAirDeltas
     for(auto iterateOutAirDeltas = outAirDeltas.begin(); iterateOutAirDeltas != outAirDeltas.end(); iterateOutAirDeltas++) {
@@ -240,8 +240,8 @@ void Cube::recalculateAttributes() {
     // add inAirDeltas
     for(auto iterateInAirDeltas = inAirDeltas.begin(); iterateInAirDeltas != inAirDeltas.end(); iterateInAirDeltas++) {
         airDelta tempAirDelta = *iterateInAirDeltas;
-        float proportionDeltaToCube = tempAirDelta.moleculesCount / newMoleculesCount;
-        float oldTemperature = getTemperature();
+        double proportionDeltaToCube = tempAirDelta.moleculesCount / newMoleculesCount;
+        double oldTemperature = getTemperature();
         newTemperature = (proportionDeltaToCube * tempAirDelta.temperature) + ((1-proportionDeltaToCube) * oldTemperature);
         newMoleculesCount += tempAirDelta.moleculesCount;
     }
@@ -284,7 +284,7 @@ vector3 Cube::getForce() {
  */
 void Cube::calcAcceleration() {
     vector3 tempForce = getForce();
-    float tempMass = getMass();
+    double tempMass = getMass();
     vector3 tempAcceleration;
     tempAcceleration.x = tempForce.x / tempMass;
     tempAcceleration.y = tempForce.y / tempMass;
@@ -306,7 +306,7 @@ void Cube::calcAcceleration() {
  * always call calcAcceleration before calcSpeed
  * --> this ensures, that calcSpeed uses the right acceleration-value
  */
-void Cube::calcSpeed(float timeStepInSeconds_){
+void Cube::calcSpeed(double timeStepInSeconds_){
     vector3 tempSpeed = getSpeed();
     vector3 tempAcceleration = getAcceleration();
     tempSpeed.x += (tempAcceleration.x * timeStepInSeconds_ * TODO_LIMITOR_FACTOR);
@@ -326,11 +326,11 @@ void Cube::calcSpeed(float timeStepInSeconds_){
  *  --> pressure = (moleculesCount * BOLTZMANN_CONST * temperature) / volume
  *
  */
-float Cube::calcPressure() {
-    float tempMoleculesCount = getMoleculesCount();
-    float tempTemperature    = getTemperature();
-    float tempVolume         = getVolume();
-    float tempPressure = (tempMoleculesCount * BOLTZMANN_CONST * tempTemperature) / tempVolume;
+double Cube::calcPressure() {
+    double tempMoleculesCount = getMoleculesCount();
+    double tempTemperature    = getTemperature();
+    double tempVolume         = getVolume();
+    double tempPressure = (tempMoleculesCount * BOLTZMANN_CONST * tempTemperature) / tempVolume;
     setPressure(tempPressure);
     return tempPressure;
 };
@@ -346,10 +346,10 @@ float Cube::calcPressure() {
  *  --> density = pressure / (individual_gas_const * temperature)
  *
  */
-float Cube::calcDensity() {
-    float tempTemperature = getTemperature();
-    float tempPressure = calcPressure();
-    float tempDensity = tempPressure / (INDIVIDUAL_GAS_CONST * tempTemperature);
+double Cube::calcDensity() {
+    double tempTemperature = getTemperature();
+    double tempPressure = calcPressure();
+    double tempDensity = tempPressure / (INDIVIDUAL_GAS_CONST * tempTemperature);
     setDensity(tempDensity);
     return tempDensity;
 };
@@ -365,9 +365,9 @@ float Cube::calcDensity() {
  *  --> mass = density / volume
  *
  */
-float Cube::calcMass() {
-    float tempDensity = calcDensity();
-    float tempMass = tempDensity * getVolume();
+double Cube::calcMass() {
+    double tempDensity = calcDensity();
+    double tempMass = tempDensity * getVolume();
     setMass(tempMass);
     return tempMass;
 };
@@ -378,14 +378,14 @@ float Cube::calcMass() {
        this simple calculation can be used, because every moleculegroup represents the same number of molecules and
        though has the same mass and volume within this cube
 */
-float Cube::calcTemperature() {
+double Cube::calcTemperature() {
     // TODO v1.0
-    float averageTemperature = 0;
+    double averageTemperature = 0;
     return averageTemperature;
 }
 
 
-float Cube::calcMoleculesCount() {
+double Cube::calcMoleculesCount() {
     //todo v1.0
     return 0;
 };
