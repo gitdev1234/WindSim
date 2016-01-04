@@ -195,12 +195,17 @@ list<airDelta> Cube::calcLeavingAirDeltas(float timeStepInSeconds_) {
 
 float Cube::calcAirDeltaMoleculesCount(float phi_, float timeStepInSeconds_) {
     float deltaMass = phi_ * timeStepInSeconds_;    // in [kg/s * s] = [kg]
+    float deltaMoleculesCount;
     float tempMass = calcMass();
     if (deltaMass > tempMass) { // TODO
         deltaMass = tempMass;
     }
-    float tempMoleculesPerMass = getMoleculesCount() / tempMass;
-    float deltaMoleculesCount = deltaMass * tempMoleculesPerMass;
+    if (tempMass > 0) {
+        float tempMoleculesPerMass = getMoleculesCount() / tempMass;
+        deltaMoleculesCount = deltaMass * tempMoleculesPerMass;
+    } else {
+        deltaMoleculesCount = 0;
+    }
     return deltaMoleculesCount;
 }
 
@@ -304,9 +309,9 @@ void Cube::calcAcceleration() {
 void Cube::calcSpeed(float timeStepInSeconds_){
     vector3 tempSpeed = getSpeed();
     vector3 tempAcceleration = getAcceleration();
-    tempSpeed.x += (tempAcceleration.x * timeStepInSeconds_);
-    tempSpeed.y += (tempAcceleration.y * timeStepInSeconds_);
-    tempSpeed.z += (tempAcceleration.z * timeStepInSeconds_);
+    tempSpeed.x += (tempAcceleration.x * timeStepInSeconds_ * TODO_LIMITOR_FACTOR);
+    tempSpeed.y += (tempAcceleration.y * timeStepInSeconds_ * TODO_LIMITOR_FACTOR);
+    tempSpeed.z += (tempAcceleration.z * timeStepInSeconds_ * TODO_LIMITOR_FACTOR);
     setSpeed(tempSpeed);
 };
 

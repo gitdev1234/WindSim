@@ -269,7 +269,7 @@ void Area::PrintCubes(string properties) {
 void Area::ModifyTemperature(int x, int y, string s) {
     coords c = { .x = x, .y = y };
     Cubes[x][y].modifyTemperature(s);
-    AffectSurroundingCubes(x,y);
+    AffectSurroundingCubes(x,y); // TODO
 
     cout << "[<" << x << ":" << y << ">";
     cout << "M:" << Cubes[x][y].getMoleculesCount();
@@ -957,7 +957,7 @@ void Area::simulateAirExchange(float timeStepInSeconds_) {
     coords c;
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
-            if ((x == 1) && (y == 1)) {  // todo delete debug code
+            if ((x == 3) && (y == 0)) {  // todo delete debug code
              float todo = 1;
             }
             c.x = x;
