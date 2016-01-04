@@ -193,10 +193,17 @@ void Area::PrintCubes(string properties) {
     float MoleculeGroupsCount_Max = GetMinMaxValue("G",true);
     float MoleculeGroupsCount_Min = GetMinMaxValue("G",false);
 
+
+
     // calculate width of table coloumns
     int size;
     vector <int> ColumnWidthVec(Cubes[0].size());
     stringstream outStream, lengthStream;
+
+    // set how many decimal places are printed
+    cout << setprecision(PRINT_PRECISION) << fixed;
+    outStream << setprecision(PRINT_PRECISION) << fixed;
+
     for (int i = 0; i < 2; i++) {
 
         for (int y = 0; y < Cubes.size(); y++) {
@@ -273,7 +280,7 @@ void Area::PrintCubes(string properties) {
 void Area::ModifyTemperature(int x, int y, string s) {
     coords c = { .x = x, .y = y };
     Cubes[y][x].modifyTemperature(s);
-    AffectSurroundingCubes(x,y); //TODO
+    //AffectSurroundingCubes(x,y); //TODO
 
     cout << "[<" << y << ":" << x << ">";
     cout << "M:" << Cubes[y][x].getMoleculesCount();
@@ -926,7 +933,7 @@ void Area::simulate(float timeStepInSeconds_, float simulationSpeedInSeconds_) {
         timeDelta = 0;
         startTime = GetTimeMs64();
         // TODO output simulation results to console
-        PrintCubes("M");
+        PrintCubes("PM");
         cout << "ShowSimulation [][][][][]" << endl;
 
     }

@@ -15,6 +15,8 @@
 #include <string>
 #include "Cube.h"
 #include "sstream"
+#include <iomanip>  // for cout << setprecision
+#include <limits>   //    -- || --
 
 using namespace std;
 
