@@ -18,8 +18,61 @@
 
 using namespace std;
 
-class Area
-{
+/**
+ * Class Area
+ *
+ * @brief represents mXn-Matrix of Cubes
+ *
+ *
+ * see the following image for to understand the meaning of CubesCountWidth, CubesCountLength, height, length, width; x-,y- and z-axis
+ *
+ *            A-------X-------X-------X-------X-------B    ----> A-->B = x-axis = width
+ *           /|      /|      /|      /|      /|      /|                  the number of cubes from A to B is CubesCountWidth = 5
+ *          / |     / |     / |     / |     / |     / |
+ *         X-------X-------X-------X-------X-------X  |
+ *        /|      /|      /|      /|      /|      /|--X
+ *       / |     / |     / |     / |     / |     / | /
+ *      X-------X-------X-------X-------X-------X  |/
+ *     /|      /|      /|      /|      /|      /|--X
+ *    / |     / |     / |     / |     / |     / | /
+ *   C--|----X--|----X--|----X--|----X--|----D  |/   ^
+ *   |  X----|--X----|--X----|--X----|--X----|--X    |
+ *   | /     | /     | /     | /     | /     | /     | E-->D = z-axis = height
+ *   |/      |/      |/      |/      |/      |/      |         the number of cubes from E to D, in this version of WindSim is always 1
+ *   X-------X-------X-------X-------X-------E       |
+ *
+ *    /
+ *   / A-->C = y-axis = length
+ *  /          the number of cubes from A to C is CubesCountLength = 3
+ * v
+ *
+ *
+ * The matrix is called "Cubes" and represented by a vector of a vector of the class Cube
+ * As the matrix is two-dimensional representation, one can understand the vector<vector>> "Cubes" as a top view.
+ * Coordinates within this matrix are stored as [Y,X].
+ * See the following image to understand how coordinates are calculated.
+ *
+ *   A-------X-------X-------X-------X-------B   ----> A-->B = x-axis
+ *   |       |       |       |       |       |
+ *   | [0,0] | [0,1] | [0,2] | [0,3] | [0,4] |
+ *   |       |       |       |       |       |
+ *   X-------X-------X-------X-------X-------X
+ *   |       |       |       |       |       |
+ *   | [1,0] | [1,1] | [1,2] | [1,3] | [1,4] |
+ *   |       |       |       |       |       |
+ *   X-------X-------X-------X-------X-------X
+ *   |       |       |       |       |       |
+ *   | [2,0] | [2,1] | [2,2] | [2,3] | [2,4] |
+ *   |       |       |       |       |       |
+ *   C-------X-------X-------X-------X-------D
+ *
+ *   |
+ *   | A-->C = y-axis
+ *   |
+ *   v
+ */
+
+class Area {
     public:
         Area();
         //Area(int CubesCountWidth, int CubesCountLength, float heightCube, float widthCube, float lengthCube);
