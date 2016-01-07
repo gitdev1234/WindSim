@@ -114,6 +114,7 @@ double Area::GetMinMaxValue(string properties, bool max_) {
                 case 'M' : temp = Cubes[y][x].getMoleculesCount();        break;
                 case 'T' : temp = Cubes[y][x].getTemperature();           break;
                 case 'P' : temp = Cubes[y][x].calcPressure();             break;
+                case 'S' : temp = Cubes[y][x].getSpeed().x;               break;
             };
             if (max_) {
                 if (temp > minmaxValue) {
@@ -910,18 +911,29 @@ void Area::initSimulation() {
 /**
  @todo doc
  */
-void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_) {
+void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_, bool printEveryCalculation_) {
     int startTime = GetTimeMs64();
     double timeDelta = 0;
 
     // while-loop == whole simulation
     // --> one loop execution is one simulationStep for displaying
     //     and (simulationSpeedInSeconds / timeStepInSeconds) simulation steps for calculation
-    while (1) {
+    int i = 0;
+    while (i < 1000) {
+        i++;
+        cout << "ShowSimulation [][][][][]"; // << endl;
+        cout << "MinSpeed X : " << GetMinMaxValue("S",false) << "MaxSpeed X : " << GetMinMaxValue("S",true) << endl;
 
-        //for (int i = 0; i < (simulationSpeedInSeconds_ / timeStepInSeconds_); i++) { //
-            simulateTimeStep(timeStepInSeconds_);                                   // calculations
-        //}                                                                          //
+        if (!printEveryCalculation_) {
+            for (int i = 0; i < (simulationSpeedInSeconds_ / timeStepInSeconds_); i++) {
+                simulateTimeStep(timeStepInSeconds_);
+            }
+            PrintCubes("P");                // print only after last calculation
+        } else {
+            simulateTimeStep(timeStepInSeconds_);
+            PrintCubes("P");                // print only after last calculation
+        }
+
 
         while (timeDelta <= simulationSpeedInSeconds_ * 1000) { // wait until display simulation time has ended
             // wait
@@ -932,15 +944,17 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_)
         timeDelta = 0;
         startTime = GetTimeMs64();
         // TODO output simulation results to console
-        PrintCubes("PM");
-        cout << "ShowSimulation [][][][][]" << endl;
+
+
 
     }
 };
 
 void Area::simulateTimeStep(double timeStepInSeconds_) {
     //TODO
-    cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
+    if (SHOW_IN_DETAIL) {
+        cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
+    }
     simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
 };

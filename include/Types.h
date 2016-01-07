@@ -28,8 +28,10 @@ const bool PRINT_PRETTY  = true;
 const double MODIFY_TEMPERATURE_DELTA = 0.001;
 const double BOLTZMANN_CONST = 1.38 * pow(10,-23); //BOLTZMANN_CONST = 1.38064852 * pow(10,-23);
 const double INDIVIDUAL_GAS_CONST = 287.05; // [J / (Kg * K)]
-const double TODO_LIMITOR_FACTOR = 1; //0.001;
+const double TODO_LIMITOR_FACTOR = 1; // TODO
 const int PRINT_PRECISION = 10; // decimal places that are printed in cout
+
+enum programMode {START, ABORT, STAY_IN_LOOP, LOAD_STANDARD, CONFIGURE_AREA, LOAD_AREA_TEMPLATE, MODIFY_VAL, PRINT_AREA, SIMULATION,  STOP};
 
 struct GeoCoords {
     double geoHeight, geoLength, geoWidth;

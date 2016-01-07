@@ -14,3 +14,5 @@
 - overload scalar_multiplication for vector3
 - insert getter and setter for every attribute and set them private if not needed
 - proof for direct manipulation without getter and setter
+- in Main : replace things like "Enter '+'" by "Enter [+]"
+- set const functions to const

@@ -312,6 +312,9 @@ void Cube::calcSpeed(double timeStepInSeconds_){
     tempSpeed.x += (tempAcceleration.x * timeStepInSeconds_ * TODO_LIMITOR_FACTOR);
     tempSpeed.y += (tempAcceleration.y * timeStepInSeconds_ * TODO_LIMITOR_FACTOR);
     tempSpeed.z += (tempAcceleration.z * timeStepInSeconds_ * TODO_LIMITOR_FACTOR);
+    if (SHOW_IN_DETAIL) {
+        cout << "[" << coordsInArea.y << "," << coordsInArea.x << "]:" << tempSpeed.x << "," << tempSpeed.y << "," << tempSpeed.z << endl;
+    }
     setSpeed(tempSpeed);
 };
 

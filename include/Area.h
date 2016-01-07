@@ -93,7 +93,6 @@ class Area {
         // ui-implementation
         void PrintCubes(string properties);
 
-
         // modifying temperature values
         void ModifyTemperature(int x, int y, string s);
         void AffectSurroundingCubes(int x, int y);
@@ -107,7 +106,7 @@ class Area {
         /* --- simulation --- */
         // simulation
         void initSimulation();
-        void simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_);
+        void simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_, bool printEveryCalculation_);
         void simulateTimeStep(double timeStepInSeconds_);
         void simulateAirExchange(double timeStepInSeconds_);
         void simulateTemperatureExchange(double timeStepInSeconds_);

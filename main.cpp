@@ -5,9 +5,6 @@
 #include <math.h>
 using namespace std;
 
-
-enum programMode {START, ABORT, STAY_IN_LOOP, LOAD_STANDARD, CONFIGURE_AREA, LOAD_AREA_TEMPLATE, MODIFY_VAL, PRINT_AREA,  STOP};
-
 int main() {
     int w_count, l_count, x, y;
     double w_total, l_total, h_total, w_cube, l_cube;
@@ -154,7 +151,7 @@ int main() {
                 cout << "Enter [M] for printing molecules_count." << endl;
                 cout << "Enter [P] for printing pressures." << endl;
                 cout << "You can also enter a combinition of all letters." << endl;
-                cout << "Enter 'X' for getting back into previous menu." << endl;
+                cout << "Enter [X] for getting back into previous menu." << endl;
                 do {
                     ProgramMode = STAY_IN_LOOP;
                     cin >> s;
@@ -166,23 +163,55 @@ int main() {
                 } while (ProgramMode == STAY_IN_LOOP);
             } else if (toupper(s[0]) == 'S') {
                 int moleculeGroupsPerCube;
-                double moleculesPerMoleculeGroup, timeStepInSeconds, simulationSpeedInSeconds;
+                double moleculesPerMoleculeGroup, simulationTimeStep, displayTimeStep;
+                bool printEveryCalc;
                 cout << "For simulation we still need two parameters:" << endl;
                 cout << "1. The length of one timestep in seconds. This tells how detailed the simulation is calculated." << endl;
-                cout << "2. The length of how long every timestep shall be displayed. This tells how slow or fast the simulation " << endl;;
-                cout << "is shown on display." << endl;
-                cout << "For example if you enter first a 0.25 and second a 1 the programm calculates all exchange of air and " << endl;
-                cout << "changing of air pressure and so on for always a timestep of 0.25seconds (250 ms), but it displays every " << endl;
-                cout << "timestep for 1 second on the screen. This means you are seeing the simulation not in real-time, but four times slower." << endl;
-                cout << "If you enter first a 0.5 and second a 0.5, then you have a real-time simulation in which the " << endl;
-                cout << "programm simulates always timesteps of 0.5 seconds (500 ms) and shows every timestep for 0.5 seconds on the screen." << endl;
-                cout << "So now please enter first value." << endl;
-                cin  >> timeStepInSeconds;
-                cout << "And now please enter second value." << endl;
-                cin  >> simulationSpeedInSeconds;
+                cout << "2. The timestep in seconds between every print of the area." << endl;
+                cout << "This tells how slow or fast the simulation is shown on display." << endl;
+                cout << "So now please enter the simulation timestep." << endl;
+                cin  >> simulationTimeStep;
+                cout << "And now please enter the display timestep." << endl;
+                cin  >> displayTimeStep;
+
+                if (simulationTimeStep < displayTimeStep) {
+                    cout << "Your simulation-time-step value (first value) is smaller than the display-time-step value (second value)." << endl;
+                    cout << "Do you want to see every simulation timeStep?" << endl;
+                    cout << "This will lead you to a simulation which is slower than real-time." << endl;
+                    cout << "For example : " << endl;
+                    cout << "If you entered : " << endl;
+                    cout << "0.1 seconds for simulation-timestep and" << endl;
+                    cout << "1   second for display-timestep" << endl;
+                    cout << "If you now choose to print out every simulation timestep, you will see a simulation which is 10" << endl;
+                    cout << "times slower than real-time. Because every simulation timestep is calculated with" << endl;
+                    cout << "a time delta of 0.1 seconds, but is displayed for 1 second on the screen." << endl;
+                    cout << "If you choose to not print out every simulation timestep, you get an real-time simulation," << endl;
+                    cout << "which calculates 10 times per second new values, but displays them only once per second.)" << endl;
+
+                    cout << "Enter [A] if you want to display every simulation-timestep." << endl;
+                    cout << "Enter [O] if you want to display only once." << endl;
+                    do {
+                        ProgramMode = STAY_IN_LOOP;
+                        cin >> s;
+                        if (toupper(s[0]) == 'A') {
+                            printEveryCalc = true;
+                            ProgramMode = SIMULATION;
+                        } else if (toupper(s[0]) == 'O') {
+                            printEveryCalc = false;
+                            ProgramMode = SIMULATION;
+                        } else {
+                            ProgramMode = STAY_IN_LOOP;
+                        }
+                    } while (ProgramMode == STAY_IN_LOOP);
+                } else {
+                    printEveryCalc = false;
+                    ProgramMode = SIMULATION;
+                }
+
                 cout << "Simulation starts now, if you want to stop simulation press [X]" << endl;
                 MA.initSimulation();
-                MA.simulate(timeStepInSeconds,simulationSpeedInSeconds);
+                MA.simulate(simulationTimeStep,displayTimeStep,printEveryCalc);
+                return 0;
                 do {
                     ProgramMode = STAY_IN_LOOP;
                     if (toupper(s[0]) == 'X') {
