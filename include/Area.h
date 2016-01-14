@@ -110,13 +110,17 @@ class Area {
         void simulateTimeStep(double timeStepInSeconds_);
         void simulateAirExchange(double timeStepInSeconds_);
         void simulateTemperatureExchange(double timeStepInSeconds_);
+        void simulateHeatConduction(double timeStepInSeconds_);
+        double calculateTemperatureDelta(coords fromCoords_, coords toCoords_, double timeStepInSeconds_);
+        void simulateTemperatureCooldown(double timeStepInSeconds_);
+        double decreaseTemperatureUntilStandardTemperature(double temperature_,double timeStepInSeconds_);
 
         // calculating forces
-        void calculateForces(coords c);
+        void calculateForces(coords c,double timeStepInSeconds_);
         vector3 calculateGradientForce(coords c);
         vector3 calculateGradientForce(coords fromCube_, coords toCube_);
-        vector3 calculateCoriolisForce(coords c);
-        vector3 calculateFrictionForce(coords c);
+        vector3 calculateCoriolisForce(coords c,double timeStepInSeconds_);
+        vector3 calculateFrictionForce(coords c,double timeStepInSeconds_);
 
         // miscellaneous
         string getANSIRGBScaleColor(double min_, double max_, double value_);

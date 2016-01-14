@@ -98,7 +98,6 @@ class Cube
         // calculation of forces
         void clearForce();
         void addForce(vector3 force_);
-        vector3 getForce();
 
         // calculation of acceleration and speed (depending on current forces)
         void calcAcceleration();
@@ -130,16 +129,18 @@ class Cube
             double tempWidth  = getWidth();
             volume = tempHeight * tempLength * tempWidth;
         };
+        void setSurfaceRoughness(surfaceRoughnessType val_) {surfaceRoughness = val_;};
         void setDensity(double val_)                   {density = val_;                   };
         void setAcceleration(vector3 val_)            {acceleration = val_;              };
         void setSpeed(vector3 val_)                   {speed = val_;                     };
         void setInAirDeltas(list<airDelta> val_)      {inAirDeltas = val_;               };
         void addInAirDelta(airDelta val_)             {inAirDeltas.push_front(val_);     };
         void setOutAirDeltas(list<airDelta> val_)     {outAirDeltas = val_;              };
+        void setTemperatureDelta(double val_)         {temperatureDelta = val_;          };
 
         // getters
-        double getMoleculesCount()            {return moleculesCount;            };
-        double getTemperature()               {return temperature;               };
+        double getMoleculesCount()           {return moleculesCount;            };
+        double getTemperature()              {return temperature;               };
         GeoCoords getGeoCoords()             {return geoCoords;                 };
         coords getCoordsInArea()             {return coordsInArea;              };
         coords getMaxCoordsInArea()          {return maxCoordsInArea;           };
@@ -148,9 +149,12 @@ class Cube
         double getWidth ()  {return width ; };
         double getVolume()  {return volume; };
         double getDensity() {return density;};
+        surfaceRoughnessType getSurfaceRoughness() {return surfaceRoughness;};
         double getMass()    {return mass;   };
+        double getTemperatureDelta() {return temperatureDelta;};
         vector3 getSpeed() {return speed;  };
         vector3 getAcceleration()        {return acceleration; };
+        vector3 getForce()               {return force;        };
         list<airDelta> getInAirDeltas()  {return inAirDeltas;  };
         list<airDelta> getOutAirDeltas() {return outAirDeltas; };
 
@@ -162,6 +166,7 @@ class Cube
         double length;  // in m
         double width;   // in m
         double volume;  // in m^3
+        surfaceRoughnessType surfaceRoughness;
         GeoCoords geoCoords;
         coords coordsInArea;
         coords maxCoordsInArea;
@@ -179,6 +184,7 @@ class Cube
         list<airDelta> inAirDeltas;
         list<airDelta> outAirDeltas;
 
+        double temperatureDelta;
 };
 
 #endif // CUBE_H

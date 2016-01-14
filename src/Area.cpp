@@ -29,7 +29,7 @@ void Area::createStandardArea() {
     UpperLeftCube.geoLength = 8.8;       //
     UpperLeftCube.geoWidth = 53.083333;  // Bremen
     UpperLeftCube.geoHeight = 11;        //
-    createArea(10,10,1,10,10,UpperLeftCube);
+    createArea(11,11,1,11,11,UpperLeftCube);
 };
 
 void Area::createArea(int CubesCountWidth_, int CubesCountLength_, double heightArea_, double widthArea_, double lengthArea_, GeoCoords UpperLeftCube_) {
@@ -56,6 +56,7 @@ void Area::LoadBalancedAreaStructure() {
     double pressure      = 1013.25; //101325 Pa = 1012.25 hPa = standard pressure on earth / of the atmosphere
     double boltzmann_const = 1.38 * pow(10,-23);
     double molecules_count = (pressure * volume_cube) / (boltzmann_const * temperature);
+    surfaceRoughnessType surfaceRoughness = surfaceRoughnessType::MEADOW_WITH_MANY_HEDGES;
 
     // create a 2-dimensional vector of cubes with the size CubesCountLength x CubesCountWidth
     if (CubesCountLength <= 0) {
@@ -75,6 +76,7 @@ void Area::LoadBalancedAreaStructure() {
             Cubes[y][x].setMoleculesCount(molecules_count);
             Cubes[y][x].setTemperature(temperature);
             Cubes[y][x].setPressure(pressure);
+            Cubes[y][x].setSurfaceRoughness(surfaceRoughness);
             coords tempCoords;
             tempCoords.x = x;
             tempCoords.y = y;
@@ -138,15 +140,15 @@ only to use for positive numbers!!!
 string Area::getANSIRGBScaleColor(double min_, double max_, double value_) {
     int red,green,blue;
     if (min_ == max_) {
-        red = 0;
+        red = 255;
         green = 0;
-        blue = 255;
+        blue = 0;
     } else {
         double ratio = (value_ - min_) / (max_ - min_);
         double rgbvalue = 255 * ratio;
-        red = round(rgbvalue);
+        red = round(255-rgbvalue);
         green = 0;
-        blue = round(255-rgbvalue);
+        blue = round(rgbvalue);
     }
     string s, red_s, green_s, blue_s;
     stringstream sStream;
@@ -921,12 +923,23 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
     int i = 0;
     while (i < 1000) {
         i++;
-        cout << "ShowSimulation [][][][][]"; // << endl;
-        cout << "MinSpeed X : " << GetMinMaxValue("S",false) << "MaxSpeed X : " << GetMinMaxValue("S",true) << endl;
+        cout << "ShowSimulation [][][][][]" << endl;
+        double Max = 0;
+        double Min = DBL_MAX;
 
         if (!printEveryCalculation_) {
             for (int i = 0; i < (simulationSpeedInSeconds_ / timeStepInSeconds_); i++) {
                 simulateTimeStep(timeStepInSeconds_);
+                //if (GetMinMaxValue("S",false) < 0) {
+                double tempMin = GetMinMaxValue("S",false);
+                if (tempMin < Min) {
+                    Min = tempMin;
+                }
+                double tempMax = GetMinMaxValue("S",true);
+                if (tempMax > Max) {
+                    Max = tempMax;
+                }
+                //}
             }
             PrintCubes("P");                // print only after last calculation
         } else {
@@ -934,7 +947,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
             PrintCubes("P");                // print only after last calculation
         }
 
-
+        //cout << "Max : " << Max << "Min" << Min << endl;
         while (timeDelta <= simulationSpeedInSeconds_ * 1000) { // wait until display simulation time has ended
             // wait
             int newTime = GetTimeMs64();
@@ -950,13 +963,27 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
     }
 };
 
+/**
+ * simulateAirExchange
+ * simulateTemperatureExchange
+ * iterate all Cubes
+ *   | Cube.recalculateAttributes()
+ *
+ *
+ */
 void Area::simulateTimeStep(double timeStepInSeconds_) {
     //TODO
     if (SHOW_IN_DETAIL) {
         cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
     }
-    simulateAirExchange(timeStepInSeconds_);
+    //simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+            Cubes[y][x].recalculateAttributes();
+            Cubes[y][x].clearAirDeltas();
+        }
+    }
 };
 
 /**
@@ -972,9 +999,6 @@ void Area::simulateTimeStep(double timeStepInSeconds_) {
  *   | iterate all airDeltas // always 1 or two per cube
  *   |   | NewCube.addInAirDelta(airDelta)
  *
- * iterate all Cubes
- *   | Cube.recalculateAttributes()
- *
  *
  */
 void Area::simulateAirExchange(double timeStepInSeconds_) {
@@ -986,7 +1010,7 @@ void Area::simulateAirExchange(double timeStepInSeconds_) {
             }
             c.x = x;
             c.y = y;
-            calculateForces(c);
+            calculateForces(c, timeStepInSeconds_);
             Cubes[c.y][c.x].calcAcceleration();
             Cubes[c.y][c.x].calcSpeed(timeStepInSeconds_);
             list<airDelta> tempOutAirDeltas = Cubes[c.y][c.x].calcLeavingAirDeltas(timeStepInSeconds_);
@@ -996,26 +1020,115 @@ void Area::simulateAirExchange(double timeStepInSeconds_) {
             }
         }
     }
-    for (int y = 0; y < Cubes.size(); y++) {
-        for (int x = 0; x < Cubes[y].size(); x++) {
-            Cubes[y][x].recalculateAttributes();
-            Cubes[y][x].clearAirDeltas();
-        }
-    }
 
 };
 
 void Area::simulateTemperatureExchange(double timeStepInSeconds_) {
+    simulateHeatConduction(timeStepInSeconds_);
+    //simulateTemperatureCooldown(timeStepInSeconds_);
+};
 
+void Area::simulateHeatConduction(double timeStepInSeconds_) {
+    coords c;
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+            c.x = x;
+            c.y = y;
+            coords up    = {.x = c.x,     .y = c.y - 1};
+            coords down  = {.x = c.x, .    y = c.y + 1};
+            coords left  = {.x = c.x - 1, .y = c.y    };
+            coords right = {.x = c.x + 1, .y = c.y    };
+            double tempTemperatureDelta = 0;
+
+            tempTemperatureDelta += calculateTemperatureDelta(c, up, timeStepInSeconds_);
+            tempTemperatureDelta += calculateTemperatureDelta(c, down, timeStepInSeconds_);
+            tempTemperatureDelta += calculateTemperatureDelta(c, left, timeStepInSeconds_);
+            tempTemperatureDelta += calculateTemperatureDelta(c, right, timeStepInSeconds_);
+            Cubes[c.y][c.x].setTemperatureDelta(tempTemperatureDelta);
+        }
+    }
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+            double tempTemperatureDelta = Cubes[y][x].getTemperatureDelta();
+            double oldTemperature = Cubes[y][x].getTemperature();
+            double newTemperature = oldTemperature + tempTemperatureDelta;
+            Cubes[y][x].setTemperature(newTemperature);
+        }
+    }
+};
+
+double Area::calculateTemperatureDelta(coords fromCoords_, coords toCoords_, double timeStepInSeconds_) {
+   // bool left = false;
+    temperatureDelta tempTemperatureDelta;
+    double temperatureDifference;
+    double A, l;
+    if (CheckCoordsStillInArea(fromCoords_)) {
+        if ((toCoords_.x == fromCoords_.x - 1 ) || (toCoords_.x == fromCoords_.x + 1)) { // left or right
+            A = Cubes[fromCoords_.y][fromCoords_.x].getLength(); // size of contact-area between the two cubes [m^2]
+            l = Cubes[fromCoords_.y][fromCoords_.x].getWidth(); // distance (between the two midpoints of the two cubes [m])
+        } else if  ((toCoords_.y == fromCoords_.y - 1) || (toCoords_.y == fromCoords_.y + 1)) { // up or Down
+            A = Cubes[fromCoords_.y][fromCoords_.x].getWidth(); // size of contact-area between the two cubes [m^2]
+            l = Cubes[fromCoords_.y][fromCoords_.x].getLength(); // distance (between the two midpoints of the two cubes [m])
+        } else { // error
+            return 0;
+        }
+
+        if (CheckCoordsStillInArea(toCoords_)) {
+            double fromTemperature = Cubes[fromCoords_.y][fromCoords_.x].getTemperature();
+            double toTemperature   = Cubes[toCoords_.y][toCoords_.x].getTemperature();
+            temperatureDifference = toTemperature - fromTemperature;
+        } else { // Todo
+            double fromTemperature = Cubes[fromCoords_.y][fromCoords_.x].getTemperature();
+            double toTemperature   = 288;
+            temperatureDifference = toTemperature - fromTemperature;
+            //temperatureDifference = 0;
+        }
+        double dQ = THERMAL_CONDUCTIVITY_COEFFICIENT_AIR * (A/l) * timeStepInSeconds_ * temperatureDifference; // dQ = HeatDifference [J]
+        double tempMass = Cubes[fromCoords_.y][fromCoords_.x].calcMass();
+        double temperatureDifferenceWhichIsToAddOnOldTemperature = dQ / (SPECIFIC_THERMAL_CAPACITY_AIR * tempMass); // [K]
+        return temperatureDifferenceWhichIsToAddOnOldTemperature;
+
+    } else { // error
+        return 0;
+    }
+};
+
+void Area::simulateTemperatureCooldown(double timeStepInSeconds_) {
+    int tempCubesCountLength = GetCubesCountLength();
+    int tempCubesCountWidth = GetCubesCountWidth();
+    double tempTemperature;
+    for (int x = 0; x < tempCubesCountWidth; x++) {
+        tempTemperature = Cubes[0][x].getTemperature();
+        Cubes[0][x].setTemperature(decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_));
+        tempTemperature = Cubes[tempCubesCountLength - 1][x].getTemperature();
+        Cubes[tempCubesCountLength - 1][x].setTemperature(decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_));
+    }
+    for (int y = 1; y < tempCubesCountLength - 1; y++) {
+        tempTemperature = Cubes[y][0].getTemperature();
+        decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_);
+        Cubes[y][0].setTemperature(decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_));
+        tempTemperature = Cubes[y][tempCubesCountWidth - 1].getTemperature();
+        Cubes[y][tempCubesCountWidth - 1].setTemperature(decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_));
+    }
+};
+
+double Area::decreaseTemperatureUntilStandardTemperature(double temperature_,double timeStepInSeconds_) {
+    if (temperature_ > 288) {
+        temperature_ -= MODIFY_TEMPERATURE_DELTA / 10 * timeStepInSeconds_;
+    }
+    if (temperature_ < 288) {
+        temperature_ = 288;
+    }
+    return temperature_;
 };
 
 // calculating forces
 
-void Area::calculateForces(coords c) {
+void Area::calculateForces(coords c,double timeStepInSeconds_) {
     Cubes[c.y][c.x].clearForce();
     Cubes[c.y][c.x].addForce(calculateGradientForce(c));
-    Cubes[c.y][c.x].addForce(calculateCoriolisForce(c));
-    Cubes[c.y][c.x].addForce(calculateFrictionForce(c));
+    Cubes[c.y][c.x].addForce(calculateCoriolisForce(c,timeStepInSeconds_));
+    Cubes[c.y][c.x].addForce(calculateFrictionForce(c,timeStepInSeconds_));
 };
 
 
@@ -1101,7 +1214,7 @@ vector3 Area::calculateGradientForce(coords fromCube_, coords toCube_) {
     return tempGradientForce;
 };
 
-vector3 Area::calculateCoriolisForce(coords c) {
+vector3 Area::calculateCoriolisForce(coords c,double timeStepInSeconds_) {
     // TODO
     vector3 tempForces;
     tempForces.x = 0.0;
@@ -1110,13 +1223,30 @@ vector3 Area::calculateCoriolisForce(coords c) {
     return tempForces;
 };
 
-vector3 Area::calculateFrictionForce(coords c) {
+vector3 Area::calculateFrictionForce(coords c,double timeStepInSeconds_) {
     // TODO
-    vector3 tempForces;
-    tempForces.x = 0;//-0.00003;
-    tempForces.y = 0;//-0.00002;
-    tempForces.z = 0.0;
-    return tempForces;
+    //vector3 tempForces;
+    //tempForces.x = 0;//-0.00003;
+    //tempForces.y = 0;//-0.00002;
+    //tempForces.z = 0.0;
+    surfaceRoughnessType tempSurfaceRoughness = Cubes[c.y][c.x].getSurfaceRoughness();
+    double HellmannExponent;
+    switch (tempSurfaceRoughness) {
+        case WATER                   : HellmannExponent = HELLMANN_EXPONENT_WATER;                   break;
+        case MEADOW                  : HellmannExponent = HELLMANN_EXPONENT_MEADOW;                  break;
+        case MEADOW_WITH_MANY_HEDGES : HellmannExponent = HELLMANN_EXPONENT_MEADOW_WITH_MANY_HEDGES; break;
+        case PARK_LANDSCAPE          : HellmannExponent = HELLMANN_EXPONENT_PARK_LANDSCAPE;          break;
+        case DENSELY_BUILT_UP_AREA   : HellmannExponent = HELLMANN_EXPONENT_DENSELY_BUILT_UP_AREA;   break;
+        case SKYSCRAPER_CITY         : HellmannExponent = HELLMANN_EXPONENT_SKYSCRAPER_CITY;         break;
+    }
+
+    double tempMass = Cubes[c.y][c.x].getMass();
+    vector3 tempForcesWithoutFriction = Cubes[c.y][c.x].getForce();
+    vector3 tempAccelerationWithoutFriction = tempForcesWithoutFriction / tempMass;
+    vector3 tempSpeedWithoutFriction = tempAccelerationWithoutFriction * timeStepInSeconds_;
+    double h0 = Cubes[c.y][c.x].getHeight() / 2; // reference-height
+    vector3 frictionForce = tempSpeedWithoutFriction * VISCOSITY_AIR * ( HellmannExponent * (HellmannExponent - 1) / (h0 * h0) ) * tempMass;
+    return frictionForce;
 };
 
 /**

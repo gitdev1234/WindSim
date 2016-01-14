@@ -268,10 +268,6 @@ void Cube::addForce(vector3 force_) {
     force.z += force_.z;
 };
 
-vector3 Cube::getForce() {
-    return force;
-};
-
 // calculation of acceleration and speed (depending on current forces)
 
 /**
