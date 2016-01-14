@@ -312,6 +312,17 @@ void Cube::calcSpeed(double timeStepInSeconds_){
         cout << "[" << coordsInArea.y << "," << coordsInArea.x << "]:" << tempSpeed.x << "," << tempSpeed.y << "," << tempSpeed.z << endl;
     }
     setSpeed(tempSpeed);
+
+    /*
+    //Runge-Kutta
+    vector3 oldSpeed = getSpeed();
+    vector3 tempAcceleration = getAcceleration();
+    tempSpeed.x = oldSpeed.x + timeStepInSeconds_ * ca
+    tempSpeed.x = 0.5 * (oldSpeed.x + (timeStepInSeconds_ * calcAcceleration(oldSpeed)));
+    tempSpeed.y = 0.5 * (oldSpeed.y + (timeStepInSeconds_ * calcAcceleration(oldSpeed));
+    tempSpeed.z = 0.5 * (oldSpeed.z + (timeStepInSeconds_ * calcAcceleration(oldSpeed));
+    setSpeed(tempSpeed);
+    */
 };
 
 // pressure

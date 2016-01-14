@@ -923,7 +923,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
     int i = 0;
     while (i < 1000) {
         i++;
-        cout << "ShowSimulation [][][][][]" << endl;
+        cout << "ShowSimulation [][][][][]"; // << endl;
         double Max = 0;
         double Min = DBL_MAX;
 
@@ -944,10 +944,18 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
             PrintCubes("P");                // print only after last calculation
         } else {
             simulateTimeStep(timeStepInSeconds_);
+            double tempMin = GetMinMaxValue("S",false);
+            if (tempMin < Min) {
+                Min = tempMin;
+            }
+            double tempMax = GetMinMaxValue("S",true);
+            if (tempMax > Max) {
+                Max = tempMax;
+            }
             PrintCubes("P");                // print only after last calculation
         }
 
-        //cout << "Max : " << Max << "Min" << Min << endl;
+        cout << "Max : " << Max << "Min" << Min << endl;
         while (timeDelta <= simulationSpeedInSeconds_ * 1000) { // wait until display simulation time has ended
             // wait
             int newTime = GetTimeMs64();
@@ -976,7 +984,7 @@ void Area::simulateTimeStep(double timeStepInSeconds_) {
     if (SHOW_IN_DETAIL) {
         cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
     }
-    //simulateAirExchange(timeStepInSeconds_);
+    simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
@@ -1025,7 +1033,6 @@ void Area::simulateAirExchange(double timeStepInSeconds_) {
 
 void Area::simulateTemperatureExchange(double timeStepInSeconds_) {
     simulateHeatConduction(timeStepInSeconds_);
-    //simulateTemperatureCooldown(timeStepInSeconds_);
 };
 
 void Area::simulateHeatConduction(double timeStepInSeconds_) {
@@ -1090,25 +1097,6 @@ double Area::calculateTemperatureDelta(coords fromCoords_, coords toCoords_, dou
 
     } else { // error
         return 0;
-    }
-};
-
-void Area::simulateTemperatureCooldown(double timeStepInSeconds_) {
-    int tempCubesCountLength = GetCubesCountLength();
-    int tempCubesCountWidth = GetCubesCountWidth();
-    double tempTemperature;
-    for (int x = 0; x < tempCubesCountWidth; x++) {
-        tempTemperature = Cubes[0][x].getTemperature();
-        Cubes[0][x].setTemperature(decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_));
-        tempTemperature = Cubes[tempCubesCountLength - 1][x].getTemperature();
-        Cubes[tempCubesCountLength - 1][x].setTemperature(decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_));
-    }
-    for (int y = 1; y < tempCubesCountLength - 1; y++) {
-        tempTemperature = Cubes[y][0].getTemperature();
-        decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_);
-        Cubes[y][0].setTemperature(decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_));
-        tempTemperature = Cubes[y][tempCubesCountWidth - 1].getTemperature();
-        Cubes[y][tempCubesCountWidth - 1].setTemperature(decreaseTemperatureUntilStandardTemperature(tempTemperature,timeStepInSeconds_));
     }
 };
 
@@ -1241,11 +1229,9 @@ vector3 Area::calculateFrictionForce(coords c,double timeStepInSeconds_) {
     }
 
     double tempMass = Cubes[c.y][c.x].getMass();
-    vector3 tempForcesWithoutFriction = Cubes[c.y][c.x].getForce();
-    vector3 tempAccelerationWithoutFriction = tempForcesWithoutFriction / tempMass;
-    vector3 tempSpeedWithoutFriction = tempAccelerationWithoutFriction * timeStepInSeconds_;
+    vector3 oldSpeed = Cubes[c.y][c.x].getSpeed();
     double h0 = Cubes[c.y][c.x].getHeight() / 2; // reference-height
-    vector3 frictionForce = tempSpeedWithoutFriction * VISCOSITY_AIR * ( HellmannExponent * (HellmannExponent - 1) / (h0 * h0) ) * tempMass;
+    vector3 frictionForce = oldSpeed * VISCOSITY_AIR * ( HellmannExponent * (HellmannExponent - 1) / (h0 * h0) ) * tempMass * 10000;
     return frictionForce;
 };
 

@@ -37,12 +37,12 @@ const int PRINT_PRECISION = 10; // decimal places that are printed in cout
 enum programMode {START, ABORT, STAY_IN_LOOP, LOAD_STANDARD, CONFIGURE_AREA, LOAD_AREA_TEMPLATE, MODIFY_VAL, PRINT_AREA, SIMULATION,  STOP};
 
 enum surfaceRoughnessType {WATER, MEADOW, MEADOW_WITH_MANY_HEDGES, PARK_LANDSCAPE, DENSELY_BUILT_UP_AREA, SKYSCRAPER_CITY};
-const double HELLMANN_EXPONENT_WATER                   = 0.06;
-const double HELLMANN_EXPONENT_MEADOW                  = 0.08;
-const double HELLMANN_EXPONENT_MEADOW_WITH_MANY_HEDGES = 0.09;
-const double HELLMANN_EXPONENT_PARK_LANDSCAPE          = 0.14;
-const double HELLMANN_EXPONENT_DENSELY_BUILT_UP_AREA   = 0.18;
-const double HELLMANN_EXPONENT_SKYSCRAPER_CITY         = 0.29;
+const double HELLMANN_EXPONENT_WATER                   = 0.12;
+const double HELLMANN_EXPONENT_MEADOW                  = 0.16;
+const double HELLMANN_EXPONENT_MEADOW_WITH_MANY_HEDGES = 0.16;
+const double HELLMANN_EXPONENT_PARK_LANDSCAPE          = 0.27;
+const double HELLMANN_EXPONENT_DENSELY_BUILT_UP_AREA   = 0.28;
+const double HELLMANN_EXPONENT_SKYSCRAPER_CITY         = 0.37;
 
 struct GeoCoords {
     double geoHeight, geoLength, geoWidth;

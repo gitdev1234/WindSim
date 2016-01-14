@@ -112,7 +112,6 @@ class Area {
         void simulateTemperatureExchange(double timeStepInSeconds_);
         void simulateHeatConduction(double timeStepInSeconds_);
         double calculateTemperatureDelta(coords fromCoords_, coords toCoords_, double timeStepInSeconds_);
-        void simulateTemperatureCooldown(double timeStepInSeconds_);
         double decreaseTemperatureUntilStandardTemperature(double temperature_,double timeStepInSeconds_);
 
         // calculating forces
