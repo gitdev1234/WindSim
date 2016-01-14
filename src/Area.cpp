@@ -923,7 +923,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
     int i = 0;
     while (i < 1000) {
         i++;
-        cout << "ShowSimulation [][][][][]"; // << endl;
+        cout << "ShowSimulation [][][][][]" << endl;
         double Max = 0;
         double Min = DBL_MAX;
 

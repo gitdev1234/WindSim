@@ -15,7 +15,7 @@
 #include <list>
 #include <math.h>
 #include "Types.h"
-
+#include <vector>
 
 using namespace std;
 
@@ -100,6 +100,7 @@ class Cube
         void addForce(vector3 force_);
 
         // calculation of acceleration and speed (depending on current forces)
+        void calcForce(std::vector<std::vector<Cube> >& Cubes);
         void calcAcceleration();
         void calcSpeed(double timeStepInSeconds_);
 

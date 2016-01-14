@@ -270,6 +270,12 @@ void Cube::addForce(vector3 force_) {
 
 // calculation of acceleration and speed (depending on current forces)
 
+void Cube::calcForce(std::vector<std::vector<Cube> >& Cubes_) {
+    coords tempCoordsInArea = getCoordsInArea();
+    Cube c = Cubes_[coordsInArea.y][coordsInArea.x];
+    double tempLength = Cubes_[tempCoordsInArea.y][tempCoordsInArea.x].getLength();
+};
+
 /**
  * Cube::calcAcceleration()
  *
