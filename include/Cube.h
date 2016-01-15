@@ -99,8 +99,12 @@ class Cube
         void clearForce();
         void addForce(vector3 force_);
 
-        // calculation of acceleration and speed (depending on current forces)
-        void calcForce(std::vector<std::vector<Cube> >& Cubes);
+        // calculation of forces, acceleration and speed
+        void calcForces(std::vector<std::vector<Cube> >& Cubes, double timeStepInSeconds_);
+        vector3 calcGradientForce(std::vector<std::vector<Cube> >& Cubes);
+        vector3 calcGradientForce(std::vector<std::vector<Cube> >& Cubes, coords toCube_);
+        vector3 calcCoriolisForce(std::vector<std::vector<Cube> >& Cubes, double timeStepInSeconds_);
+        vector3 calcFrictionForce(double timeStepInSeconds_);
         void calcAcceleration();
         void calcSpeed(double timeStepInSeconds_);
 

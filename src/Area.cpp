@@ -1018,7 +1018,8 @@ void Area::simulateAirExchange(double timeStepInSeconds_) {
             }
             c.x = x;
             c.y = y;
-            calculateForces(c, timeStepInSeconds_);
+            Cubes[c.y][c.x].calcForces(Cubes, timeStepInSeconds_);
+            //calculateForces(c, timeStepInSeconds_); // old function of class Area
             Cubes[c.y][c.x].calcAcceleration();
             Cubes[c.y][c.x].calcSpeed(timeStepInSeconds_);
             list<airDelta> tempOutAirDeltas = Cubes[c.y][c.x].calcLeavingAirDeltas(timeStepInSeconds_);

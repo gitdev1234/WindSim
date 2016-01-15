@@ -11,6 +11,7 @@
 #define TYPES_H_INCLUDED
 
 #include <math.h>
+#include "vector3.h"
 
 
 // needed for Area::GetTimeMs64()
@@ -50,74 +51,6 @@ struct GeoCoords {
 
 struct coords {
     int x, y;
-};
-
-struct vector3 {
-    double x, y, z;
-
-    vector3& operator*(const double other_) {
-        vector3 temp;
-        temp.x = x * other_;
-        temp.y = y * other_;
-        temp.z = z * other_;
-        return temp;
-    }
-
-    vector3& operator*(const vector3 other_) {
-        vector3 temp;
-        temp.x = x * other_.x;
-        temp.y = y * other_.y;
-        temp.z = z * other_.z;
-        return temp;
-    }
-
-    vector3& operator/(const double other_) {
-        vector3 temp;
-        temp.x = x / other_;
-        temp.y = y / other_;
-        temp.z = z / other_;
-        return temp;
-    }
-
-    vector3& operator/(const vector3 other_) {
-        vector3 temp;
-        temp.x = x / other_.x;
-        temp.y = y / other_.y;
-        temp.z = z / other_.z;
-        return temp;
-    }
-
-    vector3& operator+(const double other_) {
-        vector3 temp;
-        temp.x = x + other_;
-        temp.y = y + other_;
-        temp.z = z + other_;
-        return temp;
-    }
-
-    vector3& operator+(const vector3 other_) {
-        vector3 temp;
-        temp.x = x + other_.x;
-        temp.y = y + other_.y;
-        temp.z = z + other_.z;
-        return temp;
-    }
-
-    vector3& operator-(const double other_) {
-        vector3 temp;
-        temp.x = x - other_;
-        temp.y = y - other_;
-        temp.z = z - other_;
-        return temp;
-    }
-
-    vector3& operator-(const vector3 other_) {
-        vector3 temp;
-        temp.x = x - other_.x;
-        temp.y = y - other_.y;
-        temp.z = z - other_.z;
-        return temp;
-    }
 };
 
 struct airDelta {

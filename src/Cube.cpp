@@ -270,10 +270,109 @@ void Cube::addForce(vector3 force_) {
 
 // calculation of acceleration and speed (depending on current forces)
 
-void Cube::calcForce(std::vector<std::vector<Cube> >& Cubes_) {
+void Cube::calcForces(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_) {
     coords tempCoordsInArea = getCoordsInArea();
-    Cube c = Cubes_[coordsInArea.y][coordsInArea.x];
-    double tempLength = Cubes_[tempCoordsInArea.y][tempCoordsInArea.x].getLength();
+    clearForce();
+    addForce(calcGradientForce(Cubes_));
+    addForce(calcCoriolisForce(Cubes_,timeStepInSeconds_));
+    addForce(calcFrictionForce(timeStepInSeconds_));
+};
+
+vector3 Cube::calcGradientForce(std::vector<std::vector<Cube> >& Cubes_) {
+    vector3 tempForces      = {.x = 0, .y = 0, .z = 0};
+    coords c = getCoordsInArea(); // coords of this cube within Area
+    coords leftUpperCorner  = {.x = c.x - 1, .y = c.y - 1};
+    coords up               = {.x = c.x    , .y = c.y - 1};
+    coords rightUpperCorner = {.x = c.x + 1, .y = c.y - 1};
+    coords right            = {.x = c.x + 1, .y = c.y    };
+    coords rightLowerCorner = {.x = c.x + 1, .y = c.y + 1};
+    coords down             = {.x = c.x    , .y = c.y + 1};
+    coords leftLowerCorner  = {.x = c.x - 1, .y = c.y + 1};
+    coords left             = {.x = c.x - 1, .y = c.y    };
+    tempForces += calcGradientForce(Cubes_, leftUpperCorner);
+    tempForces += calcGradientForce(Cubes_, up);
+    tempForces += calcGradientForce(Cubes_, rightUpperCorner);
+    tempForces += calcGradientForce(Cubes_, right);
+    tempForces += calcGradientForce(Cubes_, rightLowerCorner);
+    tempForces += calcGradientForce(Cubes_, down);
+    tempForces += calcGradientForce(Cubes_, leftLowerCorner);
+    tempForces += calcGradientForce(Cubes_, left);
+    return tempForces;
+};
+
+/**
+ * @brief calculates the gradientforce beetween two cubes
+ * @param fromCube_ the cube for which you calculate the force
+ * @param toCube_ the cube the calculation is referencing to
+ */
+vector3 Cube::calcGradientForce(std::vector<std::vector<Cube> >& Cubes_, coords toCube_) {
+    vector3 tempGradientForce;
+    coords fromCube = getCoordsInArea(); // coords of this cube within Area
+    if (checkCoordsStillInArea(toCube_)) {
+        double tempMass        = calcMass();
+        double tempDensity     = calcDensity();
+        double pressureDifference = calcPressure() - Cubes_[toCube_.y][toCube_.x].calcPressure();
+        vector3 positionOfFromCube;
+        positionOfFromCube.x = (fromCube.x + 0.5) * getWidth();
+        positionOfFromCube.y = (fromCube.y + 0.5) * getLength();
+        positionOfFromCube.z = (        0  + 0.5) * getHeight();
+        vector3 positionOfToCube;
+        positionOfToCube.x = (toCube_.x + 0.5) * (Cubes_[toCube_.y][toCube_.x].getWidth());
+        positionOfToCube.y = (toCube_.y + 0.5) * (Cubes_[toCube_.y][toCube_.x].getLength());
+        positionOfToCube.z = (       0  + 0.5) * (Cubes_[toCube_.y][toCube_.x].getHeight());
+
+        double xDifference = positionOfToCube.x - positionOfFromCube.x;
+        double yDifference = positionOfToCube.y - positionOfFromCube.y;
+        double zDifference = positionOfToCube.z - positionOfFromCube.z;
+        if (xDifference != 0) {
+            tempGradientForce.x = - (tempMass / tempDensity) * (pressureDifference / (xDifference)) * (-1);
+        } else {
+            tempGradientForce.x = 0;
+        }
+        if (yDifference != 0) {
+            tempGradientForce.y = - (tempMass / tempDensity) * (pressureDifference / (yDifference)) * (-1);
+        } else {
+            tempGradientForce.y = 0;
+        }
+        if (zDifference != 0) {
+            tempGradientForce.z = - (tempMass / tempDensity) * (pressureDifference / (zDifference)) * (-1);
+        } else  {
+            tempGradientForce.z = 0;
+        }
+    } else {
+        tempGradientForce.x = 0;
+        tempGradientForce.y = 0;
+        tempGradientForce.z = 0;
+    }
+    return tempGradientForce;
+};
+
+vector3 Cube::calcCoriolisForce(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_) {
+    // TODO
+    vector3 tempForces;
+    tempForces.x = 0.0;
+    tempForces.y = 0.0;
+    tempForces.z = 0.0;
+    return tempForces;
+};
+
+vector3 Cube::calcFrictionForce(double timeStepInSeconds_) {
+    surfaceRoughnessType tempSurfaceRoughness = getSurfaceRoughness();
+    double HellmannExponent;
+    switch (tempSurfaceRoughness) {
+        case WATER                   : HellmannExponent = HELLMANN_EXPONENT_WATER;                   break;
+        case MEADOW                  : HellmannExponent = HELLMANN_EXPONENT_MEADOW;                  break;
+        case MEADOW_WITH_MANY_HEDGES : HellmannExponent = HELLMANN_EXPONENT_MEADOW_WITH_MANY_HEDGES; break;
+        case PARK_LANDSCAPE          : HellmannExponent = HELLMANN_EXPONENT_PARK_LANDSCAPE;          break;
+        case DENSELY_BUILT_UP_AREA   : HellmannExponent = HELLMANN_EXPONENT_DENSELY_BUILT_UP_AREA;   break;
+        case SKYSCRAPER_CITY         : HellmannExponent = HELLMANN_EXPONENT_SKYSCRAPER_CITY;         break;
+    }
+
+    double tempMass = getMass();
+    vector3 oldSpeed = getSpeed();
+    double h0 = getHeight() / 2; // reference-height
+    vector3 frictionForce = oldSpeed * VISCOSITY_AIR * ( HellmannExponent * (HellmannExponent - 1) / (h0 * h0) ) * tempMass * 10000;
+    return frictionForce;
 };
 
 /**
