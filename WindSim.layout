@@ -2,19 +2,19 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="src/Cube.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/Area.cpp" open="1" top="1" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="8900" topLine="255" />
+			<Cursor1 position="3070" topLine="48" />
 		</Cursor>
 	</File>
 	<File name="include/Cube.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="162" topLine="169" />
+			<Cursor1 position="3054" topLine="76" />
 		</Cursor>
 	</File>
-	<File name="src/Area.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Area.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="153" topLine="0" />
+			<Cursor1 position="4033" topLine="80" />
 		</Cursor>
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -22,15 +22,25 @@
 			<Cursor1 position="9501" topLine="171" />
 		</Cursor>
 	</File>
+	<File name="src/vector3.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="0" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/Cube.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="8900" topLine="255" />
+		</Cursor>
+	</File>
 	<File name="include/Types.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="3489" topLine="0" />
+			<Cursor1 position="1754" topLine="22" />
 		</Cursor>
 	</File>
-	<File name="include/Area.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/vector3.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4878" topLine="95" />
+			<Cursor1 position="2061" topLine="18" />
 		</Cursor>
 	</File>
-	<EditorTabsLayout layout="06d795505698a2e30032634e00000002=0;WindSim:main.cpp,1;WindSim:include/Cube.h,2;WindSim:include/Types.h,3;WindSim:src/Cube.cpp,4;WindSim:include/Area.h,5;WindSim:src/Area.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=569;besth=236;minw=569;minh=236;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=06d795505698a2e30032634e00000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<EditorTabsLayout layout="060031d0569bb82200326e4e00000002=0;WindSim:main.cpp,1;WindSim:include/Cube.h,2;WindSim:include/Types.h,3;WindSim:src/Cube.cpp,4;WindSim:include/Area.h,*5;WindSim:src/Area.cpp,6;WindSim:include/vector3.h,7;WindSim:src/vector3.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=569;besth=236;minw=569;minh=236;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=060031d0569bb82200326e4e00000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
 </CodeBlocks_layout_file>

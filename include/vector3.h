@@ -49,6 +49,11 @@ class vector3 {
         void    operator-=(const double&  other_);
         void    operator-=(const vector3& other_);
 
+        friend vector3 operator*(const double& d_, const vector3& v_);
+        friend vector3 operator/(const double& d_, const vector3& v_);
+        friend vector3 operator+(const double& d_, const vector3& v_);
+        friend vector3 operator-(const double& d_, const vector3& v_);
+
         // print operator
         friend ostream& operator<<(ostream& o_, const vector3& v_);
 

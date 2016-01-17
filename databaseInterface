@@ -1,0 +1,63 @@
+
+sqlite3 openDataBase() {
+	// ...
+}
+
+void closeDataBase(sqlite3 *db_) {
+	// ...
+}
+
+void writeToDataBase(sqlite3 *db_, vector3 value_, coords c_) {
+	int x = c_.x;
+	int y = c_.y;
+	double valueX = value_.x;
+	double valueY = value_.y;
+	double valueZ = value_.z;
+	//delete from tableTODO where x == x and y == y
+	//insert into tableTODO values (x,y,valueX,valueY,valueZ)
+}
+
+void readParametersFromDataBase(sqlite3 *db_) {
+	//select X,Y,Z,... from tableTODO
+	int CubesCountWidth     = X;
+	int CubesCountLength    = Y;
+	double heightArea       = Z;
+	double widthArea        = ..;
+	double lengthArea       = ..;
+	double geoCoordsWidth   = ..;
+	double geoCoordsLength  = ..;
+	double geoCoordsHeight  = ..;
+	//setParameters(CubesCountWidth, CubesCountLength, ...); // das implementiere ich
+}
+
+void readTemperatureChangesFromDataBase(sqlite3 *db_) {
+	while (select A,B,C,... from tableTODO != 0) { // hier kann es mehrere Werte geben die man hintereinander hinzufügen muss
+		coords c = {.x = A, .y = B};
+		double temperatureDelta = C;
+		//addTemperatureDelta(c,temperatureDelta); //das implementiere ich
+	}
+}
+
+/*
+ich will dann später sowas hier in meine simulation einbauen
+
+sqlite3 db = openDataBase();
+readParametersFromDataBase(*db);
+
+while (simulation...) {
+		
+	for (int y = 0; y < Cubes.size(); y++) {
+	        for (int x = 0; x < Cubes[y].size(); x++) {
+			vector3 force = Cubes[y][x].calcForce();
+			coords c = {.x = x, .y = y}
+			writeToDataBase(*db,force,c);
+			readTemperatureChangesFromDataBase(*db);
+		}
+	}
+
+}
+
+*/
+
+
+

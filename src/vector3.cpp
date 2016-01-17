@@ -63,6 +63,10 @@ vector3 vector3::operator*(const vector3& other_) const {
     return temp;
 }
 
+vector3 operator*(const double& d_, const vector3& v_){
+    return v_ * d_;
+};
+
 void vector3::operator*=(const vector3& other_) {
     *this = *this * other_;
 }
@@ -86,6 +90,10 @@ vector3 vector3::operator/(const vector3& other_) const {
     temp.z = z / other_.z;
     return temp;
 }
+
+vector3 operator/(const double& d_, const vector3& v_){
+    return v_ / d_;
+};
 
 void vector3::operator/=(const vector3& other_) {
     *this = *this / other_;
@@ -111,6 +119,10 @@ vector3 vector3::operator+(const vector3& other_) const {
     return temp;
 }
 
+vector3 operator+(const double& d_, const vector3& v_){
+    return v_ + d_;
+};
+
 void vector3::operator+=(const vector3& other_) {
     *this = *this + other_;
 }
@@ -135,6 +147,10 @@ vector3 vector3::operator-(const vector3& other_) const {
     return temp;
 }
 
+vector3 operator-(const double& d_, const vector3& v_){
+    return v_ - d_;
+};
+
 void vector3::operator-=(const double& other_) {
     *this = *this - other_;
 }
@@ -142,6 +158,7 @@ void vector3::operator-=(const double& other_) {
 void vector3::operator-=(const vector3& other_) {
     *this = *this - other_;
 }
+
 
 // print operator
 ostream& operator<<(ostream& o_, const vector3& v_) {
