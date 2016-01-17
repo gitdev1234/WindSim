@@ -270,12 +270,12 @@ void Cube::addForce(vector3 force_) {
 
 // calculation of acceleration and speed (depending on current forces)
 
-void Cube::calcForces(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_) {
+void Cube::calcForces(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
     coords tempCoordsInArea = getCoordsInArea();
     clearForce();
     addForce(calcGradientForce(Cubes_));
-    addForce(calcCoriolisForce(Cubes_,timeStepInSeconds_));
-    addForce(calcFrictionForce(timeStepInSeconds_));
+    addForce(calcCoriolisForce(Cubes_,timeStepInSeconds_, speedOfPreviousTimeStep_));
+    addForce(calcFrictionForce(timeStepInSeconds_, speedOfPreviousTimeStep_));
 };
 
 vector3 Cube::calcGradientForce(std::vector<std::vector<Cube> >& Cubes_) {
@@ -347,7 +347,7 @@ vector3 Cube::calcGradientForce(std::vector<std::vector<Cube> >& Cubes_, coords 
     return tempGradientForce;
 };
 
-vector3 Cube::calcCoriolisForce(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_) {
+vector3 Cube::calcCoriolisForce(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
     // TODO
     vector3 tempForces;
     tempForces.x = 0.0;
@@ -356,7 +356,7 @@ vector3 Cube::calcCoriolisForce(std::vector<std::vector<Cube> >& Cubes_, double 
     return tempForces;
 };
 
-vector3 Cube::calcFrictionForce(double timeStepInSeconds_) {
+vector3 Cube::calcFrictionForce(double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
     surfaceRoughnessType tempSurfaceRoughness = getSurfaceRoughness();
     double HellmannExponent;
     switch (tempSurfaceRoughness) {
@@ -383,7 +383,8 @@ vector3 Cube::calcFrictionForce(double timeStepInSeconds_) {
  * calculates the current acceleration of the air within the cube:
  *  --> acceleration = force / mass
  */
-void Cube::calcAcceleration() {
+void Cube::calcAcceleration(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
+    calcForces(Cubes_, timeStepInSeconds_, speedOfPreviousTimeStep_);
     vector3 tempForce = getForce();
     double tempMass = getMass();
     vector3 tempAcceleration;

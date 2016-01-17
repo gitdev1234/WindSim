@@ -29,7 +29,7 @@ void Area::createStandardArea() {
     UpperLeftCube.geoLength = 8.8;       //
     UpperLeftCube.geoWidth = 53.083333;  // Bremen
     UpperLeftCube.geoHeight = 11;        //
-    createArea(11,11,1,11,11,UpperLeftCube);
+    createArea(10,10,1,10,10,UpperLeftCube);
 };
 
 void Area::createArea(int CubesCountWidth_, int CubesCountLength_, double heightArea_, double widthArea_, double lengthArea_, GeoCoords UpperLeftCube_) {
@@ -1018,9 +1018,10 @@ void Area::simulateAirExchange(double timeStepInSeconds_) {
             }
             c.x = x;
             c.y = y;
-            Cubes[c.y][c.x].calcForces(Cubes, timeStepInSeconds_);
+            //Cubes[c.y][c.x].calcForces(Cubes, timeStepInSeconds_); is now used in calcAcceleration
             //calculateForces(c, timeStepInSeconds_); // old function of class Area
-            Cubes[c.y][c.x].calcAcceleration();
+            vector3 previousSpeed = Cubes[c.y][c.x].getSpeed();
+            Cubes[c.y][c.x].calcAcceleration(Cubes, timeStepInSeconds_, previousSpeed);
             Cubes[c.y][c.x].calcSpeed(timeStepInSeconds_);
             list<airDelta> tempOutAirDeltas = Cubes[c.y][c.x].calcLeavingAirDeltas(timeStepInSeconds_);
             for(auto iterateOutAirDeltas = tempOutAirDeltas.begin(); iterateOutAirDeltas != tempOutAirDeltas.end(); iterateOutAirDeltas++) {
