@@ -1059,7 +1059,7 @@ void Area::simulateAirExchange(double timeStepInSeconds_) {
             NumericIntegrator NI;
             //NI
             vector3 previousSpeed = Cubes[c.y][c.x].getSpeed();
-            Cubes[c.y][c.x].calcAcceleration(Cubes, timeStepInSeconds_, previousSpeed);
+            Cubes[c.y][c.x].calcAcceleration(timeStepInSeconds_, previousSpeed);
             Cubes[c.y][c.x].calcSpeed(timeStepInSeconds_);
             list<airDelta> tempOutAirDeltas = Cubes[c.y][c.x].calcLeavingAirDeltas(timeStepInSeconds_);
             for(auto iterateOutAirDeltas = tempOutAirDeltas.begin(); iterateOutAirDeltas != tempOutAirDeltas.end(); iterateOutAirDeltas++) {
