@@ -4,15 +4,19 @@
 #include <map>
 #include <iostream>
 #include "vector3.h"
-#include "MyClass.h"
+#include "Cube.h"
 
 using namespace std;
 
 enum IntegrationType {EULER_CAUCHY, HEUN, RUNGE_KUTTA, DORMAND_PRINCE};
 
+class MyClass {
+    public:
+    typedef vector3 (MyClass::*FPTR)(double, vector3);
+    double x;
+};
 
-class NumericIntegrator
-{
+class NumericIntegrator {
     public:
         NumericIntegrator() {};
         ~NumericIntegrator() {};
@@ -22,9 +26,9 @@ class NumericIntegrator
         vector3 integrateOneTimeStep(double lengthOfTimeStepInSeconds_, IntegrationType integrationType_, vector3 previousValue_);
 
         // function Pointer
-        void setFunctionToIntegrate(MyClass::FPTR val_);
-        void setObjectOfFunctionToIntegrate(MyClass *val_);
-        vector3 callFunctionToIntegrate(vector3 param1_);
+        void setFunctionToIntegrate(Cube::FPTR val_);
+        void setObjectOfFunctionToIntegrate(Cube *val_);
+        vector3 callFunctionToIntegrate(double param1_, vector3 param2_);
 
         // value Map
         map<double,vector3> getValueMap() {return values;};
@@ -41,8 +45,8 @@ class NumericIntegrator
 
         map<double,vector3> values; // <IntegrationTime,value>
 
-        MyClass::FPTR functionToIntegrate;
-        MyClass *objectOfFunctionToIntegrate;
+        Cube::FPTR functionToIntegrate;
+        Cube *objectOfFunctionToIntegrate;
 
 };
 

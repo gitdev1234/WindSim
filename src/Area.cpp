@@ -13,6 +13,7 @@
 #include "Area.h"
 #include "Types.h"
 #include <thread>
+#include "NumericIntegrator.h"
 
 using namespace std;
 
@@ -1061,7 +1062,10 @@ void Area::simulateAirExchange(double timeStepInSeconds_) {
             vector3 previousSpeed = Cubes[c.y][c.x].getSpeed();
             //Cubes[c.y][c.x].calcAcceleration(timeStepInSeconds_, previousSpeed); // old is now done by numeric integrator
             //Cubes[c.y][c.x].calcSpeed(timeStepInSeconds_);  // old is now done by numeric integrator
-            vector3 newSpeed = NI.integrateOneTimeStep(Cubes[c.y][c.x].calcAcceleration, timeStepInSeconds_, IntegrationType::EULER_CAUCHY, previousSpeed);
+            NI.setObjectOfFunctionToIntegrate(&Cubes[c.y][c.x]);
+            NI.setFunctionToIntegrate(&Cube::calcAcceleration);
+            vector3 newSpeed = NI.integrateOneTimeStep(timeStepInSeconds_, IntegrationType::EULER_CAUCHY, previousSpeed);
+            Cubes[c.y][c.x].setSpeed(newSpeed);
             list<airDelta> tempOutAirDeltas = Cubes[c.y][c.x].calcLeavingAirDeltas(timeStepInSeconds_);
             for(auto iterateOutAirDeltas = tempOutAirDeltas.begin(); iterateOutAirDeltas != tempOutAirDeltas.end(); iterateOutAirDeltas++) {
                 airDelta tempAirDelta = *iterateOutAirDeltas;

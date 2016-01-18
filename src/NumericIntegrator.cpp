@@ -32,24 +32,26 @@ vector3 NumericIntegrator::integrateOneTimeStep(double lengthOfTimeStepInSeconds
 };
 
 vector3 NumericIntegrator::integrateOneTimeStepEulerCauchy(double lengthOfTimeStepInSeconds_, vector3 previousValue_) {
-    vector3 nextValue = previousValue_ + lengthOfTimeStepInSeconds_ * callFunctionToIntegrate(previousValue_);
+    vector3 nextValue = previousValue_ + lengthOfTimeStepInSeconds_ * callFunctionToIntegrate(lengthOfTimeStepInSeconds_, previousValue_);
     return nextValue;
 };
 
 vector3 NumericIntegrator::integrateOneTimeStepHeun         (double lengthOfTimeStepInSeconds_, vector3 previousValue_) {
     vector3 nextValue = previousValue_ + lengthOfTimeStepInSeconds_ *
-                        (0.5 * ( callFunctionToIntegrate(previousValue_) +
-                                 callFunctionToIntegrate(previousValue_ + lengthOfTimeStepInSeconds_ * callFunctionToIntegrate(previousValue_))
+                        (0.5 * ( callFunctionToIntegrate(lengthOfTimeStepInSeconds_, previousValue_) +
+                                 callFunctionToIntegrate(lengthOfTimeStepInSeconds_, previousValue_ + lengthOfTimeStepInSeconds_ *
+                                                         callFunctionToIntegrate(lengthOfTimeStepInSeconds_, previousValue_)
+                                                        )
                                )
                         );
     return nextValue;
 };
 
 vector3 NumericIntegrator::integrateOneTimeStepRungeKutta   (double lengthOfTimeStepInSeconds_, vector3 previousValue_) {
-    vector3 k1 = callFunctionToIntegrate(previousValue_);
-    vector3 k2 = callFunctionToIntegrate(previousValue_ + (lengthOfTimeStepInSeconds_ / 2.0) * k1);
-    vector3 k3 = callFunctionToIntegrate(previousValue_ + (lengthOfTimeStepInSeconds_ / 2.0) * k2);
-    vector3 k4 = callFunctionToIntegrate(previousValue_ + lengthOfTimeStepInSeconds_ * k3);
+    vector3 k1 = callFunctionToIntegrate(lengthOfTimeStepInSeconds_, previousValue_);
+    vector3 k2 = callFunctionToIntegrate(lengthOfTimeStepInSeconds_, previousValue_ + (lengthOfTimeStepInSeconds_ / 2.0) * k1);
+    vector3 k3 = callFunctionToIntegrate(lengthOfTimeStepInSeconds_, previousValue_ + (lengthOfTimeStepInSeconds_ / 2.0) * k2);
+    vector3 k4 = callFunctionToIntegrate(lengthOfTimeStepInSeconds_, previousValue_ + lengthOfTimeStepInSeconds_ * k3);
     vector3 nextValue = previousValue_ + lengthOfTimeStepInSeconds_ * (1.0/6.0 * (k1 + 2*(k2 + k3) + k4));
     return nextValue;
 };
@@ -70,16 +72,16 @@ vector3 NumericIntegrator::integrateOneTimeStepRungeKuttaNStepped(double lengthO
 };
 
 // function pointer
-void NumericIntegrator::setFunctionToIntegrate(MyClass::FPTR val_) {
+void NumericIntegrator::setFunctionToIntegrate(Cube::FPTR val_) {
     functionToIntegrate = val_;
 };
 
-void NumericIntegrator::setObjectOfFunctionToIntegrate(MyClass *val_) {
+void NumericIntegrator::setObjectOfFunctionToIntegrate(Cube *val_) {
     objectOfFunctionToIntegrate = val_;
 };
 
-vector3 NumericIntegrator::callFunctionToIntegrate(vector3 param1_) {
-    vector3 temp = (*objectOfFunctionToIntegrate.*functionToIntegrate)(param1_);
+vector3 NumericIntegrator::callFunctionToIntegrate(double param1_, vector3 param2_) {
+    vector3 temp = (*objectOfFunctionToIntegrate.*functionToIntegrate)(param1_,param2_);
     return temp;
 };
 

@@ -72,9 +72,10 @@ using namespace std;
  *
  */
 
-class Cube
-{
+class Cube {
     public:
+        typedef vector3 (Cube::*FPTR)(double, vector3);
+
         /* --- constructor and destructor --- */
         // constructor
         Cube();
