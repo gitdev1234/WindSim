@@ -104,7 +104,7 @@ class Cube
         // calculation of forces, acceleration and speed
         void calcForces(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
         vector3 calcGradientForce(vector<vector<Cube> >& Cubes_);
-        vector3 calcGradientForce(vector<vector<Cube> >& Cubes_, coords toCube_);
+        vector3 calcGradientForce(Cube* toCube_);
         vector3 calcCoriolisForce(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
         vector3 calcFrictionForce(double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
         vector3 calcAcceleration(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
@@ -157,7 +157,7 @@ class Cube
         double getMoleculesCount()           {return moleculesCount;            };
         double getTemperature()              {return temperature;               };
         GeoCoords getGeoCoords()             {return geoCoords;                 };
-        coords getCoordsInArea()             {return coordsInArea;              };
+        coords getCoordsInArea()  const           {return coordsInArea;              };
         coords getMaxCoordsInArea()          {return maxCoordsInArea;           };
         double getHeight()  {return height; };
         double getLength()  {return length; };

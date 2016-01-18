@@ -107,26 +107,25 @@ void Area::setNeighbourCubes(coords c_) {
         Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
     }
     if (CheckCoordsStillInArea(up)) {
-        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[up.y][up.x]);
+        Cubes[c_.y][c_.x].setUpNeighbour(&Cubes[up.y][up.x]);
     }
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! GO ON HERE
-    if (CheckCoordsStillInArea(leftUpperCorner)) {
-        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    if (CheckCoordsStillInArea(rightUpperCorner)) {
+        Cubes[c_.y][c_.x].setRightUpperNeighbour(&Cubes[rightUpperCorner.y][rightUpperCorner.x]);
     }
-    if (CheckCoordsStillInArea(leftUpperCorner)) {
-        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    if (CheckCoordsStillInArea(right)) {
+        Cubes[c_.y][c_.x].setRightNeighbour(&Cubes[right.y][right.x]);
     }
-    if (CheckCoordsStillInArea(leftUpperCorner)) {
-        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    if (CheckCoordsStillInArea(rightLowerCorner)) {
+        Cubes[c_.y][c_.x].setRightLowerNeighbour(&Cubes[rightLowerCorner.y][rightLowerCorner.x]);
     }
-    if (CheckCoordsStillInArea(leftUpperCorner)) {
-        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    if (CheckCoordsStillInArea(down)) {
+        Cubes[c_.y][c_.x].setDownNeighbour(&Cubes[down.y][down.x]);
     }
-    if (CheckCoordsStillInArea(leftUpperCorner)) {
-        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    if (CheckCoordsStillInArea(leftLowerCorner)) {
+        Cubes[c_.y][c_.x].setLeftLowerNeighbour(&Cubes[leftLowerCorner.y][leftLowerCorner.x]);
     }
-    if (CheckCoordsStillInArea(leftUpperCorner)) {
-        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    if (CheckCoordsStillInArea(left)) {
+        Cubes[c_.y][c_.x].setLeftNeighbour(&Cubes[left.y][left.x]);
     }
 
 };

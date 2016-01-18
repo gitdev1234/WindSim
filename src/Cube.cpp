@@ -282,23 +282,39 @@ void Cube::calcForces(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, 
 
 vector3 Cube::calcGradientForce(vector<vector<Cube> >& Cubes_) {
     vector3 tempForces      = {.x = 0, .y = 0, .z = 0};
-    coords c = getCoordsInArea(); // coords of this cube within Area
-    coords leftUpperCorner  = {.x = c.x - 1, .y = c.y - 1};
-    coords up               = {.x = c.x    , .y = c.y - 1};
-    coords rightUpperCorner = {.x = c.x + 1, .y = c.y - 1};
-    coords right            = {.x = c.x + 1, .y = c.y    };
-    coords rightLowerCorner = {.x = c.x + 1, .y = c.y + 1};
-    coords down             = {.x = c.x    , .y = c.y + 1};
-    coords leftLowerCorner  = {.x = c.x - 1, .y = c.y + 1};
-    coords left             = {.x = c.x - 1, .y = c.y    };
-    tempForces += calcGradientForce(Cubes_, leftUpperCorner);
-    tempForces += calcGradientForce(Cubes_, up);
-    tempForces += calcGradientForce(Cubes_, rightUpperCorner);
-    tempForces += calcGradientForce(Cubes_, right);
-    tempForces += calcGradientForce(Cubes_, rightLowerCorner);
-    tempForces += calcGradientForce(Cubes_, down);
-    tempForces += calcGradientForce(Cubes_, leftLowerCorner);
-    tempForces += calcGradientForce(Cubes_, left);
+    Cube *leftUpperCorner = getLeftUpperNeighbour();
+    if (leftUpperCorner) {
+        tempForces += calcGradientForce(leftUpperCorner);
+    }
+    Cube *Up = getUpNeighbour();
+    if (Up) {
+        tempForces += calcGradientForce(Up);
+    }
+    Cube *rightUpperCorner = getRightUpperNeighbour();
+    if (rightUpperCorner) {
+        tempForces += calcGradientForce(rightUpperCorner);
+    }
+    Cube *right = getRightNeighbour();
+    if (right) {
+        tempForces += calcGradientForce(right);
+    }
+    Cube *rightLowerCorner = getRightLowerNeighbour();
+    if (rightLowerCorner) {
+        tempForces += calcGradientForce(rightLowerCorner);
+    }
+    Cube *down = getDownNeighbour();
+    if (down) {
+        tempForces += calcGradientForce(down);
+    }
+    Cube *leftLowerCorner = getLeftLowerNeighbour();
+    if (leftLowerCorner) {
+        tempForces += calcGradientForce(leftLowerCorner);
+    }
+    Cube *left = getLeftNeighbour();
+    if (left) {
+        tempForces += calcGradientForce(left);
+    }
+
     return tempForces;
 };
 
@@ -307,21 +323,22 @@ vector3 Cube::calcGradientForce(vector<vector<Cube> >& Cubes_) {
  * @param fromCube_ the cube for which you calculate the force
  * @param toCube_ the cube the calculation is referencing to
  */
-vector3 Cube::calcGradientForce(vector<vector<Cube> >& Cubes_, coords toCube_) {
+vector3 Cube::calcGradientForce(Cube* toCube_) {
     vector3 tempGradientForce;
-    coords fromCube = getCoordsInArea(); // coords of this cube within Area
-    if (checkCoordsStillInArea(toCube_)) {
+    coords fromCubeCoords = getCoordsInArea(); // coords of this cube within Area
+    coords toCubeCoords = toCube_->getCoordsInArea();
+    if (checkCoordsStillInArea(toCubeCoords)) {
         double tempMass        = calcMass();
         double tempDensity     = calcDensity();
-        double pressureDifference = calcPressure() - Cubes_[toCube_.y][toCube_.x].calcPressure();
+        double pressureDifference = calcPressure() - toCube_->calcPressure();
         vector3 positionOfFromCube;
-        positionOfFromCube.x = (fromCube.x + 0.5) * getWidth();
-        positionOfFromCube.y = (fromCube.y + 0.5) * getLength();
-        positionOfFromCube.z = (        0  + 0.5) * getHeight();
+        positionOfFromCube.x = (fromCubeCoords.x + 0.5) * getWidth();
+        positionOfFromCube.y = (fromCubeCoords.y + 0.5) * getLength();
+        positionOfFromCube.z = (              0  + 0.5) * getHeight();
         vector3 positionOfToCube;
-        positionOfToCube.x = (toCube_.x + 0.5) * (Cubes_[toCube_.y][toCube_.x].getWidth());
-        positionOfToCube.y = (toCube_.y + 0.5) * (Cubes_[toCube_.y][toCube_.x].getLength());
-        positionOfToCube.z = (       0  + 0.5) * (Cubes_[toCube_.y][toCube_.x].getHeight());
+        positionOfToCube.x = (toCubeCoords.x + 0.5) * (toCube_->getWidth());
+        positionOfToCube.y = (toCubeCoords.y + 0.5) * (toCube_->getLength());
+        positionOfToCube.z = (            0  + 0.5) * (toCube_->getHeight());
 
         double xDifference = positionOfToCube.x - positionOfFromCube.x;
         double yDifference = positionOfToCube.y - positionOfFromCube.y;
