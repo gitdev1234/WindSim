@@ -65,7 +65,7 @@ void Area::LoadBalancedAreaStructure() {
     if (CubesCountWidth <= 0) {
         CubesCountWidth = 1;
     }
-    std::vector<std::vector<Cube> > temp(CubesCountLength, std::vector<Cube>(CubesCountWidth));
+    vector<vector<Cube> > temp(CubesCountLength, std::vector<Cube>(CubesCountWidth));
     Cubes = temp;
     temp.clear();
 
@@ -89,10 +89,47 @@ void Area::LoadBalancedAreaStructure() {
             Cubes[y][x].setLength(length_cube);
             Cubes[y][x].setWidth (width_cube);
             Cubes[y][x].setVolume();
+            setNeighbourCubes(tempCoords);
         }
     }
 };
 
+void Area::setNeighbourCubes(coords c_) {
+    coords leftUpperCorner  = {.x = c_.x - 1, .y = c_.y - 1};
+    coords up               = {.x = c_.x    , .y = c_.y - 1};
+    coords rightUpperCorner = {.x = c_.x + 1, .y = c_.y - 1};
+    coords right            = {.x = c_.x + 1, .y = c_.y    };
+    coords rightLowerCorner = {.x = c_.x + 1, .y = c_.y + 1};
+    coords down             = {.x = c_.x    , .y = c_.y + 1};
+    coords leftLowerCorner  = {.x = c_.x - 1, .y = c_.y + 1};
+    coords left             = {.x = c_.x - 1, .y = c_.y    };
+    if (CheckCoordsStillInArea(leftUpperCorner)) {
+        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    }
+    if (CheckCoordsStillInArea(up)) {
+        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[up.y][up.x]);
+    }
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! GO ON HERE
+    if (CheckCoordsStillInArea(leftUpperCorner)) {
+        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    }
+    if (CheckCoordsStillInArea(leftUpperCorner)) {
+        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    }
+    if (CheckCoordsStillInArea(leftUpperCorner)) {
+        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    }
+    if (CheckCoordsStillInArea(leftUpperCorner)) {
+        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    }
+    if (CheckCoordsStillInArea(leftUpperCorner)) {
+        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    }
+    if (CheckCoordsStillInArea(leftUpperCorner)) {
+        Cubes[c_.y][c_.x].setLeftUpperNeighbour(&Cubes[leftUpperCorner.y][leftUpperCorner.x]);
+    }
+
+};
 
 void Area::LoadAreaStructureTemplate(string path){
     // TODO
@@ -1020,6 +1057,8 @@ void Area::simulateAirExchange(double timeStepInSeconds_) {
             c.y = y;
             //Cubes[c.y][c.x].calcForces(Cubes, timeStepInSeconds_); is now used in calcAcceleration
             //calculateForces(c, timeStepInSeconds_); // old function of class Area
+            NumericIntegrator NI;
+            //NI
             vector3 previousSpeed = Cubes[c.y][c.x].getSpeed();
             Cubes[c.y][c.x].calcAcceleration(Cubes, timeStepInSeconds_, previousSpeed);
             Cubes[c.y][c.x].calcSpeed(timeStepInSeconds_);

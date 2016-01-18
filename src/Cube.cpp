@@ -18,6 +18,8 @@
  */
 Cube::Cube() { };
 
+
+
 /**
  * Destructor of class Cube
  *
@@ -270,7 +272,7 @@ void Cube::addForce(vector3 force_) {
 
 // calculation of acceleration and speed (depending on current forces)
 
-void Cube::calcForces(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
+void Cube::calcForces(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
     coords tempCoordsInArea = getCoordsInArea();
     clearForce();
     addForce(calcGradientForce(Cubes_));
@@ -278,7 +280,7 @@ void Cube::calcForces(std::vector<std::vector<Cube> >& Cubes_, double timeStepIn
     addForce(calcFrictionForce(timeStepInSeconds_, speedOfPreviousTimeStep_));
 };
 
-vector3 Cube::calcGradientForce(std::vector<std::vector<Cube> >& Cubes_) {
+vector3 Cube::calcGradientForce(vector<vector<Cube> >& Cubes_) {
     vector3 tempForces      = {.x = 0, .y = 0, .z = 0};
     coords c = getCoordsInArea(); // coords of this cube within Area
     coords leftUpperCorner  = {.x = c.x - 1, .y = c.y - 1};
@@ -305,7 +307,7 @@ vector3 Cube::calcGradientForce(std::vector<std::vector<Cube> >& Cubes_) {
  * @param fromCube_ the cube for which you calculate the force
  * @param toCube_ the cube the calculation is referencing to
  */
-vector3 Cube::calcGradientForce(std::vector<std::vector<Cube> >& Cubes_, coords toCube_) {
+vector3 Cube::calcGradientForce(vector<vector<Cube> >& Cubes_, coords toCube_) {
     vector3 tempGradientForce;
     coords fromCube = getCoordsInArea(); // coords of this cube within Area
     if (checkCoordsStillInArea(toCube_)) {
@@ -347,7 +349,7 @@ vector3 Cube::calcGradientForce(std::vector<std::vector<Cube> >& Cubes_, coords 
     return tempGradientForce;
 };
 
-vector3 Cube::calcCoriolisForce(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
+vector3 Cube::calcCoriolisForce(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
     // TODO
     vector3 tempForces;
     tempForces.x = 0.0;
@@ -383,15 +385,14 @@ vector3 Cube::calcFrictionForce(double timeStepInSeconds_, vector3 speedOfPrevio
  * calculates the current acceleration of the air within the cube:
  *  --> acceleration = force / mass
  */
-void Cube::calcAcceleration(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
+vector3 Cube::calcAcceleration(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
     calcForces(Cubes_, timeStepInSeconds_, speedOfPreviousTimeStep_);
     vector3 tempForce = getForce();
     double tempMass = getMass();
     vector3 tempAcceleration;
-    tempAcceleration.x = tempForce.x / tempMass;
-    tempAcceleration.y = tempForce.y / tempMass;
-    tempAcceleration.z = tempForce.z / tempMass;
+    tempAcceleration = tempForce / tempMass;
     setAcceleration(tempAcceleration);
+    return tempAcceleration;
 };
 
 /**

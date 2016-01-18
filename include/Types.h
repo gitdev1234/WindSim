@@ -12,6 +12,7 @@
 
 #include <math.h>
 #include "vector3.h"
+#include "NumericIntegrator.h"
 
 
 // needed for Area::GetTimeMs64()

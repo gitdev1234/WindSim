@@ -11,7 +11,7 @@
 #define CUBE_H
 
 #include <string>
-#include <iostream>"
+#include <iostream>
 #include <list>
 #include <math.h>
 #include "Types.h"
@@ -76,8 +76,10 @@ class Cube
 {
     public:
         /* --- constructor and destructor --- */
+        // constructor
         Cube();
-        virtual ~Cube();
+        // destructor
+        ~Cube();
 
         /* --- miscellaneous --- */
         // temperature
@@ -100,12 +102,12 @@ class Cube
         void addForce(vector3 force_);
 
         // calculation of forces, acceleration and speed
-        void calcForces(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
-        vector3 calcGradientForce(std::vector<std::vector<Cube> >& Cubes_);
-        vector3 calcGradientForce(std::vector<std::vector<Cube> >& Cubes_, coords toCube_);
-        vector3 calcCoriolisForce(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
+        void calcForces(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
+        vector3 calcGradientForce(vector<vector<Cube> >& Cubes_);
+        vector3 calcGradientForce(vector<vector<Cube> >& Cubes_, coords toCube_);
+        vector3 calcCoriolisForce(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
         vector3 calcFrictionForce(double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
-        void calcAcceleration(std::vector<std::vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
+        vector3 calcAcceleration(vector<vector<Cube> >& Cubes_, double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_);
         void calcSpeed(double timeStepInSeconds_);
 
         // calculations of attributes
@@ -142,6 +144,14 @@ class Cube
         void addInAirDelta(airDelta val_)             {inAirDeltas.push_front(val_);     };
         void setOutAirDeltas(list<airDelta> val_)     {outAirDeltas = val_;              };
         void setTemperatureDelta(double val_)         {temperatureDelta = val_;          };
+        void setUpNeighbour(Cube *val_)          {upNeighbour         = val_;};
+        void setDownNeighbour (Cube *val_)       {downNeighbour       = val_;};
+        void setLeftNeighbour (Cube *val_)       {leftNeighbour       = val_;};
+        void setRightNeighbour(Cube *val_)       {rightNeighbour      = val_;};
+        void setLeftUpperNeighbour (Cube *val_)  {leftUpperNeighbour  = val_;};
+        void setLeftLowerNeighbour (Cube *val_)  {leftLowerNeighbour  = val_;};
+        void setRightUpperNeighbour (Cube *val_) {rightUpperNeighbour = val_;};
+        void setRightLowerNeighbour (Cube *val_) {rightLowerNeighbour = val_;};
 
         // getters
         double getMoleculesCount()           {return moleculesCount;            };
@@ -162,6 +172,21 @@ class Cube
         vector3 getForce()               {return force;        };
         list<airDelta> getInAirDeltas()  {return inAirDeltas;  };
         list<airDelta> getOutAirDeltas() {return outAirDeltas; };
+        Cube* getUpNeighbour()    {return upNeighbour;};
+        Cube* getDownNeighbour () {return downNeighbour;};
+        Cube* getLeftNeighbour () {return leftNeighbour;};
+        Cube* getRightNeighbour() {return rightNeighbour;};
+        Cube* getLeftUpperNeighbour () {return leftUpperNeighbour;};
+        Cube* getLeftLowerNeighbour () {return leftLowerNeighbour;};
+        Cube* getRightUpperNeighbour () {return rightUpperNeighbour;};
+        Cube* getRightLowerNeighbour () {return rightLowerNeighbour;};
+
+        Cube& operator=(const Cube& other_) {
+            if (this == &other_) {
+                return *this;
+            }
+            *this = other_;
+        }
 
     protected:
 
@@ -190,6 +215,9 @@ class Cube
         list<airDelta> outAirDeltas;
 
         double temperatureDelta;
+
+        Cube *upNeighbour, *downNeighbour, *leftNeighbour, *rightNeighbour;
+        Cube *leftUpperNeighbour, *leftLowerNeighbour, *rightUpperNeighbour, *rightLowerNeighbour;
 };
 
 #endif // CUBE_H

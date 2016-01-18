@@ -85,6 +85,7 @@ class Area {
         void createStandardArea();
         void createArea(int CubesCountWidth_, int CubesCountLength_, double heightArea_, double widthArea_, double lengthArea_, GeoCoords UpperLeftCube_);
         void DestroyArea();
+        void setNeighbourCubes(coords c_);
 
         // loading area pressure and temperature structure
         void LoadBalancedAreaStructure();
@@ -151,7 +152,7 @@ class Area {
         double length;
         double width;
         GeoCoords geoCoordsUpperLeftCube;
-        std::vector<std::vector<Cube> > Cubes; // 2-dimensional array of Cube objects
+        vector<vector<Cube> > Cubes; // 2-dimensional array of Cube objects
 
 };
 

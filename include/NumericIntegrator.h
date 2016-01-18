@@ -4,6 +4,8 @@
 #include <map>
 #include <iostream>
 #include "vector3.h"
+#include <vector>
+#include "Cube.h"
 
 using namespace std;
 
@@ -15,6 +17,7 @@ class NumericIntegrator
     public:
         NumericIntegrator() {};
         ~NumericIntegrator() {};
+        //vector<vector<Cube> >& , double, vector3
 
         vector3 integrate(vector3 (*functionToIntegrate_)(vector3), double lengthOfTimeStepInSeconds_, double startTimeInSeconds_, double endTimeInSeconds_,
                           IntegrationType integrationType_, bool createValueMap = false, vector3 previousValue_ = {.x = 0.0, .y = 0.0, .z = 0.0});
