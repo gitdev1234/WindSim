@@ -1021,7 +1021,7 @@ void Area::simulateTimeStep(double timeStepInSeconds_) {
     if (SHOW_IN_DETAIL) {
         cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
     }
-    simulateAirExchange(timeStepInSeconds_);
+    //simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
