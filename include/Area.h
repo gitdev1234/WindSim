@@ -18,6 +18,7 @@
 #include <iomanip>  // for cout << setprecision
 #include <limits>   //    -- || --
 #include <float.h>
+#include <fstream>
 
 using namespace std;
 
@@ -109,6 +110,7 @@ class Area {
         void initSimulation();
         void simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_, bool printEveryCalculation_);
         void simulateTimeStep(double timeStepInSeconds_);
+        void simulateTemperatureChanges();
         void simulateAirExchange(double timeStepInSeconds_);
         void simulateTemperatureExchange(double timeStepInSeconds_);
         void simulateHeatConduction(double timeStepInSeconds_);
