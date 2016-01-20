@@ -103,7 +103,11 @@
 	"Types.h"
 	<vector>
 
+<<<<<<< HEAD
 1453281517 /home/anon/Desktop/WiSe_15_16/Unity/WindSIM/gitRepo/include/Area.h
+=======
+1453277770 /home/anon/Desktop/WiSe_15_16/Unity/WindSIM/gitRepo/include/Area.h
+>>>>>>> 8975a84a63e53064db304b3484364029424b22bc
 	<vector>
 	<stack>
 	<string>
@@ -112,8 +116,13 @@
 	<iomanip>
 	<limits>
 	<float.h>
+	<fstream>
 
+<<<<<<< HEAD
 1453281992 source:/home/anon/Desktop/WiSe_15_16/Unity/WindSIM/gitRepo/src/Area.cpp
+=======
+1453279155 source:/home/anon/Desktop/WiSe_15_16/Unity/WindSIM/gitRepo/src/Area.cpp
+>>>>>>> 8975a84a63e53064db304b3484364029424b22bc
 	<iostream>
 	<string>
 	<sstream>

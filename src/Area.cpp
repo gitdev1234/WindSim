@@ -1021,6 +1021,10 @@ void Area::simulateTimeStep(double timeStepInSeconds_) {
     if (SHOW_IN_DETAIL) {
         cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
     }
+<<<<<<< HEAD
+=======
+    //simulateTemperatureChanges();
+>>>>>>> 8975a84a63e53064db304b3484364029424b22bc
     //simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
     for (int y = 0; y < Cubes.size(); y++) {
@@ -1030,6 +1034,25 @@ void Area::simulateTimeStep(double timeStepInSeconds_) {
         }
     }
 };
+
+void Area::simulateTemperatureChanges() {
+    // TODO read database
+    string path = "tempChanges.txt";
+    ifstream file(path.c_str());
+    if (file) {
+        int x,y;
+        bool tempChangePositive;
+        while(file >> y) {
+            file >> x;
+            file >> tempChangePositive;
+            if (tempChangePositive) {
+                ModifyTemperature(x,y,"+");
+            } else {
+                ModifyTemperature(x,y,"-");
+            }
+        }
+    }
+}
 
 /**
  * Area::simulateAirExchange(double timeStepInSeconds_)
