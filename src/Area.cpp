@@ -1040,7 +1040,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
     // --> one loop execution is one simulationStep for displaying
     //     and (simulationSpeedInSeconds / timeStepInSeconds) simulation steps for calculation
     int i = 0;
-    while (i < 1000) {
+    while (i < 100) {
         i++;
         cout << "ShowSimulation [][][][][]" << endl;
         double Max = 0;
@@ -1105,7 +1105,7 @@ void Area::simulateTimeStep(double timeStepInSeconds_) {
     }
 
     simulateTemperatureChanges();
-    simulateAirExchange(timeStepInSeconds_);
+    //simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
