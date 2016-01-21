@@ -1,7 +1,9 @@
 #Bugs 
 
-- mixed the axis x and y at configuration mode creating of area size
+- done ->  mixed the axis x and y at configuration mode creating of area size
 - how to react on deltaMass > tempMass in calcAirDeltaMoleculesCount()
+- programm does not react on errors at load and saveAreaStructureTemplate
+- not yet programmed all possible ways in main
 
 #Documentation 
 
