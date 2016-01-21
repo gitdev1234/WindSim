@@ -175,7 +175,7 @@ void Area::LoadAreaStructureTemplate(string path_){
         file >> tempGeoCoords.geoLength;
         file >> tempGeoCoords.geoWidth;
         createArea(tempCubesCountWidth,tempCubesCountLength,tempHeight,tempWidth,tempLength,tempGeoCoords);
-        vector<vector<Cube> > temp(CubesCountLength, std::vector<Cube>(CubesCountWidth));
+        vector<vector<Cube> > temp(tempCubesCountLength, std::vector<Cube>(tempCubesCountWidth));
         Cubes = temp;
         temp.clear();
 
