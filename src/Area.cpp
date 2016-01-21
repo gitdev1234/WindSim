@@ -9,6 +9,7 @@
 #include <iostream>"
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <math.h>
 #include "Area.h"
 #include "Types.h"
@@ -95,6 +96,35 @@ void Area::LoadBalancedAreaStructure() {
     }
 };
 
+void Area::saveAreaStructureTemplate(string path_) {
+    ofstream file(path_.c_str());
+    if (file) {
+        file << fixed << setprecision(20);
+        file << GetCubesCountWidth() << " ";
+        file << GetCubesCountLength() << " ";
+        file << Getheight() << " ";
+        file << Getwidth() << " ";
+        file << Getlength() << " ";
+        GeoCoords tempGeoCoords = getGeoCoordsUpperLeftCube();
+        file << tempGeoCoords.geoHeight << " ";
+        file << tempGeoCoords.geoLength << " ";
+        file << tempGeoCoords.geoWidth << " ";
+        file << endl;
+        for (int y = 0; y < Cubes.size(); y++) {
+            for (int x = 0; x < Cubes[y].size(); x++) {
+                    file << y << " " << x << " ";
+                    file << Cubes[y][x].getMoleculesCount() << " ";
+                    file << Cubes[y][x].getTemperature() << " ";
+                    file << Cubes[y][x].getPressure() << " ";
+                    file << endl;
+            }
+        }
+    } else {
+        cout << "Error while saving Area Structure Template : Could not create file at path : " << path_ << endl;
+    }
+
+};
+
 void Area::setNeighbourCubes(coords c_) {
     coords leftUpperCorner  = {.x = c_.x - 1, .y = c_.y - 1};
     coords up               = {.x = c_.x    , .y = c_.y - 1};
@@ -131,8 +161,60 @@ void Area::setNeighbourCubes(coords c_) {
 
 };
 
-void Area::LoadAreaStructureTemplate(string path){
-    // TODO
+void Area::LoadAreaStructureTemplate(string path_){
+    ifstream file(path_.c_str());
+    if (file) {
+        double tempCubesCountWidth, tempCubesCountLength, tempHeight, tempWidth ,tempLength;
+        GeoCoords tempGeoCoords;
+        file >> tempCubesCountWidth;
+        file >> tempCubesCountLength;
+        file >> tempHeight;
+        file >> tempWidth;
+        file >> tempLength;
+        file >> tempGeoCoords.geoHeight;
+        file >> tempGeoCoords.geoLength;
+        file >> tempGeoCoords.geoWidth;
+        createArea(tempCubesCountWidth,tempCubesCountLength,tempHeight,tempWidth,tempLength,tempGeoCoords);
+        vector<vector<Cube> > temp(CubesCountLength, std::vector<Cube>(CubesCountWidth));
+        Cubes = temp;
+        temp.clear();
+
+        double height_cube        = height;
+        double width_cube         = width / CubesCountWidth;
+        double length_cube        = length / CubesCountLength;
+        double volume_cube        = height_cube * width_cube * length_cube;
+        surfaceRoughnessType surfaceRoughness = surfaceRoughnessType::MEADOW_WITH_MANY_HEDGES;
+
+        int y, x;
+        double tempMoleculesCount, tempTemperature, tempPressure;
+        while (file >> y) {
+            file >> x;
+            file >> tempMoleculesCount;
+            file >> tempTemperature;
+            file >> tempPressure;
+            Cubes[y][x].setMoleculesCount(tempMoleculesCount);
+            Cubes[y][x].setTemperature(tempTemperature);
+            Cubes[y][x].setPressure(tempPressure);
+            Cubes[y][x].setSurfaceRoughness(surfaceRoughness);
+            coords tempCoords;
+            tempCoords.x = x;
+            tempCoords.y = y;
+            Cubes[y][x].setCoordsInArea(tempCoords);
+            coords maxCoords;
+            maxCoords.y = Cubes.size()-1;
+            maxCoords.x = Cubes[y].size()-1;
+            Cubes[y][x].setMaxCoordsInArea(maxCoords);
+            Cubes[y][x].setHeight(height_cube);
+            Cubes[y][x].setLength(length_cube);
+            Cubes[y][x].setWidth (width_cube);
+            Cubes[y][x].setVolume();
+            setNeighbourCubes(tempCoords);
+        }
+    } else {
+        cout << "Error while loading Area Structure Template : Could not load file at path : " << path_ << endl;
+    }
+
+
 };
 
 double Area::GetMinMaxValue(string properties, bool max_) {
@@ -152,8 +234,8 @@ double Area::GetMinMaxValue(string properties, bool max_) {
             switch (toupper(properties[0])) {
                 case 'M' : temp = Cubes[y][x].getMoleculesCount();        break;
                 case 'T' : temp = Cubes[y][x].getTemperature();           break;
-                case 'P' : temp = Cubes[y][x].calcPressure();             break;
-                case 'S' : temp = Cubes[y][x].getSpeed().x;               break;
+                case 'P' : temp = Cubes[y][x].getPressure();              break;
+                case 'S' : temp = Cubes[y][x].getSpeed().x;                 break;
             };
             if (max_) {
                 if (temp > minmaxValue) {
@@ -321,10 +403,10 @@ void Area::ModifyTemperature(int x, int y, string s) {
     Cubes[y][x].modifyTemperature(s);
     //AffectSurroundingCubes(x,y); //TODO
 
-    cout << "[<" << y << ":" << x << ">";
-    cout << "M:" << Cubes[y][x].getMoleculesCount();
-    cout << "T:" << Cubes[y][x].getTemperature();
-    cout << "P:" << Cubes[y][x].calcPressure() << "]" << endl;
+    //cout << "[<" << y << ":" << x << ">";
+    //cout << "M:" << Cubes[y][x].getMoleculesCount();
+    //cout << "T:" << Cubes[y][x].getTemperature();
+    //cout << "P:" << Cubes[y][x].calcPressure() << "]" << endl;
 };
 
 
@@ -1021,11 +1103,9 @@ void Area::simulateTimeStep(double timeStepInSeconds_) {
     if (SHOW_IN_DETAIL) {
         cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
     }
-<<<<<<< HEAD
-=======
-    //simulateTemperatureChanges();
->>>>>>> 8975a84a63e53064db304b3484364029424b22bc
-    //simulateAirExchange(timeStepInSeconds_);
+
+    simulateTemperatureChanges();
+    simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {

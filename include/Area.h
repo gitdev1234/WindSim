@@ -90,7 +90,8 @@ class Area {
 
         // loading area pressure and temperature structure
         void LoadBalancedAreaStructure();
-        void LoadAreaStructureTemplate(string path);
+        void LoadAreaStructureTemplate(string path_);
+        void saveAreaStructureTemplate(string path_);
 
         // ui-implementation
         void PrintCubes(string properties);
@@ -144,6 +145,7 @@ class Area {
         double Getheight()         { return height; }
         double Getlength()         { return length; }
         double Getwidth()          { return width; }
+        GeoCoords getGeoCoordsUpperLeftCube() {return geoCoordsUpperLeftCube;}
 
     protected:
 

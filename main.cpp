@@ -107,9 +107,12 @@ int main() {
                 cout << "Configured balanced area situation succesfully." << endl;
                 ProgramMode = MODIFY_VAL;
             } else if (toupper(s[0]) == 'T') {
-                //MA.LoadAreaStructureTemplate(s)
-                cout << "Not implemented yet. Program will stop. :(" << endl;
-                ProgramMode = STOP;
+                cout << "Please enter the path of the file you want to load : " << endl;
+                string path;
+                cin >> path;
+                MA.LoadAreaStructureTemplate(path);
+                cout << "Loaded area-structure-template successfully." << endl;
+                ProgramMode = MODIFY_VAL;
             } else {
                 ProgramMode = STAY_IN_LOOP;
             }
@@ -211,11 +214,33 @@ int main() {
                 cout << "Simulation starts now, if you want to stop simulation press [X]" << endl;
                 MA.initSimulation();
                 MA.simulate(simulationTimeStep,displayTimeStep,printEveryCalc);
-                return 0;
+                cout << "Simulation has ended." << endl;
+                cout << "Enter [C] if you want to continue the simulation" << endl;
+                cout << "Enter [S] if you want to to Save current Area" << endl;
+                cout << "Enter [R] if you want to restart the programm." << endl;
+                cout << "Enter [X] if you want to exit the programm" << endl;
                 do {
                     ProgramMode = STAY_IN_LOOP;
+                    cin >> s;
+                    if (toupper(s[0]) == 'C') {
+                        ProgramMode = STOP;
+                        // TODO
+                    }
+                    if (toupper(s[0]) == 'S') {
+                        cout << "Please enter a path for the resulting file : " << endl;
+                        string tempPath;
+                        cin >> tempPath;
+                        MA.saveAreaStructureTemplate(tempPath);
+                        cout << "Area has been saved successfully." << endl;
+                        cout << "Enter [C] if you want to continue the simulation" << endl;
+                        cout << "Enter [R] if you want to restart the programm." << endl;
+                        cout << "Enter [X] if you want to exit the programm" << endl;
+                    }
+                    if (toupper(s[0]) == 'R') {
+                        ProgramMode = STOP;
+                    }
                     if (toupper(s[0]) == 'X') {
-                        ProgramMode = MODIFY_VAL;
+                        ProgramMode = STOP;
                     }
                 } while (ProgramMode == STAY_IN_LOOP);
 

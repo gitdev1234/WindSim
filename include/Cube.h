@@ -157,6 +157,7 @@ class Cube {
         // getters
         double getMoleculesCount()           {return moleculesCount;            };
         double getTemperature()              {return temperature;               };
+        double getPressure()              {return pressure;               };
         GeoCoords getGeoCoords()             {return geoCoords;                 };
         coords getCoordsInArea()  const           {return coordsInArea;              };
         coords getMaxCoordsInArea()          {return maxCoordsInArea;           };
