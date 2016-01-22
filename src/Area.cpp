@@ -1113,6 +1113,7 @@ void Area::simulateTimeStep(double timeStepInSeconds_) {
             Cubes[y][x].clearAirDeltas();
         }
     }
+    //write Data To SQLite
 };
 
 void Area::simulateTemperatureChanges() {
