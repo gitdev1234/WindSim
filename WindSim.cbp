@@ -18,6 +18,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-pg" />
+					<Add option="-lsqlite3" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -46,11 +47,15 @@
 		<Unit filename="include/Cube.h" />
 		<Unit filename="include/NumericIntegrator.h" />
 		<Unit filename="include/Types.h" />
+		<Unit filename="include/changes.hpp" />
+		<Unit filename="include/saveSqlite.hpp" />
 		<Unit filename="include/vector3.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Area.cpp" />
 		<Unit filename="src/Cube.cpp" />
 		<Unit filename="src/NumericIntegrator.cpp" />
+		<Unit filename="src/changes.cpp" />
+		<Unit filename="src/saveSqlite.cpp" />
 		<Unit filename="src/vector3.cpp" />
 		<Extensions>
 			<code_completion />

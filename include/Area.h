@@ -19,6 +19,7 @@
 #include <limits>   //    -- || --
 #include <float.h>
 #include <fstream>
+#include <sqlite3.h>
 
 using namespace std;
 
@@ -118,6 +119,10 @@ class Area {
         double calculateTemperatureDelta(coords fromCoords_, coords toCoords_, double timeStepInSeconds_);
         double decreaseTemperatureUntilStandardTemperature(double temperature_,double timeStepInSeconds_);
 
+        // sqlite
+        void openSQLite(string path_ = "cache.db");
+        void saveToSQLite(int x_, int y_);
+
         // calculating forces
         void calculateForces(coords c,double timeStepInSeconds_);
         vector3 calculateGradientForce(coords c);
@@ -157,6 +162,8 @@ class Area {
         double width;
         GeoCoords geoCoordsUpperLeftCube;
         vector<vector<Cube> > Cubes; // 2-dimensional array of Cube objects
+        sqlite3 *db;
+
 
 };
 

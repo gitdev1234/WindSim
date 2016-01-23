@@ -15,6 +15,7 @@
 #include "Types.h"
 #include <thread>
 #include "NumericIntegrator.h"
+#include "saveSqlite.hpp"
 
 using namespace std;
 
@@ -41,9 +42,11 @@ void Area::createArea(int CubesCountWidth_, int CubesCountLength_, double height
     width = widthArea_;
     length = lengthArea_;
     geoCoordsUpperLeftCube = UpperLeftCube_;
+    openSQLite();
 };
 
 void Area::DestroyArea() {
+    closeDataBase(db);
     // clear storage
     Cubes.clear();
 };
@@ -1040,7 +1043,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
     // --> one loop execution is one simulationStep for displaying
     //     and (simulationSpeedInSeconds / timeStepInSeconds) simulation steps for calculation
     int i = 0;
-    while (i < 100) {
+    while (i < 1000) {
         i++;
         cout << "ShowSimulation [][][][][]" << endl;
         double Max = 0;
@@ -1105,15 +1108,17 @@ void Area::simulateTimeStep(double timeStepInSeconds_) {
     }
 
     simulateTemperatureChanges();
-    //simulateAirExchange(timeStepInSeconds_);
+    simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
             Cubes[y][x].recalculateAttributes();
             Cubes[y][x].clearAirDeltas();
+            //write Data To SQLite
+            saveToSQLite(x,y);
         }
     }
-    //write Data To SQLite
+
 };
 
 void Area::simulateTemperatureChanges() {
@@ -1211,6 +1216,16 @@ void Area::simulateHeatConduction(double timeStepInSeconds_) {
             Cubes[y][x].setTemperature(newTemperature);
         }
     }
+};
+
+void Area::openSQLite(string path_) {
+    db = openDataBase(path_);
+};
+
+void Area::saveToSQLite(int x_, int y_) {
+    vector3 tempForce = Cubes[y_][x_].getForce();
+    writeToDataBase(db,tempForce,{.x = x_, .y = y_});
+    //cout << tempForce;
 };
 
 double Area::calculateTemperatureDelta(coords fromCoords_, coords toCoords_, double timeStepInSeconds_) {
