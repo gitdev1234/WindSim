@@ -2,9 +2,9 @@
 #include <iostream>
 #include <string.h>
 #include <sqlite3.h>
-#include "saveSqlite.hpp"
-#include "Types.h"
-#include "changes.hpp"
+#include <sstream>
+#include "../include/saveSqlite.hpp"
+#include "../include/changes.hpp"
 
 using namespace std;
 
@@ -62,7 +62,7 @@ void writeToDataBase(sqlite3 *db_, vector3 value_, coords c_) {
 			cout <<  "SQL-Insert error: " << rc << "\n";
 			sqlite3_free(zErrMsg);
 		}else{
-			//cout << "writeToDataBase successfully\n";
+			cout << "writeToDataBase successfully\n";
 		}
 	}
 }
@@ -75,24 +75,35 @@ static int readParametersFromDataBaseCallback(void *data, int argc, char **argv,
 		lengthGeoCoords=-1.0,
 		widthGeoCoords=-1.0,
 		heightGeoCoords=-1.0;
+    stringstream convertSS;
 
 	for(int i=0; i<argc; i++){
+	    convertSS.str( std::string() );  // clear
+        convertSS.clear();               // -||-
 		if(strcmp(azColName[i],"CubesCountsWidth")==0){
-			CubesCountsWidth = stoi(argv[i]);
+			convertSS << argv[i];
+			convertSS >> CubesCountsWidth;
 		}else if(strcmp(azColName[i],"CubesCountsHeight")==0){
-			CubesCountsHeight = stoi(argv[i]);
+			convertSS << argv[i];
+			convertSS >> CubesCountsHeight;
 		}else if(strcmp(azColName[i],"widthArea")==0){
-			widthArea = stod(argv[i]);
+			convertSS << argv[i];
+			convertSS >> widthArea;
 		}else if(strcmp(azColName[i],"heightArea")==0){
-			heightArea = stod(argv[i]);
+			convertSS << argv[i];
+			convertSS >> heightArea;
 		}else if(strcmp(azColName[i],"lengthArea")==0){
-			lengthArea = stod(argv[i]);
+			convertSS << argv[i];
+			convertSS >> lengthArea;
 		}else if(strcmp(azColName[i],"lengthGeoCoords")==0){
-			lengthGeoCoords = stod(argv[i]);
+			convertSS << argv[i];
+			convertSS >> lengthGeoCoords;
 		}else if(strcmp(azColName[i],"widthGeoCoords")==0){
-			widthGeoCoords = stod(argv[i]);
+			convertSS << argv[i];
+			convertSS >> widthGeoCoords;
 		}else if(strcmp(azColName[i],"heightGeoCoords")==0){
-			heightGeoCoords = stod(argv[i]);
+			convertSS << argv[i];
+			convertSS >> heightGeoCoords;
 		}
 	}
 	setParameters(CubesCountsWidth,CubesCountsHeight,widthArea,heightArea,lengthArea,lengthGeoCoords,widthGeoCoords,heightGeoCoords);
@@ -101,13 +112,19 @@ static int readParametersFromDataBaseCallback(void *data, int argc, char **argv,
 static int readTemperatureChangesFromDataBaseCallback(void *data, int argc, char **argv, char **azColName){
 	int x=-1,y=-1;
 	double delta=-1.0;
+    stringstream convertSS;
 	for(int i=0; i<argc; i++){
+	    convertSS.str( std::string() );  // clear
+        convertSS.clear();               // -||-
 		if(strcmp(azColName[i],"xPos")==0){
-			x = stoi(argv[i]);
+			convertSS << argv[i];
+			convertSS >> x;
 		}else if(strcmp(azColName[i],"yPos")==0){
-			y = stoi(argv[i]);
+			convertSS << argv[i];
+			convertSS >> y;
 		}else if(strcmp(azColName[i],"delta")==0){
-			delta = stod(argv[i]);
+			convertSS << argv[i];
+			convertSS >> delta;
 		}
 	}
 	addTemperatureDelta({.x = x, .y = y},delta);
