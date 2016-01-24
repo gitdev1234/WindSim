@@ -1043,7 +1043,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
     // --> one loop execution is one simulationStep for displaying
     //     and (simulationSpeedInSeconds / timeStepInSeconds) simulation steps for calculation
     int i = 0;
-    while (i < 1000) {
+    while (i < 30) {
         i++;
         cout << "ShowSimulation [][][][][]" << endl;
         double Max = 0;
@@ -1051,7 +1051,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
 
         if (!printEveryCalculation_) {
             for (int i = 0; i < (simulationSpeedInSeconds_ / timeStepInSeconds_); i++) {
-                simulateTimeStep(timeStepInSeconds_);
+                simulateTimeStep(timeStepInSeconds_,i);
                 //if (GetMinMaxValue("S",false) < 0) {
                 double tempMin = GetMinMaxValue("S",false);
                 if (tempMin < Min) {
@@ -1063,9 +1063,9 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
                 }
                 //}
             }
-            PrintCubes("P");                // print only after last calculation
+            PrintCubes("T");                // print only after last calculation
         } else {
-            simulateTimeStep(timeStepInSeconds_);
+            simulateTimeStep(timeStepInSeconds_,i);
             double tempMin = GetMinMaxValue("S",false);
             if (tempMin < Min) {
                 Min = tempMin;
@@ -1074,7 +1074,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
             if (tempMax > Max) {
                 Max = tempMax;
             }
-            PrintCubes("P");                // print only after last calculation
+            PrintCubes("T");                // print only after last calculation
         }
 
         cout << "Max : " << Max << "Min" << Min << endl;
@@ -1101,21 +1101,24 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
  *
  *
  */
-void Area::simulateTimeStep(double timeStepInSeconds_) {
+void Area::simulateTimeStep(double timeStepInSeconds_, int sqliteCounter_) {
     //TODO
     if (SHOW_IN_DETAIL) {
         cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
     }
 
     simulateTemperatureChanges();
-    simulateAirExchange(timeStepInSeconds_);
+    //simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {
             Cubes[y][x].recalculateAttributes();
             Cubes[y][x].clearAirDeltas();
             //write Data To SQLite
-            saveToSQLite(x,y);
+            if (sqliteCounter_ % 10 == 0) {
+                    //saveToSQLite(x,y);
+            }
+
         }
     }
 

@@ -7,9 +7,9 @@ using namespace std;
 
 int main() {
     Area MA;
-    cout << "Please enter the path of the file you want to load : " << endl;
-    string path;
-    cin >> path;
+    //cout << "Please enter the path of the file you want to load : " << endl;
+    string path = "area_templates/11_10.wsim";
+    //cin >> path;
     MA.LoadAreaStructureTemplate(path);
     cout << "Loaded area-structure-template successfully." << endl;
     MA.initSimulation();

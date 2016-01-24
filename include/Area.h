@@ -111,7 +111,7 @@ class Area {
         // simulation
         void initSimulation();
         void simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_, bool printEveryCalculation_);
-        void simulateTimeStep(double timeStepInSeconds_);
+        void simulateTimeStep(double timeStepInSeconds_, int sqliteCounter_);
         void simulateTemperatureChanges();
         void simulateAirExchange(double timeStepInSeconds_);
         void simulateTemperatureExchange(double timeStepInSeconds_);
