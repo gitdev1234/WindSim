@@ -1043,7 +1043,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
     // --> one loop execution is one simulationStep for displaying
     //     and (simulationSpeedInSeconds / timeStepInSeconds) simulation steps for calculation
     int i = 0;
-    while (i < 30) {
+    while (i < 100) {
         i++;
         cout << "ShowSimulation [][][][][]" << endl;
         double Max = 0;
@@ -1063,7 +1063,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
                 }
                 //}
             }
-            PrintCubes("T");                // print only after last calculation
+            PrintCubes("P");                // print only after last calculation
         } else {
             simulateTimeStep(timeStepInSeconds_,i);
             double tempMin = GetMinMaxValue("S",false);
@@ -1074,7 +1074,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
             if (tempMax > Max) {
                 Max = tempMax;
             }
-            PrintCubes("T");                // print only after last calculation
+            PrintCubes("P");                // print only after last calculation
         }
 
         cout << "Max : " << Max << "Min" << Min << endl;
@@ -1108,7 +1108,7 @@ void Area::simulateTimeStep(double timeStepInSeconds_, int sqliteCounter_) {
     }
 
     simulateTemperatureChanges();
-    //simulateAirExchange(timeStepInSeconds_);
+    simulateAirExchange(timeStepInSeconds_);
     simulateTemperatureExchange(timeStepInSeconds_);
     for (int y = 0; y < Cubes.size(); y++) {
         for (int x = 0; x < Cubes[y].size(); x++) {

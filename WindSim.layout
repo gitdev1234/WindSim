@@ -2,70 +2,70 @@
 <CodeBlocks_layout_file>
 	<FileVersion major="1" minor="0" />
 	<ActiveTarget name="Debug" />
-	<File name="src/changes.cpp" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/NumericIntegrator.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="3880" topLine="37" />
+		</Cursor>
+	</File>
+	<File name="main.cpp" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="154" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/saveSqlite.cpp" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="286" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/changes.cpp" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="0" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src/Area.cpp" open="1" top="1" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Types.h" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="11716" topLine="315" />
+			<Cursor1 position="526" topLine="22" />
 		</Cursor>
 	</File>
-	<File name="src/NumericIntegrator.cpp" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="2409" topLine="37" />
-		</Cursor>
-	</File>
-	<File name="src/vector3.cpp" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/vector3.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="159" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include/vector3.h" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Area.h" open="1" top="0" tabpos="12" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="4909" topLine="109" />
+		</Cursor>
+	</File>
+	<File name="include/saveSqlite.hpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="119" topLine="0" />
+		</Cursor>
+	</File>
+	<File name="src/Cube.cpp" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="15013" topLine="453" />
+		</Cursor>
+	</File>
+	<File name="include/vector3.h" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="2227" topLine="15" />
 		</Cursor>
 	</File>
-	<File name="include/Cube.h" open="1" top="0" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="8795" topLine="182" />
-		</Cursor>
-	</File>
-	<File name="src/saveSqlite.cpp" open="1" top="0" tabpos="10" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="1559" topLine="55" />
-		</Cursor>
-	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="13" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="4643" topLine="105" />
-		</Cursor>
-	</File>
-	<File name="include/NumericIntegrator.h" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/NumericIntegrator.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
 			<Cursor1 position="1120" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include/Area.h" open="1" top="0" tabpos="11" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="include/Cube.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4272" topLine="99" />
+			<Cursor1 position="5203" topLine="123" />
 		</Cursor>
 	</File>
-	<File name="src/Cube.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src/Area.cpp" open="1" top="1" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="15598" topLine="461" />
+			<Cursor1 position="39490" topLine="1092" />
 		</Cursor>
 	</File>
-	<File name="include/saveSqlite.hpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="83" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="include/Types.h" open="1" top="0" tabpos="2" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="525" topLine="21" />
-		</Cursor>
-	</File>
-	<EditorTabsLayout layout="062534b056a4267900314e6400000002=0;WindSim:include/Cube.h,1;WindSim:include/Types.h,2;WindSim:src/Cube.cpp,*3;WindSim:src/Area.cpp,4;WindSim:include/NumericIntegrator.h,5;WindSim:src/NumericIntegrator.cpp,6;WindSim:src/vector3.cpp,7;WindSim:include/vector3.h,8;WindSim:include/saveSqlite.hpp,9;WindSim:src/saveSqlite.cpp,10;WindSim:include/Area.h,11;WindSim:src/changes.cpp,12;WindSim:main.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=624;besth=233;minw=624;minh=233;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=062534b056a4267900314e6400000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
+	<EditorTabsLayout layout="0259140056a43701002e726400000002=0;WindSim:main.cpp,1;WindSim:include/Cube.h,2;WindSim:include/Types.h,3;WindSim:src/Cube.cpp,*4;WindSim:src/Area.cpp,5;WindSim:include/NumericIntegrator.h,6;WindSim:src/NumericIntegrator.cpp,7;WindSim:src/vector3.cpp,8;WindSim:include/vector3.h,9;WindSim:include/saveSqlite.hpp,10;WindSim:src/saveSqlite.cpp,11;WindSim:include/Area.h,12;WindSim:src/changes.cpp@layout2|name=dummy;caption=;state=2098174;dir=3;layer=0;row=0;pos=0;prop=100000;bestw=569;besth=243;minw=569;minh=243;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|name=0259140056a43701002e726400000002;caption=;state=2098172;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=200;besth=200;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|dock_size(5,0,0)=202|" />
 </CodeBlocks_layout_file>
