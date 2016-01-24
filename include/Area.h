@@ -121,7 +121,7 @@ class Area {
 
         // sqlite
         void openSQLite(string path_ = "cache.db");
-        void saveToSQLite(int x_, int y_);
+        void saveToSQLite();
 
         // calculating forces
         void calculateForces(coords c,double timeStepInSeconds_);

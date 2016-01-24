@@ -1043,7 +1043,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
     // --> one loop execution is one simulationStep for displaying
     //     and (simulationSpeedInSeconds / timeStepInSeconds) simulation steps for calculation
     int i = 0;
-    while (i < 100) {
+    while (i < 1000) {
         i++;
         cout << "ShowSimulation [][][][][]" << endl;
         double Max = 0;
@@ -1114,13 +1114,12 @@ void Area::simulateTimeStep(double timeStepInSeconds_, int sqliteCounter_) {
         for (int x = 0; x < Cubes[y].size(); x++) {
             Cubes[y][x].recalculateAttributes();
             Cubes[y][x].clearAirDeltas();
-            //write Data To SQLite
-            if (sqliteCounter_ % 10 == 0) {
-                    //saveToSQLite(x,y);
-            }
-
         }
     }
+        //write Data To SQLite
+    //if (sqliteCounter_ % 10 == 0) {
+            saveToSQLite();
+    //}
 
 };
 
@@ -1225,10 +1224,8 @@ void Area::openSQLite(string path_) {
     db = openDataBase(path_);
 };
 
-void Area::saveToSQLite(int x_, int y_) {
-    vector3 tempForce = Cubes[y_][x_].getForce();
-    writeToDataBase(db,tempForce,{.x = x_, .y = y_});
-    //cout << tempForce;
+void Area::saveToSQLite() {
+    writeToDataBaseFast(db,Cubes);
 };
 
 double Area::calculateTemperatureDelta(coords fromCoords_, coords toCoords_, double timeStepInSeconds_) {

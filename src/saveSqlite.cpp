@@ -67,6 +67,49 @@ void writeToDataBase(sqlite3 *db_, vector3 value_, coords c_) {
 	}
 }
 
+void writeToDataBaseFast(sqlite3 *db_, vector<vector <Cube>> Cubes_) {
+    if (Cubes_.size() > 0) {
+
+        char *zErrMsg = 0;
+        const char* data = "Callback function called";
+        int rc = 0;
+        char* sql;
+        sqlite3_stmt *stmt;
+
+        sqlite3_prepare(db_, "DELETE FROM windData",-1,&stmt,0);
+        rc = sqlite3_step(stmt);
+
+        stringstream valuesStringStream;
+
+        valuesStringStream << "INSERT INTO windData (xPos,yPos,xVal,yVal,zVal) VALUES ";
+        for (int y = 0; y < Cubes_.size(); y++) {
+            for (int x = 0; x < Cubes_[y].size(); x++) {
+                coords tempCoordsInArea = Cubes_[y][x].getCoordsInArea();
+                vector3 tempForce = Cubes_[y][x].getForce();
+                valuesStringStream << "(" << tempCoordsInArea.x << "," << tempCoordsInArea.y;
+                valuesStringStream << "," << tempForce.x << "," << tempForce.y << "," << tempForce.z << ")";
+                if (!( (y == Cubes_.size() - 1) && (x == Cubes_[y].size() - 1) )) {
+                    valuesStringStream << ",";
+                }
+            }
+        }
+        cout << valuesStringStream.str();
+
+        sqlite3_reset(stmt);
+        sqlite3_prepare(db_, valuesStringStream.str().c_str(),-1,&stmt,0);
+
+        rc = sqlite3_step(stmt);
+
+        if( rc != SQLITE_OK && rc != SQLITE_DONE){
+            cout <<  "SQL-Insert error: " << rc << "\n";
+            sqlite3_free(zErrMsg);
+        }else{
+            cout << "writeToDataBase successfully\n";
+        }
+    }
+}
+
+
 static int readParametersFromDataBaseCallback(void *data, int argc, char **argv, char **azColName){
 	int CubesCountsWidth=-1,CubesCountsHeight=-1;
 	double widthArea=-1.0,
