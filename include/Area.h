@@ -119,6 +119,7 @@ class Area {
         void simulateHeatConduction(double timeStepInSeconds_);
         double calculateTemperatureDelta(coords fromCoords_, coords toCoords_, double timeStepInSeconds_);
         double decreaseTemperatureUntilStandardTemperature(double temperature_,double timeStepInSeconds_);
+        double* getSimulationValues();
 
         // sqlite
         void openSQLite(string path_ = "cache.db");

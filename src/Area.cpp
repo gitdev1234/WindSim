@@ -1489,3 +1489,27 @@ GeoCoords Area::calcGeoCoords(coords c_) {
     newGeoCoords.geoLength = distanceInKilometer * minutesPerKilometer + tempUpperLeftCube.geoLength;
     return newGeoCoords;
 }
+
+
+double* Area::getSimulationValues() {
+    int tempCubesCountWidth = GetCubesCountWidth();
+    int tempCubesCountLength = GetCubesCountLength();
+    int arrayLength = (tempCubesCountWidth * tempCubesCountLength * 3) + 2;
+    double simulationValues[arrayLength];
+    simulationValues[0] = tempCubesCountWidth;
+    simulationValues[1] = tempCubesCountLength;
+    int counter = 1;
+    for (int y = 0; y < Cubes.size(); y++) {
+        for (int x = 0; x < Cubes[y].size(); x++) {
+                vector3 tempForce = Cubes[y][x].getForce();
+                counter++;
+                simulationValues[counter] = tempForce.x;
+                counter++;
+                simulationValues[counter] = tempForce.y;
+                counter++;
+                simulationValues[counter] = tempForce.z;
+        }
+    }
+    return simulationValues;
+}
+
