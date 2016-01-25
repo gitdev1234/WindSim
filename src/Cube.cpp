@@ -367,10 +367,17 @@ vector3 Cube::calcGradientForce(Cube* toCube_) {
 
 vector3 Cube::calcCoriolisForce(double timeStepInSeconds_, vector3 speedOfPreviousTimeStep_) {
     // TODO
+    double tempMass = getMass();
     vector3 tempForces;
-    tempForces.x = 0.0;
-    tempForces.y = 0.0;
-    tempForces.z = 0.0;
+    GeoCoords tempGeoCoords = getGeoCoords();
+    double omega  = ANGLE_SPEED_EARTH;
+    double B      = tempGeoCoords.geoWidth;
+    double lambda = tempGeoCoords.geoLength;
+    double H      = tempGeoCoords.geoHeight;
+    tempForces.x = -2 * omega * (speedOfPreviousTimeStep_.z * cos(B * M_PI / 180) - speedOfPreviousTimeStep_.y * sin(B * M_PI / 180)) * tempMass; // force direction geoLength y = B;
+    tempForces.y = -2 * omega * (-speedOfPreviousTimeStep_.x * sin(B * M_PI / 180)) * tempMass; // force direction geoLength y = B
+    tempForces.z = -2 * omega * (-speedOfPreviousTimeStep_.x * cos(B * M_PI / 180)) * tempMass; // force direction geoHeigth h = z
+
     return tempForces;
 };
 

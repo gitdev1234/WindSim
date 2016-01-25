@@ -95,6 +95,7 @@ void Area::LoadBalancedAreaStructure() {
             Cubes[y][x].setWidth (width_cube);
             Cubes[y][x].setVolume();
             setNeighbourCubes(tempCoords);
+            Cubes[y][x].setGeoCoords(calcGeoCoords(tempCoords));
         }
     }
 };
@@ -212,6 +213,7 @@ void Area::LoadAreaStructureTemplate(string path_){
             Cubes[y][x].setWidth (width_cube);
             Cubes[y][x].setVolume();
             setNeighbourCubes(tempCoords);
+            Cubes[y][x].setGeoCoords(calcGeoCoords(tempCoords));
         }
     } else {
         cout << "Error while loading Area Structure Template : Could not load file at path : " << path_ << endl;
@@ -1438,7 +1440,7 @@ uint64 Area::GetTimeMs64() {
 
  return ret;
 #endif
-}
+ }
 
 vector3 Area::sumVector3(vector3 a, vector3 b) {
     a.x += b.x;
@@ -1447,4 +1449,43 @@ vector3 Area::sumVector3(vector3 a, vector3 b) {
     return a;
 }
 
+/**
+ *        -----------          ---_-_--
+ *     ((    |   |    ))           |
+ *   ((-----------------))         |   distanceGeoWidth between Cube 0,0 and cube x,y = (lengthOfCube(x,y) * y-coordinate of cube(x,y))
+ *  (|   |   |   |   |   |)       _|_
+ * (-----------------------)   ------- geoWidth
+ *  (|   |   |   |   |    |)
+ *   ((------------------))
+ *     ((    |   |    ))
+ *       -------------
+ *
+ *               geoLength
+ *       |       |
+ *       |-------|
+ *         distanceGeoLength between Cube 0,0 and cube x,y = widthOfCube(x,y) * x-coordinate of cube (x,y)
+ */
 
+
+GeoCoords Area::calcGeoCoords(coords c_) {
+    GeoCoords tempUpperLeftCube = getGeoCoordsUpperLeftCube();
+    GeoCoords newGeoCoords;
+
+    // geoHeight
+    newGeoCoords.geoHeight = tempUpperLeftCube.geoHeight;
+
+    // geoWidth
+    double minutesPerKilometer = 1.0 / 1.852;
+    double distanceToUpperLeftCube = Cubes[c_.y][c_.x].getLength() * c_.y; // in [m]
+    double distanceInKilometer = distanceToUpperLeftCube / 1000;           // in [km]
+
+    newGeoCoords.geoWidth = distanceInKilometer * minutesPerKilometer + tempUpperLeftCube.geoWidth;
+
+    // geoLength
+    minutesPerKilometer = 1.0 / (1.852 * cos(newGeoCoords.geoWidth * M_PI / 180.0));
+    distanceToUpperLeftCube = Cubes[c_.y][c_.x].getWidth() * c_.x; // in [m]
+    distanceInKilometer = distanceToUpperLeftCube / 1000;           // in [km]
+
+    newGeoCoords.geoLength = distanceInKilometer * minutesPerKilometer + tempUpperLeftCube.geoLength;
+    return newGeoCoords;
+}

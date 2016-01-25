@@ -93,6 +93,7 @@ class Area {
         void LoadBalancedAreaStructure();
         void LoadAreaStructureTemplate(string path_);
         void saveAreaStructureTemplate(string path_);
+        GeoCoords calcGeoCoords(coords c_);
 
         // ui-implementation
         void PrintCubes(string properties);

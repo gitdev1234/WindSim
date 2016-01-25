@@ -32,6 +32,7 @@ const double INDIVIDUAL_GAS_CONST = 287.05; // [J / (Kg * K)]
 const double VISCOSITY_AIR = 13.21 * pow (10,-6); // [m^2 / s] is constant for pressure 0.1 to 10 Bar
 const double THERMAL_CONDUCTIVITY_COEFFICIENT_AIR = 0.0262;  // lambda
 const double SPECIFIC_THERMAL_CAPACITY_AIR = 1.005; // c_v
+const double ANGLE_SPEED_EARTH = 7.92115 * pow (10,-5); // omega [RAD/s]
 const double TODO_LIMITOR_FACTOR = 1; // TODO
 const int PRINT_PRECISION = 10; // decimal places that are printed in cout
 

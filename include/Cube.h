@@ -124,6 +124,7 @@ class Cube {
         void setMoleculesCount(double val_)            {moleculesCount = val_;            };
         void setTemperature(double val_)               {temperature = val_;               };
         void setPressure(double val_)                  {pressure = val_;                  };
+        void setGeoCoords(GeoCoords val_)              {geoCoords = val_;                 };
         void setMass(double val_)                      {mass = val_;                      };
         void setCoordsInArea(coords val_)             {coordsInArea = val_;              };
         void setMaxCoordsInArea(coords val_)          {maxCoordsInArea = val_;           };
