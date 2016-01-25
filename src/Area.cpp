@@ -1103,7 +1103,7 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
  *
  *
  */
-void Area::simulateTimeStep(double timeStepInSeconds_, int sqliteCounter_) {
+double* Area::simulateTimeStep(double timeStepInSeconds_, int sqliteCounter_) {
     //TODO
     if (SHOW_IN_DETAIL) {
         cout << "simulateTimeStep - dummy :P --> crunching data <--" << endl;
@@ -1120,8 +1120,9 @@ void Area::simulateTimeStep(double timeStepInSeconds_, int sqliteCounter_) {
     }
         //write Data To SQLite
     //if (sqliteCounter_ % 10 == 0) {
-            saveToSQLite();
+            //saveToSQLite();
     //}
+    return getSimulationValues();
 
 };
 
