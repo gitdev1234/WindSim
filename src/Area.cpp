@@ -42,11 +42,11 @@ void Area::createArea(int CubesCountWidth_, int CubesCountLength_, double height
     width = widthArea_;
     length = lengthArea_;
     geoCoordsUpperLeftCube = UpperLeftCube_;
-    openSQLite();
+    //openSQLite();
 };
 
 void Area::DestroyArea() {
-    closeDataBase(db);
+    //closeDataBase(db);
     // clear storage
     Cubes.clear();
 };
@@ -1092,7 +1092,9 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
 
             //write Data To SQLite
         if (i % 1 == 0) {
+            openSQLite();
             saveToSQLite();
+            closeDataBase(db);
         }
 
     }
