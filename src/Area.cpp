@@ -1090,7 +1090,10 @@ void Area::simulate(double timeStepInSeconds_, double simulationSpeedInSeconds_,
         startTime = GetTimeMs64();
         // TODO output simulation results to console
 
-
+            //write Data To SQLite
+        if (i % 1 == 0) {
+            saveToSQLite();
+        }
 
     }
 };
@@ -1118,10 +1121,7 @@ double* Area::simulateTimeStep(double timeStepInSeconds_, int sqliteCounter_) {
             Cubes[y][x].clearAirDeltas();
         }
     }
-        //write Data To SQLite
-    //if (sqliteCounter_ % 10 == 0) {
-            //saveToSQLite();
-    //}
+
     return getSimulationValues();
 
 };
@@ -1233,7 +1233,7 @@ void Area::saveToSQLite() {
 
 double Area::calculateTemperatureDelta(coords fromCoords_, coords toCoords_, double timeStepInSeconds_) {
    // bool left = false;
-    temperatureDelta tempTemperatureDelta;
+
     double temperatureDifference;
     double A, l;
     if (CheckCoordsStillInArea(fromCoords_)) {

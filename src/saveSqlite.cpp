@@ -85,15 +85,15 @@ void writeToDataBaseFast(sqlite3 *db_, vector<vector <Cube>> Cubes_) {
         for (int y = 0; y < Cubes_.size(); y++) {
             for (int x = 0; x < Cubes_[y].size(); x++) {
                 coords tempCoordsInArea = Cubes_[y][x].getCoordsInArea();
-                vector3 tempForce = Cubes_[y][x].getForce();
+                vector3 tempSpeed = Cubes_[y][x].getSpeed();
                 valuesStringStream << "(" << tempCoordsInArea.x << "," << tempCoordsInArea.y;
-                valuesStringStream << "," << tempForce.x << "," << tempForce.y << "," << tempForce.z << ")";
+                valuesStringStream << "," << tempSpeed.x << "," << tempSpeed.y << "," << tempSpeed.z << ")";
                 if (!( (y == Cubes_.size() - 1) && (x == Cubes_[y].size() - 1) )) {
                     valuesStringStream << ",";
                 }
             }
         }
-        cout << valuesStringStream.str();
+        //cout << valuesStringStream.str();
 
         sqlite3_reset(stmt);
         sqlite3_prepare(db_, valuesStringStream.str().c_str(),-1,&stmt,0);

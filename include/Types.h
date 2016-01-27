@@ -60,10 +60,10 @@ struct airDelta {
     double temperature;
 };
 
-struct temperatureDelta {
+/*struct temperatureDelta {
     coords newCoords;
     double temperatureDelta;
-};
+};*/
 
 
 #endif // TYPES_H_INCLUDED
