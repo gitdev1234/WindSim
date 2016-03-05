@@ -9,7 +9,7 @@ int main() {
     Area MA;
     //cout << "Please enter the path of the file you want to load : " << endl;
     //string path = "area_templates/11_40_vulcano.wsim";
-    string path = "area_templates/11_10.wsim";
+    string path = "area_templates/11_40_vulcano.wsim";
     //cin >> path;
     MA.LoadAreaStructureTemplate(path);
     cout << "Loaded area-structure-template successfully." << endl;
